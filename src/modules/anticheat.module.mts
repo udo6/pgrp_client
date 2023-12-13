@@ -5,6 +5,7 @@ import { ModuleBase } from "../utils/models/baseModels/module.base.mjs";
 import playerModule from './player.module.mjs';
 import weaponData from '../utils/data/weaponData.mjs';
 import adminModule from './admin.module.mjs';
+import { distanceTo } from '../utils/math.mjs';
 
 type godmodePlayer = { player: number, date: Date };
 
@@ -89,7 +90,7 @@ export default new class AnticheatModule extends ModuleBase {
     if (this.godmode.active && game.getPlayerInvincible(player) != this.godmode.value) this.godmode.flag();
     else this.godmode.unflag();
 
-    if (this.position.active && (!game.isPedFalling(alt.Player.local) && !adminModule.noclip.active && this.position.value.distanceToSquared(player.pos) > (player.vehicle == null ? AnticheatModule.tpMaxDist : AnticheatModule.tpVehicleMaxDist))) this.position.flag();
+    if (this.position.active && (!game.isPedFalling(alt.Player.local) && !adminModule.noclip.active && distanceTo(this.position.value, player.pos, false) > (player.vehicle == null ? AnticheatModule.tpMaxDist : AnticheatModule.tpVehicleMaxDist))) this.position.flag();
     else { this.position.unflag(); this.position.value = player.pos; }
 
     this.checkFlags();
