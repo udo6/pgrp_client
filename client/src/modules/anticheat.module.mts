@@ -44,6 +44,7 @@ export default new class AnticheatModule extends ModuleBase {
 
     alt.everyTick(this.tick.bind(this));
 
+    alt.on('playerWeaponChange', this.onWeaponSwitch.bind(this));
     alt.on('playerWeaponShoot', this.onWeaponShoot.bind(this));
     alt.on('weaponDamage', this.onWeaponDamage.bind(this));
     alt.on('enteredVehicle', this.enterVehicle.bind(this));
@@ -108,16 +109,6 @@ export default new class AnticheatModule extends ModuleBase {
         if (weaponData.timeBetweenShots != data.timeBetweenShots) alt.log(`[ANTICHEAT] Weapon: ${player.currentWeapon} timeBetweenShots: ${weaponData.timeBetweenShots} | ${data.timeBetweenShots}`);
         if (weaponData.playerDamageModifier != data.playerDamageModifier) alt.log(`[ANTICHEAT] Weapon: ${player.currentWeapon} recoilShakeAmplitude: ${weaponData.playerDamageModifier} | ${data.playerDamageModifier}`);
       }
-
-      player.weapons.forEach(x => {
-        if (x.hash == 2725352035) return;
-
-        const weapon = playerModule.weapons.find(e => e == x.hash);
-        if (weapon != null) return;
-
-        this.triggerServer('Server:Anticheat:Weapon', x.hash);
-        this.timeout();
-      });
     }
 
     const now = new Date();
@@ -171,6 +162,16 @@ export default new class AnticheatModule extends ModuleBase {
     }
   }
 
+  private onWeaponSwitch(oldWeapon: number, newWeapon: number): void {
+    if (newWeapon != 2725352035 && game.isPedArmed(alt.Player.local.scriptID, 6)) {
+      const weapon = playerModule.weapons.find(e => e == newWeapon);
+      if (weapon != null) return;
+
+      this.triggerServer('Server:Anticheat:Weapon', newWeapon);
+      this.timeout();
+    }
+  }
+
   private onWeaponShoot(weapon: number, ammo: number, clip: number): void {
     const data = (weaponData as any)[`${weapon}`];
     const now = new Date().getTime();
@@ -183,8 +184,6 @@ export default new class AnticheatModule extends ModuleBase {
     }
 
     this.lastShot = now;
-
-    if (alt.Player.local.vehicle != null) return;
   }
 
   private onWeaponDamage(target: alt.Entity, weaponHash: number, damage: number, offset: alt.Vector3, bodyPart: alt.BodyPart): boolean | void {

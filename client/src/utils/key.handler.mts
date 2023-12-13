@@ -22,7 +22,7 @@ class KeyHandler extends ScriptBase {
       [KeyCode.KEY_E, 'INTERACTION', 'Server:Player:StopInteraction', false],
       [KeyCode.KEY_E, 'JUMPPOINT', 'Server:JumpPoint:Enter', false],
       [KeyCode.KEY_E, 'WAREHOUSE', 'Server:Warehouse:Open', false],
-      [KeyCode.KEY_E, 'WAREHOUSE_UPGRADE', 'Server:JumpPoint:Enter', false],
+      [KeyCode.KEY_E, 'WAREHOUSE_UPGRADE', 'Server:Warehouse:Upgrader', false],
       [KeyCode.KEY_E, 'PROCESSOR', 'Server:Processor:Start', false],
       [KeyCode.KEY_E, 'TEAM', 'Server:Team:Interact', false],
       [KeyCode.KEY_E, 'GANGWAR', 'Server:Gangwar:Interact', false],
@@ -137,43 +137,7 @@ class KeyHandler extends ScriptBase {
 
         this.triggerServer("Server:Animation:Open");
         break;
-      case KeyCode.KEY_G:
-        if(alt.Player.local.vehicle != null) return;
-
-        const veh = this.getClosestVehicle(5);
-        if(veh == null) return;
-
-        const seat = this.getFirstFreeSeat(veh, false);
-        if(seat == -1) return;
-
-        game.taskEnterVehicle(alt.Player.local, veh, 0, seat, 2, 1, '0');
-        break;
     }
-  }
-
-  private getClosestVehicle(maxDist: number): alt.Vehicle | null {
-    let veh = null;
-    let dist = maxDist;
-
-    alt.Vehicle.all.forEach(x => {
-      const distance = x.pos.distanceTo(alt.Player.local.pos);
-      if(distance < dist) {
-        veh = x;
-        dist = distance;
-      }
-    });
-
-    return veh;
-  }
-
-  private getFirstFreeSeat(veh: alt.Vehicle, includeDriver: boolean): number {
-    for(let i = includeDriver ? -1 : 0; i < veh.seatCount; i++){
-      if(alt.Player.all.find(x => x.vehicle == veh && x.seat == i)) continue;
-
-      return i;
-    }
-
-    return -1;
   }
 }
 

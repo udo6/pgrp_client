@@ -151,7 +151,6 @@ export const loadIPLs = (): void => {
   alt.requestIpl('gabz_pillbox_milo_');
   const pbkh = game.getInteriorAtCoords(311.2546, -592.4204, 42.32737);
   const pbkhValid = game.isValidInterior(pbkh);
-  alt.log('PBKH: ' + pbkhValid);
 
   if(pbkhValid) {
     alt.removeIpl('rc12b_fixed');

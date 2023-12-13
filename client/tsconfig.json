@@ -6,7 +6,7 @@
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "skipLibCheck": true,
-    "outDir": "./dist",
+    "outDir": "./build",
     "typeRoots": ["./node_modules/@types", "./node_modules/@altv"],
     "moduleResolution": "node",
     "resolveJsonModule": true,
