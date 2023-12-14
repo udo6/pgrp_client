@@ -55,6 +55,10 @@ class KeyHandler extends ScriptBase {
       [KeyCode.KEY_L, 'JUMPPOINT', 'Server:JumpPoint:Lock', false],
       [KeyCode.KEY_L, 'HOUSE', 'Server:House:Lock', false],
       [KeyCode.KEY_L, 'DOOR_LOCK', 'Server:Door:Lock', false],
+      
+      // JOBS
+      [KeyCode.KEY_E, 'GARBAGE_JOB_JOIN', 'Server:GarbageJob:Open', false],
+      [KeyCode.KEY_E, 'GARBAGE_JOB_RETURN', 'Server:GarbageJob:Return', false],
     ];
 
     alt.onServer('Client:KeyHandler:SetInteraction', this.setInteraction.bind(this));
