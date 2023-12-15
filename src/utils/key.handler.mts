@@ -23,7 +23,7 @@ class KeyHandler extends ScriptBase {
       [KeyCode.KEY_E, 'JUMPPOINT', 'Server:JumpPoint:Enter', false],
       [KeyCode.KEY_E, 'WAREHOUSE', 'Server:Warehouse:Open', false],
       [KeyCode.KEY_E, 'WAREHOUSE_UPGRADE', 'Server:Warehouse:Upgrader', false],
-      [KeyCode.KEY_E, 'PROCESSOR', 'Server:Processor:Start', false],
+      [KeyCode.KEY_E, 'PROCESSOR', 'Server:Processor:Open', false],
       [KeyCode.KEY_E, 'TEAM', 'Server:Team:Interact', false],
       [KeyCode.KEY_E, 'GANGWAR', 'Server:Gangwar:Interact', false],
       [KeyCode.KEY_E, 'GANGWARSPAWN', 'Server:Gangwar:OpenMenu', false],
@@ -50,6 +50,7 @@ class KeyHandler extends ScriptBase {
       [KeyCode.KEY_E, 'DMV', 'Server:DMV:Open', false],
       [KeyCode.KEY_E, 'SOCIAL_BONUS', 'Server:SocialBonus:Open', false],
       [KeyCode.KEY_E, 'TUNER', 'Server:Tuner:Open', true],
+      [KeyCode.KEY_E, 'LSPD_TELEPORTER', 'Server:Police:OpenTeleporter', false],
 
       [KeyCode.KEY_L, 'JUMPPOINT', 'Server:JumpPoint:Lock', false],
       [KeyCode.KEY_L, 'HOUSE', 'Server:House:Lock', false],
@@ -69,7 +70,7 @@ class KeyHandler extends ScriptBase {
   }
 
   private onKeyDown(key: number): void {
-    if (!playerModule.alive || alt.Player.local.getStreamSyncedMeta('ROPED') || alt.Player.local.getStreamSyncedMeta('CUFFED')) return;
+    if (alt.Player.local.isInRagdoll || !playerModule.alive || alt.Player.local.getStreamSyncedMeta('ROPED') || alt.Player.local.getStreamSyncedMeta('CUFFED')) return;
 
     switch (key) {
       case KeyCode.PERIOD:

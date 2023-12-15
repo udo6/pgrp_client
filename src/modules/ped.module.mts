@@ -8,7 +8,7 @@ export default new class PedModule extends ModuleBase {
     super('PedModule');
 
     alt.on('spawned', this.freezePeds.bind(this));
-    alt.setInterval(this.freezePeds.bind(this), 10000);
+    alt.setInterval(this.freezePeds.bind(this), 5000);
   }
 
   private freezePeds(): void {
