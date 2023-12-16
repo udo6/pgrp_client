@@ -55,7 +55,7 @@ class KeyHandler extends ScriptBase {
       [KeyCode.KEY_L, 'JUMPPOINT', 'Server:JumpPoint:Lock', false],
       [KeyCode.KEY_L, 'HOUSE', 'Server:House:Lock', false],
       [KeyCode.KEY_L, 'DOOR_LOCK', 'Server:Door:Lock', false],
-      
+
       // JOBS
       [KeyCode.KEY_E, 'GARBAGE_JOB_START', 'Server:GarbageJob:Open', false],
       [KeyCode.KEY_E, 'GARBAGE_JOB_RETURN', 'Server:GarbageJob:Return', false],
@@ -91,9 +91,21 @@ class KeyHandler extends ScriptBase {
           return;
         }
 
+        if (alt.Player.local.getSyncedMeta("IS_GARBAGE_MAN") == true) {
+          const vehicle = alt.Vehicle.all.filter(x => x.model == 1917016601).find(x => x.pos.distanceTo(alt.Player.local.pos) <= 10); // 1917016601 = Trash truck
+          if (vehicle != null) {
+            const trunkCoords = game.getWorldPositionOfEntityBone(vehicle.scriptID, game.getEntityBoneIndexByName(vehicle.scriptID, 'platelight'));
+            const distance = game.getDistanceBetweenCoords(alt.Player.local.pos.x, alt.Player.local.pos.y, alt.Player.local.pos.z, trunkCoords.x, trunkCoords.y, trunkCoords.z, true);
+            if (distance > 1.5) return;
+            
+            this.triggerServer("Server:GarbageJob:Throw", vehicle.id);
+          }
+        }
+
+
         const eInteractions = this._interactions.filter(x => x[0] == KeyCode.KEY_E);
         const eInteraction = eInteractions.find(x => x[1] == this._activeInteractions['KEY_E']);
-        if(eInteraction == null || (!eInteraction[3] && alt.Player.local.vehicle != null)) break;
+        if (eInteraction == null || (!eInteraction[3] && alt.Player.local.vehicle != null)) break;
 
         this.triggerServer(eInteraction[2]);
         break;
@@ -102,7 +114,7 @@ class KeyHandler extends ScriptBase {
 
         const lInteractions = this._interactions.filter(x => x[0] == KeyCode.KEY_L);
         const lInteraction = lInteractions.find(x => x[1] == this._activeInteractions['KEY_L']);
-        if(lInteraction != null) {
+        if (lInteraction != null) {
           this.triggerServer(lInteraction[2]);
           break;
         }
