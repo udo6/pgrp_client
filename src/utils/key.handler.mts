@@ -95,9 +95,9 @@ class KeyHandler extends ScriptBase {
         if (vehicle != null) {
           const trunkCoords = game.getWorldPositionOfEntityBone(vehicle.scriptID, game.getEntityBoneIndexByName(vehicle.scriptID, 'platelight'));
           const distance = game.getDistanceBetweenCoords(alt.Player.local.pos.x, alt.Player.local.pos.y, alt.Player.local.pos.z, trunkCoords.x, trunkCoords.y, trunkCoords.z, true);
-          if (distance > 1.5) return;
-
-          this.triggerServer("Server:GarbageJob:Throw", vehicle.id);
+          if (distance <= 1.5) {
+            this.triggerServer("Server:GarbageJob:Throw", vehicle.id);
+          }
         }
 
         const eInteractions = this._interactions.filter(x => x[0] == KeyCode.KEY_E);
