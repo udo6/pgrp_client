@@ -3,7 +3,7 @@ import { InteractionWindow } from "../../utils/models/baseModels/window.base.mjs
 
 class LaptopWindow extends InteractionWindow {
   constructor() {
-    super('Laptop', KeyCode.F4, true, false, 0, true, false, true, true, true);
+    super('Laptop', KeyCode.F3, true, false, 0, true, false, true, true, true);
   }
 }
 
