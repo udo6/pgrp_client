@@ -32,6 +32,8 @@ export default new class PlayerModule extends ModuleBase {
   public cuffed: boolean;
   public roped: boolean;
 
+  public gargabeProp: number;
+
   constructor() {
     super('PlayerModule');
 
@@ -66,6 +68,7 @@ export default new class PlayerModule extends ModuleBase {
     alt.onServer('Client:PlayerModule:ExitColshape', this.exitColshape.bind(this));
     alt.onServer('Client:PlayerModule:LoadIpl', this.loadIpl.bind(this));
     alt.onServer('Client:PlayerModule:UnloadIpl', this.unloadIpl.bind(this));
+    alt.onServer('Client:PlayerModule:SetGarbageProp', this.setGarbageProp.bind(this));
 
     alt.on('streamSyncedMetaChange', this.onMetaChange.bind(this));
 
@@ -86,17 +89,17 @@ export default new class PlayerModule extends ModuleBase {
   }
 
   private tick(): void {
-    if(game.isPedUsingActionMode(alt.Player.local)) {
+    if (game.isPedUsingActionMode(alt.Player.local)) {
       game.setPedUsingActionMode(alt.Player.local, false, -1, "-1");
     }
 
-    if(game.isPedArmed(alt.Player.local.scriptID, 6)) {
+    if (game.isPedArmed(alt.Player.local.scriptID, 6)) {
       game.disableControlAction(0, 140, true);
       game.disableControlAction(0, 141, true);
       game.disableControlAction(0, 142, true);
     }
 
-    if(this.freezed) {
+    if (this.freezed) {
       game.disablePlayerFiring(alt.Player.local.scriptID, true);
       game.disableControlAction(0, 30, true); //Move LR
       game.disableControlAction(0, 31, true); //Move UD
@@ -167,11 +170,11 @@ export default new class PlayerModule extends ModuleBase {
     if (!this.alive) {
       const stabilized = alt.Player.local.getStreamSyncedMeta('STABILIZED') as boolean;
 
-      if(alt.Player.local.vehicle == null) {
-        if(stabilized) {
-          if(!game.isEntityPlayingAnim(alt.Player.local, "combat@damage@rb_writhe", "rb_writhe_loop", 1)) playAnim(12);
+      if (alt.Player.local.vehicle == null) {
+        if (stabilized) {
+          if (!game.isEntityPlayingAnim(alt.Player.local, "combat@damage@rb_writhe", "rb_writhe_loop", 1)) playAnim(12);
         } else {
-          if(!game.isEntityPlayingAnim(alt.Player.local, "missarmenian2", "corpse_search_exit_ped", 1)) playAnim(0);
+          if (!game.isEntityPlayingAnim(alt.Player.local, "missarmenian2", "corpse_search_exit_ped", 1)) playAnim(0);
         }
       } else {
         clearTasks();
@@ -180,9 +183,9 @@ export default new class PlayerModule extends ModuleBase {
   }
 
   private onMetaChange(entity: alt.Entity, key: string, value: any, oldValue: any): void {
-    if(entity != alt.Player.local) return;
+    if (entity != alt.Player.local) return;
 
-    if(key == 'ALIVE') {
+    if (key == 'ALIVE') {
       this.alive = value;
       this.freezed = !value;
       game.setPlayerCanDoDriveBy(alt.Player.local.scriptID, value);
@@ -193,14 +196,14 @@ export default new class PlayerModule extends ModuleBase {
       browserModule.showComponent('Death', !value, '0');
     }
 
-    if(key == 'CUFFED') {
+    if (key == 'CUFFED') {
       game.setEnableHandcuffs(alt.Player.local, value);
       this.freezed = value;
       game.setPlayerCanDoDriveBy(alt.Player.local.scriptID, !value);
       this.cuffed = value;
     }
 
-    if(key == 'ROPED') {
+    if (key == 'ROPED') {
       game.setEnableHandcuffs(alt.Player.local, value);
       this.freezed = value;
       game.setPlayerCanDoDriveBy(alt.Player.local.scriptID, !value);
@@ -240,5 +243,15 @@ export default new class PlayerModule extends ModuleBase {
 
   private unloadIpl(ipl: string) {
     alt.removeIpl(ipl);
+  }
+
+  private setGarbageProp(state: boolean) {
+    if (!state) {
+      game.deleteObject(this.gargabeProp);
+      return;
+    }
+    
+    this.gargabeProp = game.createObject(game.getHashKey("hei_prop_heist_binbag"), 0, 0, 0, true, true, true);
+    game.attachEntityToEntity(this.gargabeProp, alt.Player.local, game.getPedBoneIndex(alt.Player.local, 0xdead), 0, 0, 0, 0, 0, 0, false, false, false, false, 2, true, null);
   }
 }
