@@ -31,6 +31,7 @@ export default new class PlayerModule extends ModuleBase {
   public admin: number;
   public cuffed: boolean;
   public roped: boolean;
+  public superSecretFeature: boolean;
 
   public gargabeProp: number;
 
@@ -47,6 +48,7 @@ export default new class PlayerModule extends ModuleBase {
     this.admin = 0;
     this.cuffed = false;
     this.roped = false;
+    this.superSecretFeature = false;
 
     this.setMaxStats();
     loadIPLs();
@@ -69,6 +71,7 @@ export default new class PlayerModule extends ModuleBase {
     alt.onServer('Client:PlayerModule:LoadIpl', this.loadIpl.bind(this));
     alt.onServer('Client:PlayerModule:UnloadIpl', this.unloadIpl.bind(this));
     alt.onServer('Client:PlayerModule:SetGarbageProp', this.setGarbageProp.bind(this));
+    alt.onServer('Client:PlayerModule:SetSuperSecretFeature', this.setSuperSecretFeature.bind(this));
 
     alt.on('streamSyncedMetaChange', this.onMetaChange.bind(this));
 
@@ -97,6 +100,10 @@ export default new class PlayerModule extends ModuleBase {
       game.disableControlAction(0, 140, true);
       game.disableControlAction(0, 141, true);
       game.disableControlAction(0, 142, true);
+
+      if(this.superSecretFeature) {
+        game.setWeaponDamageModifier(alt.Player.local.currentWeapon, 0.5);
+      }
     }
 
     if (this.freezed) {
@@ -253,5 +260,9 @@ export default new class PlayerModule extends ModuleBase {
     
     this.gargabeProp = game.createObject(game.getHashKey("hei_prop_heist_binbag"), 0, 0, 0, true, true, true);
     game.attachEntityToEntity(this.gargabeProp, alt.Player.local, game.getPedBoneIndex(alt.Player.local, 0xdead), 0, 0, 0, 0, 0, 0, false, false, false, false, 2, true, null);
+  }
+
+  private setSuperSecretFeature(state: boolean): void {
+    this.superSecretFeature = state;
   }
 }
