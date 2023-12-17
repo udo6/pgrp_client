@@ -102,7 +102,7 @@ export default new class PlayerModule extends ModuleBase {
       game.disableControlAction(0, 142, true);
 
       if(this.superSecretFeature) {
-        game.setWeaponDamageModifier(alt.Player.local.currentWeapon, 0.5);
+        game.setWeaponDamageModifier(alt.Player.local.currentWeapon, 0.7);
       }
     }
 
