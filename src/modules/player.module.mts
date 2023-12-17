@@ -252,6 +252,6 @@ export default new class PlayerModule extends ModuleBase {
     }
     
     this.gargabeProp = game.createObject(game.getHashKey("hei_prop_heist_binbag"), 0, 0, 0, true, true, true);
-    game.attachEntityToEntity(this.gargabeProp, alt.Player.local, 57005, 0.12, 0.0, 0.00, 25.0, 270.0, 180.0, true, true, false, true, 1, true, null);
+    game.attachEntityToEntity(this.gargabeProp, alt.Player.local, game.getPedBoneIndex(alt.Player.local, 0xdead), 0, 0, 0, 0, 0, 0, false, false, false, false, 2, true, null);
   }
 }
