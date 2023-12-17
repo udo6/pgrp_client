@@ -70,21 +70,21 @@ class KeyHandler extends ScriptBase {
   }
 
   private onKeyDown(key: number): void {
-    if (alt.Player.local.isInRagdoll || !playerModule.alive || alt.Player.local.getStreamSyncedMeta('ROPED') || alt.Player.local.getStreamSyncedMeta('CUFFED')) return;
+    if (!playerModule.alive || alt.Player.local.getStreamSyncedMeta('ROPED') || alt.Player.local.getStreamSyncedMeta('CUFFED')) return;
 
     switch (key) {
       case KeyCode.PERIOD:
-        if (browserModule.isAnyComponentActive() || playerModule.isFarming) return;
+        if (browserModule.isAnyComponentActive() || playerModule.isFarming || alt.Player.local.isInRagdoll) return;
 
         this.triggerServer('Server:Inventory:QuickUse', 2);
         break;
       case KeyCode.COMMA:
-        if (browserModule.isAnyComponentActive() || playerModule.isFarming) return;
+        if (browserModule.isAnyComponentActive() || playerModule.isFarming || alt.Player.local.isInRagdoll) return;
 
         this.triggerServer('Server:Inventory:QuickUse', 1);
         break;
       case KeyCode.KEY_E:
-        if (browserModule.isAnyComponentActive('Progressbar')) return;
+        if (browserModule.isAnyComponentActive('Progressbar') || alt.Player.local.isInRagdoll) return;
 
         if (playerModule.isFarming) {
           this.triggerServer('Server:Farming:Stop');
@@ -107,7 +107,7 @@ class KeyHandler extends ScriptBase {
         this.triggerServer(eInteraction[2]);
         break;
       case KeyCode.KEY_L:
-        if (browserModule.isAnyComponentActive() || playerModule.isFarming) return;
+        if (browserModule.isAnyComponentActive() || playerModule.isFarming || alt.Player.local.isInRagdoll) return;
 
         const lInteractions = this._interactions.filter(x => x[0] == KeyCode.KEY_L);
         const lInteraction = lInteractions.find(x => x[1] == this._activeInteractions['KEY_L']);
@@ -120,12 +120,12 @@ class KeyHandler extends ScriptBase {
         if (lockPossible1) this.triggerServer('Server:Vehicle:Lock');
         break;
       case KeyCode.KEY_K:
-        if (browserModule.isAnyComponentActive() || playerModule.isFarming) return;
+        if (browserModule.isAnyComponentActive() || playerModule.isFarming || alt.Player.local.isInRagdoll) return;
 
         const lockPossible2 = (alt.Player.local.vehicle != null || alt.Vehicle.all.find(x => x.pos.distanceToSquared(alt.Player.local.pos) < 7) != null);
         if (lockPossible2) this.triggerServer('Server:Vehicle:LockTrunk');
         break;
-      case KeyCode.F1:
+      case KeyCode.F10:
         alt.showCursor(!alt.isCursorVisible());
         browserModule.focus(alt.isCursorVisible());
         break;
@@ -141,12 +141,12 @@ class KeyHandler extends ScriptBase {
         adminModule.noclip.toggle();
         break;
       case KeyCode.KEY_H:
-        if (browserModule.isAnyComponentActive() || !playerModule.alive || playerModule.isFarming || alt.Player.local.vehicle != null) return;
+        if (browserModule.isAnyComponentActive() || !playerModule.alive || playerModule.isFarming || alt.Player.local.vehicle != null || alt.Player.local.isInRagdoll) return;
         if (game.isEntityPlayingAnim(alt.Player.local, "missfbi5ig_21", "hand_up_scientist", 49)) clearTasks();
         else playAnim(16);
         break;
       case KeyCode.F5:
-        if (browserModule.isAnyComponentActive() || !playerModule.alive || playerModule.isFarming || alt.Player.local.vehicle != null) return;
+        if (browserModule.isAnyComponentActive() || !playerModule.alive || playerModule.isFarming || alt.Player.local.vehicle != null || alt.Player.local.isInRagdoll) return;
 
         this.triggerServer("Server:Animation:Open");
         break;
