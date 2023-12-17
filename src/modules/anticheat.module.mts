@@ -18,6 +18,7 @@ const vehicleRocketboostWhitelist: number[] = [
   0xB5EF4C33
 ];
 
+// todo: noclip
 export default new class AnticheatModule extends ModuleBase {
   public static tpMaxDist: number = 25;
   public static tpVehicleMaxDist: number = 50;
