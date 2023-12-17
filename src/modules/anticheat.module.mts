@@ -30,6 +30,7 @@ export default new class AnticheatModule extends ModuleBase {
   public magic: AnticheatComponent<null>;
   public godmodePlayers: godmodePlayer[];
   public lastShot: number;
+  public fallingUnderground: boolean;
 
   constructor() {
     super('AnticheatModule');
@@ -42,6 +43,7 @@ export default new class AnticheatModule extends ModuleBase {
     this.magic = new AnticheatComponent(null, 300);
     this.godmodePlayers = [];
     this.lastShot = new Date().getTime();
+    this.fallingUnderground = false;
 
     alt.everyTick(this.tick.bind(this));
 
@@ -90,8 +92,29 @@ export default new class AnticheatModule extends ModuleBase {
     if (this.godmode.active && game.getPlayerInvincible(player) != this.godmode.value) this.godmode.flag();
     else this.godmode.unflag();
 
-    if (this.position.active && (!game.isPedFalling(alt.Player.local) && !adminModule.noclip.active && distanceTo(this.position.value, player.pos, false) > (player.vehicle == null ? AnticheatModule.tpMaxDist : AnticheatModule.tpVehicleMaxDist))) this.position.flag();
-    else { this.position.unflag(); this.position.value = player.pos; }
+    const falling = game.isPedFalling(alt.Player.local);
+    const noclip = adminModule.noclip.active;
+    const tpDist = distanceTo(this.position.value, player.pos, false);
+    const allowedTpDist = player.vehicle == null ? AnticheatModule.tpMaxDist : AnticheatModule.tpVehicleMaxDist;
+
+    if(!this.fallingUnderground && falling) {
+      const [_, groundZ] = game.getGroundZFor3dCoord(player.pos.x, player.pos.y, player.pos.z, 0, false, false);
+      if(groundZ == 0)
+        this.fallingUnderground = true;
+    }
+
+    if (this.position.active && (!falling && !noclip && tpDist > allowedTpDist)) {
+      if(this.fallingUnderground) {
+        this.position.flags = 0;
+        this.position.value = player.pos;
+        this.fallingUnderground = false;
+      }
+      this.position.flag();
+    }
+    else { 
+      this.position.unflag();
+      this.position.value = player.pos;
+    }
 
     this.checkFlags();
 
