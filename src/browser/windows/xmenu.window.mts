@@ -50,10 +50,10 @@ class XMenuWindow extends WindowBase {
     if(veh != null) {
       items = [
         new XMenuItem('Motor an/aus', 'engine', 'Server:XMenu:ToggleEngine', []),
-        new XMenuItem('Türen auf/zu', 'lock', 'Server:XMenu:LockVehicle', [veh.id]),
-        new XMenuItem('Kofferraum auf/zu', 'trunk', 'Server:XMenu:LockTrunk', [veh.id]),
+        new XMenuItem('Türen auf/zu', 'lock', 'Server:XMenu:LockVehicle', [veh.remoteID]),
+        new XMenuItem('Kofferraum auf/zu', 'trunk', 'Server:XMenu:LockTrunk', [veh.remoteID]),
         new XMenuItem('Rauswerfen', 'eject', 'Server:XMenu:Eject', []),
-        new XMenuItem('Fahrzeug ID', 'eject', 'Server:XMenu:GetVehicleId', [veh.id])
+        new XMenuItem('Fahrzeug ID', 'eject', 'Server:XMenu:GetVehicleId', [veh.remoteID])
       ];
     } else {
       const targetEntity = getEntity();
