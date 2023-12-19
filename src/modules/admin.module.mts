@@ -6,7 +6,12 @@ import { NoclipModel } from '../utils/models/noclip.model.mjs';
 export default new class AdminModule extends ModuleBase {
   public duty: boolean;
   public noclip: NoclipModel;
+  public spectating: boolean;
+
   private _namesTick: number | null;
+  private _spectateTarget: alt.Player | null;
+  private _spectateCam: number | null;
+  private _spectateTick: number | null;
 
   constructor() {
     super('AdminModule');
@@ -14,8 +19,50 @@ export default new class AdminModule extends ModuleBase {
     this.duty = false;
     this.noclip = new NoclipModel();
     this._namesTick = null;
+    this._spectateTarget = null;
+    this._spectateCam = null;
+    this._spectateTick = null;
 
-    alt.onServer('Client:AdminModule:SetDuty', (state: boolean) => this.setDuty(state));
+    alt.onServer('Client:AdminModule:StartSpectating', this.startSpectating.bind(this));
+    alt.onServer('Client:AdminModule:StopSpectating', this.stopSpectating.bind(this));
+    alt.onServer('Client:AdminModule:SetDuty', this.setDuty.bind(this));
+  }
+
+  private startSpectating(target: alt.Player): void {
+    if(target == null || !target.valid || this._spectateTick != null) return;
+
+    this._spectateTarget = target;
+    this._spectateCam = game.createCamWithParams('DEFAULT_SCRIPTED_CAMERA', target.pos.x, target.pos.y, target.pos.z, 0, 0, 0, 75, true, 2);
+    game.pointCamAtPedBone(this._spectateCam, target, 39317, 0, 0, 0, true);
+    game.setCamActive(this._spectateCam, true);
+    game.renderScriptCams(true, false, 0, true, false, 0);
+
+    this._spectateTick = alt.everyTick(this.renderSpectate.bind(this));
+  }
+
+  private stopSpectating(): void {
+    if(this._spectateCam != null) {
+      game.detachCam(this._spectateCam);
+      game.setCamActive(this._spectateCam, false);
+      game.destroyCam(this._spectateCam, false);
+      game.renderScriptCams(false, false, 0, true, false, 0);
+      this._spectateCam = null;
+    }
+
+    if(this._spectateTick != null) {
+      alt.clearEveryTick(this._spectateTick);
+      this._spectateTick = null;
+    }
+
+    this._spectateTarget = null;
+  }
+
+  private renderSpectate(): void {
+    if(this._spectateCam == null) return;
+    if(this._spectateTarget == null || !this._spectateTarget.valid) return this.stopSpectating();
+
+    game.attachCamToPedBone(this._spectateCam, this._spectateTarget, 39317, 0, -5.0, 1.0, true);
+    alt.Player.local.pos = new alt.Vector3(this._spectateTarget.pos.x, this._spectateTarget.pos.y, this._spectateTarget.pos.z - 100);
   }
 
   private setDuty(state: boolean): void {
