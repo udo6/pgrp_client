@@ -31,6 +31,7 @@ export default new class AdminModule extends ModuleBase {
   private startSpectating(target: alt.Player): void {
     if(target == null || !target.valid || this._spectateTick != null) return;
 
+    this.spectating = true;
     this._spectateTarget = target;
     this._spectateCam = game.createCamWithParams('DEFAULT_SCRIPTED_CAMERA', target.pos.x, target.pos.y, target.pos.z, 0, 0, 0, 75, true, 2);
     game.pointCamAtPedBone(this._spectateCam, target, 39317, 0, 0, 0, true);
@@ -55,6 +56,7 @@ export default new class AdminModule extends ModuleBase {
     }
 
     this._spectateTarget = null;
+    this.spectating = false;
   }
 
   private renderSpectate(): void {
