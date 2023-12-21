@@ -51,6 +51,7 @@ class KeyHandler extends ScriptBase {
       [KeyCode.KEY_E, 'SOCIAL_BONUS', 'Server:SocialBonus:Open', false],
       [KeyCode.KEY_E, 'TUNER', 'Server:Tuner:Open', true],
       [KeyCode.KEY_E, 'LSPD_TELEPORTER', 'Server:Police:OpenTeleporter', false],
+      [KeyCode.KEY_E, 'CREATOR', 'Server:Creator:Enter', false],
 
       [KeyCode.KEY_L, 'JUMPPOINT', 'Server:JumpPoint:Lock', false],
       [KeyCode.KEY_L, 'HOUSE', 'Server:House:Lock', false],
