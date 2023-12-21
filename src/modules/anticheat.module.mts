@@ -161,6 +161,11 @@ export default new class AnticheatModule extends ModuleBase {
         this.triggerServer('Server:Anticheat:RocketBoost');
       }
     }
+
+    this.godmodePlayers.slice(0).forEach(x => {
+      if(now.getTime() - x.date.getTime() >= 1000)
+        this.godmodePlayers.splice(this.godmodePlayers.indexOf(x), 1);
+    });
   }
 
   private checkFlags(): void {
