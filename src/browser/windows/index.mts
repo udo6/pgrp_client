@@ -19,3 +19,4 @@ import './phone.window.mjs';
 import './givekey.window.mjs';
 import './barber.window.mjs';
 import './tattoo.window.mjs';
+import './mmenu.window.mjs';
