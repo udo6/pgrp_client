@@ -6,3 +6,4 @@ import './vehicle.module.mjs';
 import './door.module.mjs';
 import './world.module.mjs';
 import './ped.module.mjs';
+import './moneytruck.module.mjs';
