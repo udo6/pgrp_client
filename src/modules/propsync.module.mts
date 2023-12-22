@@ -5,11 +5,13 @@ import { ModuleBase } from "../utils/models/baseModels/module.base.mjs";
 
 export default new class PropSyncModule extends ModuleBase {
   public tempProp: alt.Object | null;
+  public propData: {propName: string, bone: number, posX: number, posY: number, posZ: number, rotX: number, rotY: number, rotZ: number };
 
   constructor() {
     super('PropSyncModule');
 
     this.tempProp = null;
+    this.propData = {};
 
     alt.onServer("Client:PropSyncModule:AddProp", this.addProp.bind(this));
     alt.onServer("Client:PropSyncModule:Clear", this.clearProps.bind(this));
@@ -27,6 +29,16 @@ export default new class PropSyncModule extends ModuleBase {
 
     game.attachEntityToEntity(prop, player.scriptID, game.getPedBoneIndex(player.scriptID, bone), posX, posY, posZ, rotX, rotY, rotZ, false, false, false, true, 2, true, false);
     this.tempProp = alt.Object.all.find(x => x.id == prop);
+    this.propData = {
+      propName: propName,
+      bone: bone,
+      posX: posX,
+      posY: posY,
+      posZ: posZ,
+      rotX: rotX,
+      rotY: rotY,
+      rotZ: rotZ
+    };
   }
 
   private clearProps(): void {
@@ -42,7 +54,7 @@ export default new class PropSyncModule extends ModuleBase {
   private tick(): void {
     if (this.tempProp != null) {
       const player = alt.Player.local;
-      game.attachEntityToEntity(this.tempProp.scriptID, player.scriptID, game.getPedBoneIndex(player.scriptID, 57005), 0, 0, 0, 0, 0, 0, false, false, false, true, 2, true, false);
+      game.attachEntityToEntity(this.tempProp.scriptID, player.scriptID, game.getPedBoneIndex(player.scriptID, this.propData.bone), this.propData.posX, this.propData.posY, this.propData.posZ, this.propData.rotX, this.propData.posY, this.propData.posZ, false, false, false, true, 2, true, false);
     }
   }
 }
