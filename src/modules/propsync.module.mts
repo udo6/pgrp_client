@@ -5,7 +5,7 @@ import { ModuleBase } from "../utils/models/baseModels/module.base.mjs";
 
 export default new class PropSyncModule extends ModuleBase {
   public tempProp: alt.Object | null;
-  public propData: {propName: string, bone: number, posX: number, posY: number, posZ: number, rotX: number, rotY: number, rotZ: number };
+  public propData: { propName: string, bone: number, posX: number, posY: number, posZ: number, rotX: number, rotY: number, rotZ: number } | {};
 
   constructor() {
     super('PropSyncModule');
