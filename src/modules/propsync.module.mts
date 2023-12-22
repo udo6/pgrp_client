@@ -15,6 +15,7 @@ export default new class PropSyncModule extends ModuleBase {
 
     alt.onServer("Client:PropSyncModule:AddProp", this.addProp.bind(this));
     alt.onServer("Client:PropSyncModule:Clear", this.clearProps.bind(this));
+    
     alt.everyTick(this.tick.bind(this));
   }
 

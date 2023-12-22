@@ -7,3 +7,6 @@ import './door.module.mjs';
 import './world.module.mjs';
 import './ped.module.mjs';
 import './propsync.module.mjs';
+
+import './garbagejob.module.mjs';
+import './moneytruckjob.module.mjs';
