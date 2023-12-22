@@ -9,11 +9,11 @@ export default new class PropSyncModule extends ModuleBase {
   constructor() {
     super('PropSyncModule');
 
+    this.tempProp = null;
+
     alt.onServer("Client:PropSyncModule:AddProp", this.addProp.bind(this));
     alt.onServer("Client:PropSyncModule:Clear", this.clearProps.bind(this));
     alt.everyTick(this.tick.bind(this));
-
-    this.tempProp = null;
   }
 
   private addProp(propName: string, bone: number, posX: number, posY: number, posZ: number, rotX: number, rotY: number, rotZ: number): void {
