@@ -70,7 +70,6 @@ export default new class PlayerModule extends ModuleBase {
     alt.onServer('Client:PlayerModule:ExitColshape', this.exitColshape.bind(this));
     alt.onServer('Client:PlayerModule:LoadIpl', this.loadIpl.bind(this));
     alt.onServer('Client:PlayerModule:UnloadIpl', this.unloadIpl.bind(this));
-    alt.onServer('Client:PlayerModule:SetGarbageProp', this.setGarbageProp.bind(this));
     alt.onServer('Client:PlayerModule:SetSuperSecretFeature', this.setSuperSecretFeature.bind(this));
 
     alt.on('streamSyncedMetaChange', this.onMetaChange.bind(this));
@@ -250,16 +249,6 @@ export default new class PlayerModule extends ModuleBase {
 
   private unloadIpl(ipl: string) {
     alt.removeIpl(ipl);
-  }
-
-  private setGarbageProp(state: boolean) {
-    if (!state) {
-      game.deleteObject(this.gargabeProp);
-      return;
-    }
-    
-    this.gargabeProp = game.createObject(game.getHashKey("hei_prop_heist_binbag"), 0, 0, 0, true, true, true);
-    game.attachEntityToEntity(this.gargabeProp, alt.Player.local, game.getPedBoneIndex(alt.Player.local, 0xdead), 0, 0, 0, 0, 0, 0, false, false, false, false, 2, true, null);
   }
 
   private setSuperSecretFeature(state: boolean): void {
