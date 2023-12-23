@@ -14,12 +14,11 @@ export default new class MoneyTruckJobModule extends ModuleBase {
 
   private keyDown(key: number): void {
     if (KeyCode.KEY_E != key) return;
-
     const vehicle = alt.Vehicle.all.filter(x => x.model == 1747439474).find(x => x.pos.distanceTo(alt.Player.local.pos) <= 10); // 1747439474 = Stockade
     if (vehicle != null) {
-      const trunkCoords = game.getWorldPositionOfEntityBone(vehicle.scriptID, game.getEntityBoneIndexByName(vehicle.scriptID, 'platelight'));
+      const trunkCoords = game.getWorldPositionOfEntityBone(vehicle.scriptID, game.getEntityBoneIndexByName(vehicle.scriptID, 'door_pside_r'));
       const distance = game.getDistanceBetweenCoords(alt.Player.local.pos.x, alt.Player.local.pos.y, alt.Player.local.pos.z, trunkCoords.x, trunkCoords.y, trunkCoords.z, true);
-      if (distance <= 1.5) {
+      if (distance <= 2.5) {
         this.triggerServer("Server:MoneyTruckJob:Store", vehicle.id);
       }
     }

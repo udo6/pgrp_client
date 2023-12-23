@@ -47,11 +47,12 @@ export default new class PropSyncModule extends ModuleBase {
   private clearProps(): void {
     if (this.tempProp == null) return;
 
-    game.detachEntity(this.tempProp.scriptID, true, true);
+    game.detachEntity(this.tempProp.scriptID, false, false);
     game.deleteObject(this.tempProp.scriptID);
 
     this.tempProp.destroy();
     this.tempProp = null;
+    this.propData = null;
   }
 
   private tick(): void {
