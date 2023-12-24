@@ -19,9 +19,11 @@ const animations: animation[] = [
   ["combat@damage@rb_writhe", "rb_writhe_loop", 1],                                  // 12 STABILIZED
   ["amb@prop_human_parking_meter@male@base", "base", 1],                             // 13 SEARCH
   ["amb@world_human_gardener_plant@male@base", "base", 1],                           // 14 HARVEST PLANT
-  ["amb@medic@standing@tendtodead@base", "base", 1],                                 // 15 LAPTOP
+  ["amb@code_human_in_bus_passenger_idles@female@tablet@idle_a", "idle_a", 50],      // 15 LAPTOP
   ["missfbi5ig_21", "hand_up_scientist", 49],                                        // 16 SURRENDER
   ["amb@world_human_stand_mobile@male@text@base", "base", 49],                       // 17 PHONE
+  ["amb@world_human_stand_mobile@male@text@base", "base", 49],                       // 18 RAMMING
+  ["timetable@gardener@filling_can", "gar_ig_5_filling_can", 35],                    // 19 FUELING
 ];
 
 export const playAnim = (type: number): void => {
