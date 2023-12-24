@@ -88,11 +88,7 @@ const voiceRangesEnum = {
   1: 1,
   2: 3,
   3: 8,
-  4: 15,
-  5: 20,
-  6: 25,
-  7: 30,
-  8: 40,
+  4: 15
 }
 
 const translations = {
@@ -222,36 +218,8 @@ export class YaCAClientModule {
       canUseMegaphone: false,
     };
 
-    this.registerEvents();
-
-    /*NKeyhandler.registerKeybind(107, "yaca:changeVoiceRangeAdd", "Mirkofon-Reichweite +", () => { this.changeVoiceRange(1) });
-    NKeyhandler.registerKeybind(109, "yaca:changeVoiceRangeRemove", "Mirkofon-Reichweite -", () => { this.changeVoiceRange(-1) });
-
-    NKeyhandler.registerKeybind(80, "yaca:radioUI", "Funkgerät öffnen/schließen", () => { this.openRadio() });
-    NKeyhandler.registerKeybind(220, "yaca:radioTalking", "Funk Sprechen", () => { this.radioTalkingStart(true) });
-    NKeyhandler.registerKeybind(220, "yaca:radioTalking", null, () => { this.radioTalkingStart(false) }, { onKeyDown: false });
-
-    NKeyhandler.registerKeybind(96, "yaca:megaphone", "Megaphone", () => { this.useMegaphone(true) })
-    NKeyhandler.registerKeybind(96, "yaca:megaphone", null, () => { this.useMegaphone(false) }, { onKeyDown: false })*/
-
-    alt.log('[Client] YaCA Client loaded');
-  }
-
-  /***
-   * Gets the singleton of YaCAClientModule
-   * 
-   * @returns {YaCAClientModule}
-   */
-  static getInstance() {
-    if (!this.instance) {
-      this.instance = new YaCAClientModule();
-    }
-
-    return this.instance;
-  }
-
-  registerEvents() {
-    alt.onServer("client:yaca:init", (dataObj) => {
+    alt.onServer("client:yaca:init", (dataJson) => {
+      const dataObj = JSON.parse(dataJson);
       if (this.rangeInterval) {
         alt.clearInterval(this.rangeInterval);
         this.rangeInterval = null;
@@ -270,7 +238,7 @@ export class YaCAClientModule {
             this.initRequest(dataObj);
             this.firstConnect = false;
           } else {
-            alt.emitServerRaw("server:yaca:wsReady", this.firstConnect);
+            alt.emitServer("server:yaca:wsReady", this.firstConnect);
           }
 
           alt.log('[YACA-Websocket]: connected');
@@ -289,7 +257,8 @@ export class YaCAClientModule {
       this.initRequest(dataObj);
     });
 
-    alt.onServer("client:yaca:addPlayers", (dataObjects) => {
+    alt.onServer("client:yaca:addPlayers", (dataJson) => {
+      let dataObjects = JSON.parse(dataJson);
       if (!Array.isArray(dataObjects)) dataObjects = [dataObjects];
 
       for (const dataObj of dataObjects) {
@@ -354,7 +323,7 @@ export class YaCAClientModule {
 
     //   if (this.radioEnabled != state) {
     //     this.radioEnabled = state;
-    //     alt.emitServerRaw("server:yaca:enableRadio", state);
+    //     alt.emitServer("server:yaca:enableRadio", state);
 
     //     if (!state) {
     //       for (let i = 1; i <= settings.maxRadioChannels; i++) {
@@ -375,14 +344,14 @@ export class YaCAClientModule {
     // this.webview.on('client:yaca:changeRadioFrequency', (frequency) => {
     //   if (!this.isPluginInitialized()) return;
 
-    //   alt.emitServerRaw("server:yaca:changeRadioFrequency", this.activeRadioChannel, frequency);
+    //   alt.emitServer("server:yaca:changeRadioFrequency", this.activeRadioChannel, frequency);
     // });
 
-    alt.onServer("client:yaca:setRadioFreq", (channel, frequency) => {
-      this.setRadioFrequency(channel, frequency);
+    alt.onServer("client:yaca:setRadioFreq", (frequency) => {
+      this.setRadioFrequency(1, frequency);
     });
 
-    alt.onServer("client:yaca:radioTalking", (target, frequency, state, infos, self = false) => {
+    alt.onServer("client:yaca:radioTalking", (target, frequency, state, self = false) => {
       if (self) {
         this.radioTalkingStateToPluginWithWhisper(state, target);
         return;
@@ -397,20 +366,12 @@ export class YaCAClientModule {
       const channel = this.findRadioChannelByFrequency(frequency);
       if (!channel) return;
 
-      const info = infos[this.localPlayer.remoteID];
-
-      if (!info?.shortRange || (info?.shortRange && player.isSpawned)) {
-        YaCAClientModule.setPlayersCommType(player, YacaFilterEnum.RADIO, state, channel, undefined, CommDeviceMode.RECEIVER, CommDeviceMode.SENDER);
-      }
+      YaCAClientModule.setPlayersCommType(player, YacaFilterEnum.RADIO, state, channel, undefined, CommDeviceMode.RECEIVER, CommDeviceMode.SENDER);
 
       state ? this.playersInRadioChannel.get(channel)?.add(player.remoteID) : this.playersInRadioChannel.get(channel)?.delete(player.remoteID);
 
-      if (info?.shortRange || !state) {
-        if (state) {
-          this.playersWithShortRange.set(player.remoteID, frequency)
-        } else {
-          this.playersWithShortRange.delete(player.remoteID)
-        }
+      if (!state) {
+        this.playersWithShortRange.delete(player.remoteID)
       }
     });
 
@@ -419,28 +380,26 @@ export class YaCAClientModule {
 
     //   const channel = this.activeRadioChannel;
     //   if (this.radioChannelSettings[channel].frequency == 0) return;
-    //   alt.emitServerRaw("server:yaca:muteRadioChannel", channel)
+    //   alt.emitServer("server:yaca:muteRadioChannel", channel)
     // });
 
-    alt.onServer("client:yaca:setRadioMuteState", (channel, state) => {
-      this.radioChannelSettings[channel].muted = state;
-      this.updateRadioInWebview(channel);
-      this.disableRadioFromPlayerInChannel(channel);
+    alt.onServer("client:yaca:setRadioMuteState", (state) => {
+      this.radioChannelSettings[1].muted = state;
+      this.updateRadioInWebview(1);
+      this.disableRadioFromPlayerInChannel(1);
     });
 
-    alt.onServer("client:yaca:leaveRadioChannel", (client_ids, frequency) => {
+    alt.onServer("client:yaca:leaveRadioChannel", (client_ids) => {
       if (!Array.isArray(client_ids)) client_ids = [client_ids];
 
-      const channel = this.findRadioChannelByFrequency(frequency);
-
-      if (client_ids.includes(this.localPlayer.yacaPlugin.clientId)) this.setRadioFrequency(channel, 0);
+      if (client_ids.includes(this.localPlayer.yacaPlugin.clientId)) this.setRadioFrequency(1, 0);
 
       this.sendWebsocket({
         base: { "request_type": "INGAME" },
         comm_device_left: {
           comm_type: YacaFilterEnum.RADIO,
           client_ids: client_ids,
-          channel: channel
+          channel: 1
         }
       });
     });
@@ -448,7 +407,7 @@ export class YaCAClientModule {
     // this.webview.on('client:yaca:changeActiveRadioChannel', (channel) => {
     //   if (!this.isPluginInitialized() || !this.radioEnabled) return;
 
-    //   alt.emitServerRaw('server:yaca:changeActiveRadioChannel', channel);
+    //   alt.emitServer('server:yaca:changeActiveRadioChannel', channel);
     //   this.activeRadioChannel = channel;
     //   this.updateRadioInWebview(channel);
     // });
@@ -468,7 +427,7 @@ export class YaCAClientModule {
     //   if (oldVolume == this.radioChannelSettings[channel].volume) return
 
     //   if (this.radioChannelSettings[channel].volume == 0 || (oldVolume == 0 && this.radioChannelSettings[channel].volume > 0)) {
-    //     alt.emitServerRaw("server:yaca:muteRadioChannel", channel)
+    //     alt.emitServer("server:yaca:muteRadioChannel", channel)
     //   }
 
     //   // Prevent duplicate update, cuz mute has its own update
@@ -674,6 +633,31 @@ export class YaCAClientModule {
         YaCAClientModule.setPlayersCommType(entity, YacaFilterEnum.RADIO, false);
       }
     });
+
+    /*NKeyhandler.registerKeybind(107, "yaca:changeVoiceRangeAdd", "Mirkofon-Reichweite +", () => { this.changeVoiceRange(1) });
+    NKeyhandler.registerKeybind(109, "yaca:changeVoiceRangeRemove", "Mirkofon-Reichweite -", () => { this.changeVoiceRange(-1) });
+
+    NKeyhandler.registerKeybind(80, "yaca:radioUI", "Funkgerät öffnen/schließen", () => { this.openRadio() });
+    NKeyhandler.registerKeybind(220, "yaca:radioTalking", "Funk Sprechen", () => { this.radioTalkingStart(true) });
+    NKeyhandler.registerKeybind(220, "yaca:radioTalking", null, () => { this.radioTalkingStart(false) }, { onKeyDown: false });
+
+    NKeyhandler.registerKeybind(96, "yaca:megaphone", "Megaphone", () => { this.useMegaphone(true) })
+    NKeyhandler.registerKeybind(96, "yaca:megaphone", null, () => { this.useMegaphone(false) }, { onKeyDown: false })*/
+
+    alt.log('[Client] YaCA Client loaded');
+  }
+
+  /***
+   * Gets the singleton of YaCAClientModule
+   * 
+   * @returns {YaCAClientModule}
+   */
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new YaCAClientModule();
+    }
+
+    return this.instance;
   }
 
   /* ======================== Helper Functions ======================== */
@@ -690,7 +674,7 @@ export class YaCAClientModule {
       ingame_channel: dataObj.chid,
       default_channel: dataObj.deChid,
       ingame_channel_password: dataObj.channelPassword,
-      excluded_channels: [1337], // Channel ID's where users can be in while being ingame
+      excluded_channels: [9801, 9802, 9804], // Channel ID's where users can be in while being ingame
       /**
        * default are 2 meters
        * if the value is set to -1, the player voice range is taken
@@ -742,7 +726,7 @@ export class YaCAClientModule {
 
     if (payload.code === "OK") {
       if (payload.requestType === "JOIN") {
-        alt.emitServerRaw("server:yaca:addPlayer", parseInt(payload.message));
+        alt.emitServer("server:yaca:addPlayer", parseInt(payload.message));
 
         if (this.rangeInterval) {
           alt.clearInterval(this.rangeInterval);
@@ -870,7 +854,7 @@ export class YaCAClientModule {
         natives.drawMarker(1, pos.x, pos.y, pos.z - 0.98, 0, 0, 0, 0, 0, 0, (voiceRange * 2) - 1, (voiceRange * 2) - 1, 1, 0, 255, 0, 50, false, true, 2, true, null, null, false);
       });
 
-    alt.emitServerRaw("server:yaca:changeVoiceRange", voiceRange);
+    alt.emitServer("server:yaca:changeVoiceRange", voiceRange);
 
     return true;
   };
@@ -1000,7 +984,7 @@ export class YaCAClientModule {
       this.messageDisplayed = true;
     }
 
-    if (this.noPluginActivated >= 120) alt.emitServerRaw("server:yaca:noVoicePlugin")
+    if (this.noPluginActivated >= 120) alt.emitServer("server:yaca:noVoicePlugin")
   }
 
   /**
@@ -1022,7 +1006,7 @@ export class YaCAClientModule {
       //this.webview.emit('webview:hud:isTalking', isTalking);
 
       // TODO: Deprecated if alt:V syncs the playFacialAnim native
-      alt.emitServerRaw("server:yaca:lipsync", isTalking)
+      alt.emitServer("server:yaca:lipsync", isTalking)
     }
   }
 
@@ -1238,7 +1222,7 @@ export class YaCAClientModule {
       if (this.radioTalking) {
         this.radioTalking = false;
         if (!this.useWhisper) this.radioTalkingStateToPlugin(false);
-        alt.emitServerRaw("server:yaca:radioTalking", false);
+        alt.emitServer("server:yaca:radioTalking", false);
         //this.webview.emit('webview:hud:isRadioTalking', false);
         if (clearPedTasks) natives.stopAnimTask(this.localPlayer, "random@arrests", "generic_radio_chatter", 4);
       }
@@ -1254,7 +1238,7 @@ export class YaCAClientModule {
     alt.Utils.requestAnimDict("random@arrests").then(() => {
       natives.taskPlayAnim(this.localPlayer, "random@arrests", "generic_radio_chatter", 3, -4, -1, 49, 0.0, false, false, false);
 
-      alt.emitServerRaw("server:yaca:radioTalking", true);
+      alt.emitServer("server:yaca:radioTalking", true);
       //this.webview.emit('webview:hud:isRadioTalking', true);
     });
   };
@@ -1290,6 +1274,6 @@ export class YaCAClientModule {
     if ((!this.localPlayer.vehicle?.valid && !this.localPlayer.yacaPluginLocal.canUseMegaphone) || state == this.localPlayer.yacaPluginLocal.lastMegaphoneState) return;
 
     this.localPlayer.yacaPluginLocal.lastMegaphoneState = !this.localPlayer.yacaPluginLocal.lastMegaphoneState;
-    alt.emitServerRaw("server:yaca:useMegaphone", state)
+    alt.emitServer("server:yaca:useMegaphone", state)
   }
 }
