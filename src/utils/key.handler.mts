@@ -147,15 +147,15 @@ class KeyHandler extends ScriptBase {
         this.triggerServer("Server:Animation:Open");
         break;
       case KeyCode.KEY_Y:
-        if (browserModule.isAnyComponentActive()) return;
+        if (browserModule.isAnyComponentActive() || !playerModule.alive) return;
         voiceModule.toggleRange();
         break;
       case KeyCode.DOWN_ARROW:
-        if (browserModule.isAnyComponentActive()) return;
+        if (browserModule.isAnyComponentActive() || !playerModule.alive) return;
         voiceModule.setTransmitting(true);
         break;
       case KeyCode.UP_ARROW:
-        if (browserModule.isAnyComponentActive()) return;
+        if (browserModule.isAnyComponentActive() || !playerModule.alive) return;
         voiceModule.toggleTransmitting();
         break;
     }
@@ -164,7 +164,7 @@ class KeyHandler extends ScriptBase {
   private onKeyUp(key: KeyCode): void {
     switch(key) {
       case KeyCode.DOWN_ARROW:
-        if (browserModule.isAnyComponentActive()) return;
+        if (browserModule.isAnyComponentActive() || !playerModule.alive) return;
         voiceModule.setTransmitting(false);
         break;
     }
