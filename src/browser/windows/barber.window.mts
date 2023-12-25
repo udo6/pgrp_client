@@ -15,9 +15,11 @@ class BarberWindow extends InteractionWindow {
     browserModule.on('Client:Barber:Try', this.try.bind(this));
   }
 
-  private try(style: string, color: string, highlightColor: string): void {
+  private try(style: string, color: string, highlightColor: string, beardStyle: string, beardColor: string): void {
     game.setPedComponentVariation(alt.Player.local, 2, parseInt(style), 0, 2);
     game.setPedHairTint(alt.Player.local, parseInt(color), parseInt(highlightColor));
+    game.setPedHeadOverlay(alt.Player.local, 1, parseInt(beardStyle), 1);
+    game.setPedHeadOverlayTint(alt.Player.local, 1, 1, parseInt(beardColor), parseInt(beardColor));
   }
 
   public onShow(state: boolean, data: string): void {

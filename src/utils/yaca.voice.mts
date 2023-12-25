@@ -336,11 +336,6 @@ export class YaCAClientModule {
     });
 
     alt.onServer("client:yaca:radioTalking", (target, frequency, state, self = false) => {
-      if (self) {
-        this.radioTalkingStateToPluginWithWhisper(state, target);
-        return;
-      }
-
       const player = alt.Player.getByRemoteID(target);
       if (!player?.valid) return;
 
@@ -350,7 +345,7 @@ export class YaCAClientModule {
       const channel = this.findRadioChannelByFrequency(frequency);
       if (!channel) return;
 
-      YaCAClientModule.setPlayersCommType(player, YacaFilterEnum.RADIO, state, channel, undefined, CommDeviceMode.RECEIVER, CommDeviceMode.SENDER);
+      // YaCAClientModule.setPlayersCommType(player, YacaFilterEnum.RADIO, state, channel, undefined, CommDeviceMode.RECEIVER, CommDeviceMode.SENDER);
 
       state ? this.playersInRadioChannel.get(channel)?.add(player.remoteID) : this.playersInRadioChannel.get(channel)?.delete(player.remoteID);
 
@@ -370,106 +365,14 @@ export class YaCAClientModule {
 
       if (client_ids.includes(this.localPlayer.yacaPlugin.clientId)) this.setRadioFrequency(1, 0);
 
-      this.sendWebsocket({
-        base: { "request_type": "INGAME" },
-        comm_device_left: {
-          comm_type: YacaFilterEnum.RADIO,
-          client_ids: client_ids,
-          channel: 1
-        }
-      });
-    });
-
-    // this.webview.on('client:yaca:changeActiveRadioChannel', (channel) => {
-    //   if (!this.isPluginInitialized() || !this.radioEnabled) return;
-
-    //   alt.emitServer('server:yaca:changeActiveRadioChannel', channel);
-    //   this.activeRadioChannel = channel;
-    //   this.updateRadioInWebview(channel);
-    // });
-
-    // this.webview.on('client:yaca:changeRadioChannelVolume', (higher) => {
-    //   if (!this.isPluginInitialized() || !this.radioEnabled || this.radioChannelSettings[this.activeRadioChannel].frequency == 0) return;
-
-    //   const channel = this.activeRadioChannel;
-    //   const oldVolume = this.radioChannelSettings[channel].volume;
-    //   this.radioChannelSettings[channel].volume = this.clamp(
-    //     oldVolume + (higher ? 0.17 : -0.17),
-    //     0,
-    //     1
-    //   )
-
-    //   // Prevent event emit spams, if nothing changed
-    //   if (oldVolume == this.radioChannelSettings[channel].volume) return
-
-    //   if (this.radioChannelSettings[channel].volume == 0 || (oldVolume == 0 && this.radioChannelSettings[channel].volume > 0)) {
-    //     alt.emitServer("server:yaca:muteRadioChannel", channel)
-    //   }
-
-    //   // Prevent duplicate update, cuz mute has its own update
-    //   if (this.radioChannelSettings[channel].volume > 0) this.updateRadioInWebview(channel);
-
-    //   // Send update to voiceplugin
-    //   this.setCommDeviceVolume(YacaFilterEnum.RADIO, this.radioChannelSettings[channel].volume, channel);
-    // });
-
-    // this.webview.on("client:yaca:changeRadioChannelStereo", () => {
-    //   if (!this.isPluginInitialized() || !this.radioEnabled) return;
-
-    //   const channel = this.activeRadioChannel;
-
-    //   switch (this.radioChannelSettings[channel].stereo) {
-    //     case YacaStereoMode.STEREO:
-    //       this.radioChannelSettings[channel].stereo = YacaStereoMode.MONO_LEFT;
-    //       this.radarNotification(`Kanal ${channel} ist nun auf der linken Seite hörbar.`);
-    //       break;
-    //     case YacaStereoMode.MONO_LEFT:
-    //       this.radioChannelSettings[channel].stereo = YacaStereoMode.MONO_RIGHT;
-    //       this.radarNotification(`Kanal ${channel} ist nun auf der rechten Seite hörbar.`);
-    //       break;
-    //     case YacaStereoMode.MONO_RIGHT:
-    //       this.radioChannelSettings[channel].stereo = YacaStereoMode.STEREO;
-    //       this.radarNotification(`Kanal ${channel} ist nun auf beiden Seiten hörbar.`);
-    //   };
-
-    //   // Send update to voiceplugin
-    //   this.setCommDeviceStereomode(YacaFilterEnum.RADIO, this.radioChannelSettings[channel].stereo, channel);
-    // });
-
-    //TODO: Implement, will be used if player activates radio speaker so everyone around him can hear it
-    // this.webview.on("client:yaca:changeRadioSpeaker", () => {
-
-    // })
-
-    /* =========== INTERCOM SYSTEM =========== */
-    /**
-     * Handles the "client:yaca:addRemovePlayerIntercomFilter" server event.
-     *
-     * @param {Number[] | Number} playerIDs - The IDs of the players to be added or removed from the intercom filter.
-     * @param {boolean} state - The state indicating whether to add or remove the players.
-     */
-    alt.onServer("client:yaca:addRemovePlayerIntercomFilter", (playerIDs, state) => {
-      if (!Array.isArray(playerIDs)) playerIDs = [playerIDs];
-
-      let playersToRemove = [],
-        playersToAdd = [];
-      for (let playerID of playerIDs) {
-        let player = alt.Player.getByRemoteID(playerID);
-        if (!state || !player?.valid) {
-          playersToRemove.push(player);
-          continue;
-        }
-
-        playersToAdd.push(player);
-      }
-
-      if (playersToRemove.length) {
-        YaCAClientModule.setPlayersCommType(playersToRemove, YacaFilterEnum.INTERCOM, false);
-      }
-
-      if (playersToAdd.length) {
-        YaCAClientModule.setPlayersCommType(playersToAdd, YacaFilterEnum.INTERCOM, true);
-      }
+      // this.sendWebsocket({
+      //   base: { "request_type": "INGAME" },
+      //   comm_device_left: {
+      //     comm_type: YacaFilterEnum.RADIO,
+      //     client_ids: client_ids,
+      //     channel: 1
+      //   }
+      // });
     });
 
     /* =========== PHONE SYSTEM =========== */
@@ -483,66 +386,51 @@ export class YaCAClientModule {
       const target = alt.Player.getByRemoteID(targetID);
       if (!target?.valid) return;
 
-      YaCAClientModule.setPlayersCommType(target, YacaFilterEnum.PHONE, state, undefined, undefined, CommDeviceMode.TRANSCEIVER, CommDeviceMode.TRANSCEIVER);
+      //YaCAClientModule.setPlayersCommType(target, YacaFilterEnum.PHONE, state, undefined, undefined, CommDeviceMode.TRANSCEIVER, CommDeviceMode.TRANSCEIVER);
 
       target.isOnPhone = state;
     });
 
-    /**
-     * Handles the "client:yaca:phoneOld" server event.
-     *
-     * @param {number} targetID - The ID of the target.
-     * @param {boolean} state - The state of the phone.
-     */
-    alt.onServer("client:yaca:phoneOld", (targetID, state) => {
-      const target = alt.Player.getByRemoteID(targetID);
-      if (!target?.valid) return;
-
-      const targets = this.useWhisper ? [target, this.localPlayer] : [target];
-
-      YaCAClientModule.setPlayersCommType(targets, YacaFilterEnum.PHONE_HISTORICAL, state, undefined, undefined, true);
-    });
-
     /* =========== alt:V Events =========== */
-    alt.on("syncedMetaChange", (entity, key, newValue, oldValue) => {
-      if (!entity?.valid || !(entity instanceof alt.Player)) return;
+    // alt.on("syncedMetaChange", (entity, key, newValue, oldValue) => {
+    //   if (!entity?.valid || !(entity instanceof alt.Player)) return;
 
-      if (key == "yaca:isMutedOnPhone" && entity.isOnPhone) {
-        if (newValue) {
-          YaCAClientModule.setPlayersCommType(entity, YacaFilterEnum.PHONE, false);
-        } else {
-          YaCAClientModule.setPlayersCommType(entity, YacaFilterEnum.PHONE, true);
-        }
-        return;
-      }
-    });
+    //   if (key == "yaca:isMutedOnPhone" && entity.isOnPhone) {
+    //     if (newValue) {
+    //       YaCAClientModule.setPlayersCommType(entity, YacaFilterEnum.PHONE, false);
+    //     } else {
+    //       YaCAClientModule.setPlayersCommType(entity, YacaFilterEnum.PHONE, true);
+    //     }
+    //     return;
+    //   }
+    // });
 
     alt.on("streamSyncedMetaChange", (entity, key, newValue, oldValue) => {
       if (!entity?.valid || !(entity instanceof alt.Player) || !entity.isSpawned) return;
 
       // Handle megaphone on meta-change
-      if (key === "yaca:megaphoneactive") {
-        YaCAClientModule.setPlayersCommType(
-          entity,
-          YacaFilterEnum.MEGAPHONE,
-          typeof newValue !== "undefined",
-          undefined,
-          newValue,
-          entity.id === this.localPlayer.id ? CommDeviceMode.SENDER : CommDeviceMode.RECEIVER,
-          entity.id === this.localPlayer.id ? CommDeviceMode.RECEIVER : CommDeviceMode.SENDER);
-        return;
-      }
+      // if (key === "yaca:megaphoneactive") {
+      //   YaCAClientModule.setPlayersCommType(
+      //     entity,
+      //     YacaFilterEnum.MEGAPHONE,
+      //     typeof newValue !== "undefined",
+      //     undefined,
+      //     newValue,
+      //     entity.id === this.localPlayer.id ? CommDeviceMode.SENDER : CommDeviceMode.RECEIVER,
+      //     entity.id === this.localPlayer.id ? CommDeviceMode.RECEIVER : CommDeviceMode.SENDER);
+      //   return;
+      // }
 
-      if (key == "yaca:phoneSpeaker") {
-        if (typeof newValue == "undefined") {
-          this.removePhoneSpeakerFromEntity(entity);
-          delete entity.yacaPlugin.phoneCallMemberIds;
-        } else {
-          if (oldValue && newValue) this.removePhoneSpeakerFromEntity(entity);
-          this.setPlayerVariable(entity, "phoneCallMemberIds", Array.isArray(newValue) ? newValue : [newValue]);
-        }
-        return;
-      }
+      // if (key == "yaca:phoneSpeaker") {
+      //   if (typeof newValue == "undefined") {
+      //     this.removePhoneSpeakerFromEntity(entity);
+      //     delete entity.yacaPlugin.phoneCallMemberIds;
+      //   } else {
+      //     if (oldValue && newValue) this.removePhoneSpeakerFromEntity(entity);
+      //     this.setPlayerVariable(entity, "phoneCallMemberIds", Array.isArray(newValue) ? newValue : [newValue]);
+      //   }
+      //   return;
+      // }
 
       if (key == "yaca:lipsync") {
         this.syncLipsPlayer(entity, !!newValue);
@@ -556,32 +444,32 @@ export class YaCAClientModule {
       const entityID = entity.remoteID;
 
       // Handle megaphone on stream-in
-      if (entity?.valid && entity.hasStreamSyncedMeta("yaca:megaphoneactive")) {
-        YaCAClientModule.setPlayersCommType(
-          entity,
-          YacaFilterEnum.MEGAPHONE,
-          true,
-          undefined,
-          entity.getStreamSyncedMeta("yaca:megaphoneactive"),
-          CommDeviceMode.RECEIVER,
-          CommDeviceMode.SENDER
-        );
-      }
+      // if (entity?.valid && entity.hasStreamSyncedMeta("yaca:megaphoneactive")) {
+      //   YaCAClientModule.setPlayersCommType(
+      //     entity,
+      //     YacaFilterEnum.MEGAPHONE,
+      //     true,
+      //     undefined,
+      //     entity.getStreamSyncedMeta("yaca:megaphoneactive"),
+      //     CommDeviceMode.RECEIVER,
+      //     CommDeviceMode.SENDER
+      //   );
+      // }
 
-      // Handle phonecallspeaker on stream-in
-      if (entity?.valid && entity.hasStreamSyncedMeta("yaca:phoneSpeaker")) {
-        const value = entity.getStreamSyncedMeta("yaca:phoneSpeaker");
+      // // Handle phonecallspeaker on stream-in
+      // if (entity?.valid && entity.hasStreamSyncedMeta("yaca:phoneSpeaker")) {
+      //   const value = entity.getStreamSyncedMeta("yaca:phoneSpeaker");
 
-        this.setPlayerVariable(entity, "phoneCallMemberIds", Array.isArray(value) ? value : [value]);
-      }
+      //   this.setPlayerVariable(entity, "phoneCallMemberIds", Array.isArray(value) ? value : [value]);
+      // }
 
-      // Handle shortrange radio on stream-in
-      if (this.playersWithShortRange.has(entityID)) {
-        const channel = this.findRadioChannelByFrequency(this.playersWithShortRange.get(entityID));
-        if (channel) {
-          YaCAClientModule.setPlayersCommType(entity, YacaFilterEnum.RADIO, true, channel);
-        }
-      }
+      // // Handle shortrange radio on stream-in
+      // if (this.playersWithShortRange.has(entityID)) {
+      //   const channel = this.findRadioChannelByFrequency(this.playersWithShortRange.get(entityID));
+      //   if (channel) {
+      //     YaCAClientModule.setPlayersCommType(entity, YacaFilterEnum.RADIO, true, channel);
+      //   }
+      // }
 
       if (entity?.valid) {
         this.syncLipsPlayer(entity, !!entity.getStreamSyncedMeta("yaca:lipsync"));
@@ -594,20 +482,20 @@ export class YaCAClientModule {
       const entityID = entity.remoteID;
 
       // Handle phonecallspeaker on stream-out
-      if (entity.yacaPlugin?.phoneCallMemberIds) {
-        this.removePhoneSpeakerFromEntity(entity);
-        delete entity.yacaPlugin.phoneCallMemberIds;
-      }
+      // if (entity.yacaPlugin?.phoneCallMemberIds) {
+      //   this.removePhoneSpeakerFromEntity(entity);
+      //   delete entity.yacaPlugin.phoneCallMemberIds;
+      // }
 
-      // Handle megaphone on stream-out
-      if (entity?.hasStreamSyncedMeta("yaca:megaphoneactive")) {
-        YaCAClientModule.setPlayersCommType(entity, YacaFilterEnum.MEGAPHONE, false, undefined, undefined, CommDeviceMode.RECEIVER, CommDeviceMode.SENDER);
-      }
+      // // Handle megaphone on stream-out
+      // if (entity?.hasStreamSyncedMeta("yaca:megaphoneactive")) {
+      //   YaCAClientModule.setPlayersCommType(entity, YacaFilterEnum.MEGAPHONE, false, undefined, undefined, CommDeviceMode.RECEIVER, CommDeviceMode.SENDER);
+      // }
 
-      // Handle shortrange radio on stream-out
-      if (this.playersWithShortRange.has(entityID)) {
-        YaCAClientModule.setPlayersCommType(entity, YacaFilterEnum.RADIO, false);
-      }
+      // // Handle shortrange radio on stream-out
+      // if (this.playersWithShortRange.has(entityID)) {
+      //   YaCAClientModule.setPlayersCommType(entity, YacaFilterEnum.RADIO, false);
+      // }
     });
 
     /*NKeyhandler.registerKeybind(107, "yaca:changeVoiceRangeAdd", "Mirkofon-Reichweite +", () => { this.changeVoiceRange(1) });
@@ -974,7 +862,8 @@ export class YaCAClientModule {
     const players = [];
     const allPlayers = alt.Player.streamedIn;
     const localPos = this.localPlayer.pos;
-    const currentRoom = natives.getRoomKeyFromEntity(this.localPlayer);
+    const localRadioChannel = alt.Player.local.getStreamSyncedMeta('RADIO_CHANNEL');
+    const callPartner = alt.Player.local.getStreamSyncedMeta('CALL_PARTNER');
 
     for (const player of allPlayers) {
       if (!player?.valid || player.remoteID == this.localPlayer.remoteID) continue;
@@ -982,52 +871,48 @@ export class YaCAClientModule {
       const voiceSetting = player.yacaPlugin;
       if (!voiceSetting?.clientId) continue;
 
-      let muffleIntensity = 0;
-      if (currentRoom != natives.getRoomKeyFromEntity(player) && !natives.hasEntityClearLosToEntity(this.localPlayer, player, 17)) {
-        muffleIntensity = 10; // 10 is the maximum intensity
-      }
+      // workaround to disable radio effect
+      const targetRadioChannel = player.getStreamSyncedMeta('RADIO_CHANNEL');
+      const pos = ((this.radioEnabled && localRadioChannel == targetRadioChannel) || (callPartner == player.remoteID)) ? localPos : player.pos;
 
       players.push({
         client_id: voiceSetting.clientId,
-        position: player.pos,
+        position: pos,
         direction: natives.getEntityForwardVector(player),
         range: voiceSetting.range,
         is_underwater: natives.isPedSwimmingUnderWater(player),
-        muffle_intensity: muffleIntensity,
+        muffle_intensity: 0,
         is_muted: voiceSetting.forceMuted
       });
 
       // Phone speaker handling.
-      if (voiceSetting.phoneCallMemberIds) {
-        let applyPhoneSpeaker = new Set();
-        let phoneSpeakerRemove = new Set();
-        for (const phoneCallMemberId of voiceSetting.phoneCallMemberIds) {
-          let phoneCallMember = alt.Player.getByRemoteID(phoneCallMemberId);
-          if (!phoneCallMember?.valid) continue;
+      // if (voiceSetting.phoneCallMemberIds) {
+      //   let applyPhoneSpeaker = new Set();
+      //   let phoneSpeakerRemove = new Set();
+      //   for (const phoneCallMemberId of voiceSetting.phoneCallMemberIds) {
+      //     let phoneCallMember = alt.Player.getByRemoteID(phoneCallMemberId);
+      //     if (!phoneCallMember?.valid) continue;
 
-          if (phoneCallMember.hasSyncedMeta("yaca:isMutedOnPhone")
-            || phoneCallMember.yacaPlugin?.forceMuted
-            || this.localPlayer.pos.distanceTo(player.pos) > settings.maxPhoneSpeakerRange
-          ) {
-            if (!applyPhoneSpeaker.has(phoneCallMember)) phoneSpeakerRemove.add(phoneCallMember);
-            continue;
-          }
+      //     if (phoneCallMember.hasSyncedMeta("yaca:isMutedOnPhone") || phoneCallMember.yacaPlugin?.forceMuted || this.localPlayer.pos.distanceTo(player.pos) > settings.maxPhoneSpeakerRange) {
+      //       if (!applyPhoneSpeaker.has(phoneCallMember)) phoneSpeakerRemove.add(phoneCallMember);
+      //       continue;
+      //     }
 
-          players.push({
-            client_id: phoneCallMember.yacaPlugin.clientId,
-            position: player.pos,
-            direction: natives.getEntityForwardVector(player),
-            range: settings.maxPhoneSpeakerRange,
-            is_underwater: natives.isPedSwimmingUnderWater(player)
-          });
+      //     players.push({
+      //       client_id: phoneCallMember.yacaPlugin.clientId,
+      //       position: player.pos,
+      //       direction: natives.getEntityForwardVector(player),
+      //       range: settings.maxPhoneSpeakerRange,
+      //       is_underwater: natives.isPedSwimmingUnderWater(player)
+      //     });
 
-          if (phoneSpeakerRemove.has(phoneCallMember)) phoneSpeakerRemove.delete(phoneCallMember)
-          applyPhoneSpeaker.add(phoneCallMember)
-        }
+      //     if (phoneSpeakerRemove.has(phoneCallMember)) phoneSpeakerRemove.delete(phoneCallMember)
+      //     applyPhoneSpeaker.add(phoneCallMember)
+      //   }
 
-        if (applyPhoneSpeaker.size) YaCAClientModule.setPlayersCommType(Array.from(applyPhoneSpeaker), YacaFilterEnum.PHONE_SPEAKER, true);
-        if (phoneSpeakerRemove.size) YaCAClientModule.setPlayersCommType(Array.from(phoneSpeakerRemove), YacaFilterEnum.PHONE_SPEAKER, false);
-      }
+      //   if (applyPhoneSpeaker.size) YaCAClientModule.setPlayersCommType(Array.from(applyPhoneSpeaker), YacaFilterEnum.PHONE_SPEAKER, true);
+      //   if (phoneSpeakerRemove.size) YaCAClientModule.setPlayersCommType(Array.from(phoneSpeakerRemove), YacaFilterEnum.PHONE_SPEAKER, false);
+      // }
     }
 
     /** Send collected data to ts-plugin. */
@@ -1088,21 +973,9 @@ export class YaCAClientModule {
    *
    * @param {boolean} state - The state of the player talking on the radio.
    */
-  radioTalkingStateToPlugin(state) {
-    YaCAClientModule.setPlayersCommType(this.localPlayer, YacaFilterEnum.RADIO, state, this.activeRadioChannel);
-  }
-
-  radioTalkingStateToPluginWithWhisper(state, targets) {
-    let comDeviceTargets = [];
-    for (const target of targets) {
-      const player = alt.Player.getByRemoteID(target);
-      if (!player?.valid) continue;
-
-      comDeviceTargets.push(player);
-    }
-
-    YaCAClientModule.setPlayersCommType(comDeviceTargets, YacaFilterEnum.RADIO, state, this.activeRadioChannel, undefined, CommDeviceMode.SENDER, CommDeviceMode.RECEIVER);
-  }
+  // radioTalkingStateToPlugin(state) {
+  //   YaCAClientModule.setPlayersCommType(this.localPlayer, YacaFilterEnum.RADIO, state, this.activeRadioChannel);
+  // }
 
   /**
    * Updates the UI when a player changes the radio channel.
@@ -1156,81 +1029,15 @@ export class YaCAClientModule {
     const players = this.playersInRadioChannel.get(channel);
     if (!players?.size) return;
 
-    let targets = [];
+    // let targets = [];
     for (const playerId of players) {
       const player = alt.Player.getByRemoteID(playerId);
       if (!player?.valid) continue;
 
-      targets.push(player);
+      // targets.push(player);
       players.delete(player.remoteID);
     }
 
-    if (targets.length) YaCAClientModule.setPlayersCommType(targets, YacaFilterEnum.RADIO, false, channel, undefined, CommDeviceMode.RECEIVER);
-  }
-
-  /**
-   * Starts the radio talking state.
-   *
-   * @param {boolean} state - The state of the radio talking.
-   * @param {boolean} [clearPedTasks=true] - Whether to clear ped tasks. Defaults to true if not provided.
-   */
-  radioTalkingStart(state, clearPedTasks = true) {
-    if (!state) {
-      if (this.radioTalking) {
-        this.radioTalking = false;
-        if (!this.useWhisper) this.radioTalkingStateToPlugin(false);
-        alt.emitServer("server:yaca:radioTalking", false);
-        //this.webview.emit('webview:hud:isRadioTalking', false);
-        if (clearPedTasks) natives.stopAnimTask(this.localPlayer, "random@arrests", "generic_radio_chatter", 4);
-      }
-
-      return;
-    }
-
-    if (!this.radioEnabled || !this.radioFrequenceSetted || this.radioTalking || this.localPlayer.isReloading) return;
-
-    this.radioTalking = true;
-    if (!this.useWhisper) this.radioTalkingStateToPlugin(true);
-
-    alt.Utils.requestAnimDict("random@arrests").then(() => {
-      natives.taskPlayAnim(this.localPlayer, "random@arrests", "generic_radio_chatter", 3, -4, -1, 49, 0.0, false, false, false);
-
-      alt.emitServer("server:yaca:radioTalking", true);
-      //this.webview.emit('webview:hud:isRadioTalking', true);
-    });
-  };
-
-  /* ======================== PHONE SYSTEM ======================== */
-
-  /**
-   * Removes the phone speaker effect from a player entity.
-   *
-   * @param {alt.Player} entity - The player entity from which the phone speaker effect is to be removed.
-   */
-  removePhoneSpeakerFromEntity(entity) {
-    if (!entity?.valid || !entity.yacaPlugin?.phoneCallMemberIds) return;
-
-    let playersToSet = [];
-    for (const phoneCallMemberId of entity.yacaPlugin.phoneCallMemberIds) {
-      let phoneCallMember = alt.Player.getByRemoteID(phoneCallMemberId);
-      if (!phoneCallMember?.valid) continue;
-
-      playersToSet.push(phoneCallMember);
-    }
-
-    YaCAClientModule.setPlayersCommType(playersToSet, YacaFilterEnum.PHONE_SPEAKER, false);
-  }
-
-  /* ======================== MEGAPHONE SYSTEM ======================== */
-  /**
-   * Toggles the use of the megaphone.
-   *
-   * @param {boolean} [state=false] - The state of the megaphone. Defaults to false if not provided.
-   */
-  useMegaphone(state = false) {
-    if ((!this.localPlayer.vehicle?.valid && !this.localPlayer.yacaPluginLocal.canUseMegaphone) || state == this.localPlayer.yacaPluginLocal.lastMegaphoneState) return;
-
-    this.localPlayer.yacaPluginLocal.lastMegaphoneState = !this.localPlayer.yacaPluginLocal.lastMegaphoneState;
-    alt.emitServer("server:yaca:useMegaphone", state)
+    // if (targets.length) YaCAClientModule.setPlayersCommType(targets, YacaFilterEnum.RADIO, false, channel, undefined, CommDeviceMode.RECEIVER);
   }
 }

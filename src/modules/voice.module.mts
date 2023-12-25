@@ -3,6 +3,7 @@ import game from 'natives';
 import { ModuleBase } from '../utils/models/baseModels/module.base.mjs';
 import { YaCAClientModule } from '../utils/yaca.voice.mjs';
 import browserModule from './browser.module.mjs';
+import { clearTasks, playAnim2 } from '../utils/animation.handler.mjs';
 
 enum TransmitState {
   OFF,
@@ -14,7 +15,7 @@ export default new class VoiceModule extends ModuleBase {
   private voice: YaCAClientModule;
   private range: number;
   private muted: boolean;
-  private radio: boolean;
+  private canTransmit: boolean;
   private radioTransmitting: boolean;
   private radioTransmitState: TransmitState;
 
@@ -23,11 +24,21 @@ export default new class VoiceModule extends ModuleBase {
 
     this.range = 1;
     this.muted = false;
-    this.radio = false;
+    this.canTransmit = false;
     this.radioTransmitting = false;
     this.radioTransmitState = TransmitState.OFF;
 
     this.voice = YaCAClientModule.getInstance();
+
+    alt.onServer('Client:VoiceModule:SetRadioState', this.onServerRadioStatusChange.bind(this));
+  }
+
+  private onServerRadioStatusChange(state: boolean): void {
+    this.radioTransmitState = state ? TransmitState.PTT : TransmitState.OFF;
+    this.radioTransmitting = false;
+    this.canTransmit = state;
+
+    this.updateHud();
   }
 
   public toggleRange(): void {
@@ -38,13 +49,15 @@ export default new class VoiceModule extends ModuleBase {
   }
 
   public setTransmitting(state: boolean): void {
-    if(this.radioTransmitting == state || (state && this.radioTransmitState != TransmitState.PTT)) return;
+    if(!this.canTransmit || this.radioTransmitting == state || (state && this.radioTransmitState != TransmitState.PTT)) return;
     this.triggerServer('server:yaca:radioTalkingState', state);
     this.radioTransmitting = state;
+    if(state) playAnim2('random@arrests', 'generic_radio_chatter', 49);
+    else clearTasks();
   }
 
   public toggleTransmitting(): void {
-    if(this.radioTransmitting && this.radioTransmitState == TransmitState.PTT) return;
+    if(!this.canTransmit || (this.radioTransmitting && this.radioTransmitState == TransmitState.PTT)) return;
     
     this.radioTransmitState++;
     if(this.radioTransmitState > 2) this.radioTransmitState = 0;
@@ -53,18 +66,21 @@ export default new class VoiceModule extends ModuleBase {
       this.triggerServer('server:yaca:radioTalkingState', false);
       this.triggerServer('server:yaca:enableRadio', false);
       this.radioTransmitting = false;
-      this.radio = false;
     }
 
     if(this.radioTransmitState == TransmitState.PTT) {
       this.triggerServer('server:yaca:enableRadio', true);
-      this.radio = true;
     }
 
     if(this.radioTransmitState == TransmitState.ACTIVE) {
       this.triggerServer('server:yaca:radioTalkingState', true);
       this.radioTransmitting = true;
     }
+
+    playAnim2('random@arrests', 'generic_radio_chatter', 49);
+    alt.setTimeout(() => {
+      clearTasks();
+    }, 200);
 
     this.updateHud();
   }
