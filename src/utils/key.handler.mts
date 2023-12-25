@@ -7,6 +7,7 @@ import { KeyCode } from './enums/keys.mjs';
 
 import { ScriptBase } from "./models/baseModels/script.base.mjs";
 import { clearTasks, playAnim } from './animation.handler.mjs';
+import voiceModule from '../modules/voice.module.mjs';
 
 type interaction = [KeyCode, string, string, boolean];
 
@@ -66,6 +67,7 @@ class KeyHandler extends ScriptBase {
 
     alt.onServer('Client:KeyHandler:SetInteraction', this.setInteraction.bind(this));
     alt.on('keydown', (key: number) => this.onKeyDown(key));
+    alt.on('keyup', (key: number) => this.onKeyUp(key));
   }
 
   private setInteraction(key: string, interaction: string): void {
@@ -143,6 +145,27 @@ class KeyHandler extends ScriptBase {
         if (browserModule.isAnyComponentActive() || !playerModule.alive || playerModule.isFarming || alt.Player.local.vehicle != null || alt.Player.local.isInRagdoll) return;
 
         this.triggerServer("Server:Animation:Open");
+        break;
+      case KeyCode.KEY_Y:
+        if (browserModule.isAnyComponentActive()) return;
+        voiceModule.toggleRange();
+        break;
+      case KeyCode.DOWN_ARROW:
+        if (browserModule.isAnyComponentActive()) return;
+        voiceModule.setTransmitting(true);
+        break;
+      case KeyCode.UP_ARROW:
+        if (browserModule.isAnyComponentActive()) return;
+        voiceModule.toggleTransmitting();
+        break;
+    }
+  }
+
+  private onKeyUp(key: KeyCode): void {
+    switch(key) {
+      case KeyCode.DOWN_ARROW:
+        if (browserModule.isAnyComponentActive()) return;
+        voiceModule.setTransmitting(false);
         break;
     }
   }

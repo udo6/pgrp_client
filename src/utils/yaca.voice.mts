@@ -1,5 +1,6 @@
 import * as alt from 'alt-client';
 import * as natives from 'natives';
+import voiceModule from '../modules/voice.module.mjs';
 
 declare module "alt-client" {
   export interface LocalPlayer {
@@ -85,10 +86,9 @@ const defaultRadioChannelSettings = {
 
 // Values are in meters
 const voiceRangesEnum = {
-  1: 1,
-  2: 3,
-  3: 8,
-  4: 15
+  1: 2,
+  2: 6,
+  3: 12
 }
 
 const translations = {
@@ -317,35 +317,19 @@ export class YaCAClientModule {
       }
     });
 
-    /* =========== RADIO SYSTEM =========== */
-    // this.webview.on('client:yaca:enableRadio', (state) => {
-    //   if (!this.isPluginInitialized()) return;
+    alt.onServer("client:yaca:setRadioEnabled", (state) => {
+      this.radioEnabled = state;
 
-    //   if (this.radioEnabled != state) {
-    //     this.radioEnabled = state;
-    //     alt.emitServer("server:yaca:enableRadio", state);
+      if (!state) {
+        this.disableRadioFromPlayerInChannel(1);
+      }
 
-    //     if (!state) {
-    //       for (let i = 1; i <= settings.maxRadioChannels; i++) {
-    //         this.disableRadioFromPlayerInChannel(i);
-    //       }
-    //     }
-    //   }
-
-    //   this.webview.emit('webview:hud:radioState', state);
-
-    //   if (state && !this.radioInited) {
-    //     this.radioInited = true;
-    //     this.initRadioSettings();
-    //     this.updateRadioInWebview(this.activeRadioChannel);
-    //   }
-    // });
-
-    // this.webview.on('client:yaca:changeRadioFrequency', (frequency) => {
-    //   if (!this.isPluginInitialized()) return;
-
-    //   alt.emitServer("server:yaca:changeRadioFrequency", this.activeRadioChannel, frequency);
-    // });
+      if (state && !this.radioInited) {
+        this.radioInited = true;
+        this.initRadioSettings();
+        this.updateRadioInWebview(this.activeRadioChannel);
+      }
+    });
 
     alt.onServer("client:yaca:setRadioFreq", (frequency) => {
       this.setRadioFrequency(1, frequency);
@@ -374,14 +358,6 @@ export class YaCAClientModule {
         this.playersWithShortRange.delete(player.remoteID)
       }
     });
-
-    // this.webview.on('client:yaca:muteRadioChannel', () => {
-    //   if (!this.isPluginInitialized() || !this.radioEnabled) return;
-
-    //   const channel = this.activeRadioChannel;
-    //   if (this.radioChannelSettings[channel].frequency == 0) return;
-    //   alt.emitServer("server:yaca:muteRadioChannel", channel)
-    // });
 
     alt.onServer("client:yaca:setRadioMuteState", (state) => {
       this.radioChannelSettings[1].muted = state;
@@ -806,7 +782,7 @@ export class YaCAClientModule {
    *
    * @param {number} toggle - The new voice range.
    */
-  changeVoiceRange(toggle) {
+  changeVoiceRange(newRange) {
     if (!this.localPlayer.yacaPluginLocal.canChangeVoiceRange) return false;
 
     if (this.visualVoiceRangeTimeout) {
@@ -819,26 +795,10 @@ export class YaCAClientModule {
       this.visualVoiceRangeTick = null;
     }
 
-    this.uirange += toggle;
+    this.uirange = newRange;
+    this.lastuiRange = newRange;
 
-    if (this.uirange < 1) {
-      this.uirange = 1;
-    } else if (this.uirange == 5 && this.localPlayer.yacaPluginLocal.maxVoiceRange < 5) {
-      this.uirange = 4;
-    } else if (this.uirange == 6 && this.localPlayer.yacaPluginLocal.maxVoiceRange < 6) {
-      this.uirange = 5;
-    } else if (this.uirange == 7 && this.localPlayer.yacaPluginLocal.maxVoiceRange < 7) {
-      this.uirange = 6;
-    } else if (this.uirange == 8 && this.localPlayer.yacaPluginLocal.maxVoiceRange < 8) {
-      this.uirange = 7;
-    } else if (this.uirange > 8) {
-      this.uirange = 8;
-    }
-
-    if (this.lastuiRange == this.uirange) return false;
-    this.lastuiRange = this.uirange;
-
-    const voiceRange = voiceRangesEnum[this.uirange] || 1;
+    const voiceRange = voiceRangesEnum[this.uirange];
 
     this.visualVoiceRangeTimeout = alt.setTimeout(() => {
       if (this.visualVoiceRangeTick) {
@@ -996,16 +956,13 @@ export class YaCAClientModule {
     // Update state if player is muted or not
     if (payload.code === "MUTE_STATE") {
       this.isPlayerMuted = !!parseInt(payload.message);
-      //this.webview.emit('webview:hud:voiceDistance', this.isPlayerMuted ? 0 : voiceRangesEnum[this.uirange]);
+      voiceModule.onMute(this.isPlayerMuted);
     }
 
     const isTalking = !this.isPlayerMuted && !!parseInt(payload.message);
     if (this.isTalking != isTalking) {
       this.isTalking = isTalking;
 
-      //this.webview.emit('webview:hud:isTalking', isTalking);
-
-      // TODO: Deprecated if alt:V syncs the playFacialAnim native
       alt.emitServer("server:yaca:lipsync", isTalking)
     }
   }
