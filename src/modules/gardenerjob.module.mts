@@ -6,6 +6,7 @@ import { ModuleBase } from "../utils/models/baseModels/module.base.mjs";
 export default new class GardenerJobModule extends ModuleBase {
   private jobStarted: boolean;
   private jobCounter: number;
+  private jobInterval: number;
 
   constructor() {
     super("GardenerJobModule")
@@ -21,8 +22,7 @@ export default new class GardenerJobModule extends ModuleBase {
     if (this.jobStarted) return;
 
     this.jobStarted = true;
-
-    setInterval(() => {
+    this.jobInterval = setInterval(() => {
       const player = alt.Player.local;
       if (!player.vehicle) return;
 
@@ -38,8 +38,9 @@ export default new class GardenerJobModule extends ModuleBase {
 
   private stopJob(): void {
     if (!this.jobStarted) return;
+    if (this.jobInterval != 0) clearInterval(this.jobInterval);
 
-    alt.emitServer("Server:GardenerJobModule:StopJob", this.jobCounter);
+    alt.emitServer("Server:GardenerJob:StopJob", this.jobCounter);
 
     this.jobStarted = false;
     this.jobCounter = 0;
