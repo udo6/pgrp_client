@@ -63,6 +63,7 @@ class KeyHandler extends ScriptBase {
       [KeyCode.KEY_E, 'GARBAGE_JOB_RETURN', 'Server:GarbageJob:Return', false],
       [KeyCode.KEY_E, 'MONEY_TRUCK_JOB_START', 'Server:MoneyTruckJob:Open', false],
       [KeyCode.KEY_E, 'MONEY_TRUCK_JOB_PICKUP', 'Server:MoneyTruckJob:Pickup', false],
+      [KeyCode.KEY_E, 'GARDENER_JOB_START', 'Server:GardenerJob:Open', false],
     ];
 
     alt.onServer('Client:KeyHandler:SetInteraction', this.setInteraction.bind(this));

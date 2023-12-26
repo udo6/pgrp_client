@@ -11,3 +11,4 @@ import './voice.module.mjs';
 
 import './garbagejob.module.mjs';
 import './moneytruckjob.module.mjs';
+import './gardenerjob.module.mjs';
