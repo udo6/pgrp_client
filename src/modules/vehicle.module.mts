@@ -3,6 +3,7 @@ import game from 'natives';
 
 import { ModuleBase } from "../utils/models/baseModels/module.base.mjs";
 import { distanceTo } from '../utils/math.mjs';
+import browserModule from './browser.module.mjs';
 
 export default new class VehicleModule extends ModuleBase {
   private _bones: string[];
@@ -43,7 +44,7 @@ export default new class VehicleModule extends ModuleBase {
   }
 
   private keydown(key: alt.KeyCode): void {
-    if (key != alt.KeyCode.G) return;
+    if (key != alt.KeyCode.G || alt.Player.local.vehicle != null || browserModule.isAnyComponentActive()) return;
 
     const vehicle = this.getClosestVehicle();
     if (vehicle == null) return;
