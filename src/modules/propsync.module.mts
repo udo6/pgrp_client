@@ -2,21 +2,25 @@ import alt from 'alt-client';
 import game from 'natives';
 
 import { ModuleBase } from "../utils/models/baseModels/module.base.mjs";
+import { Entity } from 'alt-client';
+import { BaseObjectType } from 'alt-client';
 
 export default new class PropSyncModule extends ModuleBase {
   public temporaryProp: number | null;
   public propData: { propName: string, bone: number, posX: number, posY: number, posZ: number, rotX: number, rotY: number, rotZ: number } | null;
+  private clearing: boolean;
 
   constructor() {
     super('PropSyncModule');
 
     this.temporaryProp = null;
     this.propData = null;
+    this.clearing = false;
 
     alt.onServer("Client:PropSyncModule:AddProp", this.addProp.bind(this));
     alt.onServer("Client:PropSyncModule:Clear", this.clearProps.bind(this));
 
-    // alt.everyTick(this.tick.bind(this));
+    alt.on('syncedMetaChange', this.syncedMetaChange.bind(this));
   }
 
   private addProp(propName: string, bone: number, posX: number, posY: number, posZ: number, rotX: number, rotY: number, rotZ: number): void {
@@ -45,14 +49,33 @@ export default new class PropSyncModule extends ModuleBase {
     game.deleteObject(this.temporaryProp);
     game.detachEntity(this.temporaryProp, true, true);
 
-    this.temporaryProp = null;
-    this.propData = null;
+    this.clearing = true;
   }
 
-  // private tick(): void {
-  //   if (this.tempProp != null) {
-  //     const player = alt.Player.local;
-  //     game.attachEntityToEntity(this.tempProp, player.scriptID, game.getPedBoneIndex(player.scriptID, this.propData.bone), this.propData.posX, this.propData.posY, this.propData.posZ, this.propData.rotX, this.propData.posY, this.propData.posZ, false, false, false, true, 2, true, 0);
-  //   }
-  // }
+  private syncedMetaChange(entity: Entity, key: any, newValue: any, oldValue: any): void {
+    if (entity.type !== BaseObjectType.Player) return;
+    if (!entity.hasSyncedMeta('Player:PropSyncModule:Prop')) return;
+
+    let value = JSON.parse(entity.getSyncedMeta('Player:PropSyncModule:Prop') as string) as { propName: string, bone: number, posX: number, posY: number, posZ: number, rotX: number, rotY: number, rotZ: number } | null;
+    if (value == null) return;
+
+    game.attachEntityToEntity(
+      this.temporaryProp,
+      entity.scriptID,
+      game.getPedBoneIndex(entity.scriptID, value.bone),
+      value.posX,
+      value.posY,
+      value.posZ,
+      value.rotX,
+      value.rotY,
+      value.rotZ,
+      false,
+      false,
+      false,
+      false,
+      2,
+      true,
+      0
+    );
+  }
 }
