@@ -699,7 +699,7 @@ export class YaCAClientModule {
 
       this.visualVoiceRangeTick = alt.everyTick(() => {
         let pos = this.localPlayer.pos;
-        natives.drawMarker(1, pos.x, pos.y, pos.z - 0.98, 0, 0, 0, 0, 0, 0, (voiceRange * 2) - 1, (voiceRange * 2) - 1, 1, 0, 255, 0, 50, false, true, 2, true, null, null, false);
+        natives.drawMarker(1, pos.x, pos.y, pos.z - 0.98, 0, 0, 0, 0, 0, 0, (voiceRange * 2) - 1, (voiceRange * 2) - 1, 1, 0, 155, 255, 50, false, true, 2, true, null, null, false);
       });
 
     alt.emitServer("server:yaca:changeVoiceRange", voiceRange);
@@ -860,19 +860,18 @@ export class YaCAClientModule {
    */
   calcPlayers() {
     const players = [];
-    const allPlayers = alt.Player.streamedIn;
     const localPos = this.localPlayer.pos;
-    const localRadioChannel = alt.Player.local.getStreamSyncedMeta('RADIO_CHANNEL');
-    const callPartner = alt.Player.local.getStreamSyncedMeta('CALL_PARTNER');
+    const localRadioChannel = alt.Player.local.getSyncedMeta('RADIO_CHANNEL');
+    const callPartner = alt.Player.local.getSyncedMeta('CALL_PARTNER');
 
-    for (const player of allPlayers) {
+    for (const player of alt.Player.all) {
       if (!player?.valid || player.remoteID == this.localPlayer.remoteID) continue;
 
       const voiceSetting = player.yacaPlugin;
       if (!voiceSetting?.clientId) continue;
 
       // workaround to disable radio effect
-      const targetRadioChannel = player.getStreamSyncedMeta('RADIO_CHANNEL');
+      const targetRadioChannel = player.getSyncedMeta('RADIO_CHANNEL');
       const pos = ((this.radioEnabled && localRadioChannel == targetRadioChannel) || (callPartner == player.remoteID)) ? localPos : player.pos;
 
       players.push({
@@ -884,35 +883,6 @@ export class YaCAClientModule {
         muffle_intensity: 0,
         is_muted: voiceSetting.forceMuted
       });
-
-      // Phone speaker handling.
-      // if (voiceSetting.phoneCallMemberIds) {
-      //   let applyPhoneSpeaker = new Set();
-      //   let phoneSpeakerRemove = new Set();
-      //   for (const phoneCallMemberId of voiceSetting.phoneCallMemberIds) {
-      //     let phoneCallMember = alt.Player.getByRemoteID(phoneCallMemberId);
-      //     if (!phoneCallMember?.valid) continue;
-
-      //     if (phoneCallMember.hasSyncedMeta("yaca:isMutedOnPhone") || phoneCallMember.yacaPlugin?.forceMuted || this.localPlayer.pos.distanceTo(player.pos) > settings.maxPhoneSpeakerRange) {
-      //       if (!applyPhoneSpeaker.has(phoneCallMember)) phoneSpeakerRemove.add(phoneCallMember);
-      //       continue;
-      //     }
-
-      //     players.push({
-      //       client_id: phoneCallMember.yacaPlugin.clientId,
-      //       position: player.pos,
-      //       direction: natives.getEntityForwardVector(player),
-      //       range: settings.maxPhoneSpeakerRange,
-      //       is_underwater: natives.isPedSwimmingUnderWater(player)
-      //     });
-
-      //     if (phoneSpeakerRemove.has(phoneCallMember)) phoneSpeakerRemove.delete(phoneCallMember)
-      //     applyPhoneSpeaker.add(phoneCallMember)
-      //   }
-
-      //   if (applyPhoneSpeaker.size) YaCAClientModule.setPlayersCommType(Array.from(applyPhoneSpeaker), YacaFilterEnum.PHONE_SPEAKER, true);
-      //   if (phoneSpeakerRemove.size) YaCAClientModule.setPlayersCommType(Array.from(phoneSpeakerRemove), YacaFilterEnum.PHONE_SPEAKER, false);
-      // }
     }
 
     /** Send collected data to ts-plugin. */
