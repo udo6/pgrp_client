@@ -538,7 +538,38 @@ export class YaCAClientModule {
       ingame_channel: dataObj.chid,
       default_channel: dataObj.deChid,
       ingame_channel_password: dataObj.channelPassword,
-      excluded_channels: [9801, 9802, 9804], // Channel ID's where users can be in while being ingame
+      excluded_channels: [
+        9801,
+        9802,
+        9804,
+        9810,
+        9811,
+        9805,
+        9806,
+        9807,
+        9822,
+        9823,
+        9824,
+        9825,
+        9826,
+        9827,
+        9828,
+        9829,
+        9830,
+        9821,
+        9835,
+        9836,
+        9834,
+        9842,
+        9843,
+        9844,
+        9839,
+        9840,
+        9841,
+        9837,
+        9838,
+        9983
+      ], // Channel ID's where users can be in while being ingame
       /**
        * default are 2 meters
        * if the value is set to -1, the player voice range is taken
