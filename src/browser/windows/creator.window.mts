@@ -81,7 +81,7 @@ class CreatorWindow extends WindowBase {
   public onShow(state: boolean, data: string): void {
     if (state) {
       this._lastData = JSON.parse(data);
-      this._camera = game.createCamWithParams('DEFAULT_SCRIPTED_CAMERA', 402.8664, -997.5515, -98.5, 0, 0, 0, 90, true, 2);
+      this._camera = game.createCamWithParams('DEFAULT_SCRIPTED_CAMERA', 402.8664, -997.5515, -98.5, 0, 0, 0, 75, true, 2);
       game.pointCamAtCoord(this._camera, 402.8664, -996.4108, -98.5);
       game.setCamActive(this._camera, true);
       this.changeGender(parseInt(this._lastData!.Gender));

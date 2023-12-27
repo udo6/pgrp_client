@@ -16,8 +16,8 @@ class TattooWindow extends InteractionWindow {
     browserModule.on('Client:Tattoo:Rotate', this.rotate.bind(this));
   }
 
-  private rotate(val: number): void {
-    game.setEntityRotation(alt.Player.local, 0, 0, val, 1, true);
+  private rotate(val: string): void {
+    game.setEntityRotation(alt.Player.local, 0, 0, parseFloat(val), 1, true);
   }
 
   public onShow(state: boolean, data: string): void {
@@ -26,7 +26,7 @@ class TattooWindow extends InteractionWindow {
       const fwdVector = game.getEntityForwardVector(alt.Player.local);
       const range = 1.7;
       const fwd = new alt.Vector3(pos.x + fwdVector.x * range, pos.y + fwdVector.y * range, pos.z + fwdVector.z + 0.5);
-      this._camera = game.createCamWithParams('DEFAULT_SCRIPTED_CAMERA', fwd.x, fwd.y, fwd.z, 0, 0, 0, 85, true, 2);
+      this._camera = game.createCamWithParams('DEFAULT_SCRIPTED_CAMERA', fwd.x, fwd.y, fwd.z, 0, 0, 0, 75, true, 2);
       game.pointCamAtCoord(this._camera, pos.x, pos.y, pos.z);
       game.setCamActive(this._camera, true);
       game.renderScriptCams(true, false, 0, true, false, 0);

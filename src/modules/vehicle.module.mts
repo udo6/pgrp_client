@@ -33,6 +33,7 @@ export default new class VehicleModule extends ModuleBase {
 
     alt.onServer('Client:Vehicle:Exit', this.getKickedFromVehicle.bind(this));
 
+    alt.on('leftVehicle', this.exitVehicle.bind(this));
     alt.on('keydown', this.keydown.bind(this));
     alt.on('streamSyncedMetaChange', this.sirenSoundChange.bind(this));
     alt.on('gameEntityCreate', this.streamIn.bind(this));
@@ -43,6 +44,10 @@ export default new class VehicleModule extends ModuleBase {
     alt.setInterval(this.tick.bind(this), 15000);
   }
 
+  private exitVehicle(vehicle: alt.Vehicle, seat: number): void {
+    game.setPedConfigFlag(alt.Player.local.scriptID, 184, false);
+  }
+
   private keydown(key: alt.KeyCode): void {
     if (key != alt.KeyCode.G || alt.Player.local.vehicle != null || browserModule.isAnyComponentActive()) return;
 
@@ -51,6 +56,7 @@ export default new class VehicleModule extends ModuleBase {
 
     const seat = this.getClosestVehicleSeat(vehicle);
     game.taskEnterVehicle(alt.Player.local.scriptID, vehicle.scriptID, -1, seat, 2, 0, '0');
+    game.setPedConfigFlag(alt.Player.local.scriptID, 184, true);
   }
 
   private getClosestVehicle(): alt.Vehicle | null {
@@ -77,7 +83,7 @@ export default new class VehicleModule extends ModuleBase {
       const boneIndex = game.getEntityBoneIndexByName(vehicle.scriptID, this._bones[i]);
       const bonePos = game.getWorldPositionOfEntityBone(vehicle.scriptID, boneIndex);
       const dist = distanceTo(alt.Player.local.pos, bonePos, false);
-      if(dist >= closestSeat || !game.isVehicleSeatFree(vehicle.scriptID, i, false)) continue;
+      if(dist > closestDistance || !game.isVehicleSeatFree(vehicle.scriptID, i, false)) continue;
 
       closestSeat = i;
       closestDistance = dist;
