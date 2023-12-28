@@ -32,6 +32,7 @@ export default new class AnticheatModule extends ModuleBase {
   public magic: AnticheatComponent<null>;
   public godmodePlayers: godmodePlayer[];
   public lastShot: number;
+  public useWeaponModifier: boolean;
 
   constructor() {
     super('AnticheatModule');
@@ -44,6 +45,7 @@ export default new class AnticheatModule extends ModuleBase {
     this.magic = new AnticheatComponent(null, 300);
     this.godmodePlayers = [];
     this.lastShot = new Date().getTime();
+    this.useWeaponModifier = true;
 
     alt.everyTick(this.tick.bind(this));
 
@@ -108,23 +110,6 @@ export default new class AnticheatModule extends ModuleBase {
 
     this.checkFlags();
 
-    if (game.isPedArmed(alt.Player.local.scriptID, 6)) {
-      const altvData = player.currentWeaponData;
-      const data = (weaponData as any)[`${player.currentWeapon}`];
-      if (data != null && weaponData != null) {
-        if (altvData.recoilShakeAmplitude != data.recoilShakeAmplitude) this.triggerServer('Server:Anticheat:WeaponModification', player.currentWeapon, 'recoilShakeAmplitude', altvData.recoilShakeAmplitude);
-        if (altvData.recoilAccuracyMax != data.recoilAccuracyMax) this.triggerServer('Server:Anticheat:WeaponModification', player.currentWeapon, 'recoilAccuracyMax', altvData.recoilAccuracyMax);
-        if (altvData.recoilAccuracyToAllowHeadshotPlayer != data.recoilAccuracyToAllowHeadshotPlayer) this.triggerServer('Server:Anticheat:WeaponModification', player.currentWeapon, 'recoilAccuracyToAllowHeadshotPlayer', altvData.recoilAccuracyToAllowHeadshotPlayer);
-        if (altvData.recoilRecoveryRate != data.recoilRecoveryRate) this.triggerServer('Server:Anticheat:WeaponModification', player.currentWeapon, 'recoilRecoveryRate', altvData.recoilRecoveryRate);
-        if (altvData.animReloadRate != data.animReloadRate) this.triggerServer('Server:Anticheat:WeaponModification', player.currentWeapon, 'animReloadRate', altvData.animReloadRate);
-        if (altvData.vehicleReloadTime != data.vehicleReloadTime) this.triggerServer('Server:Anticheat:WeaponModification', player.currentWeapon, 'vehicleReloadTime', altvData.vehicleReloadTime);
-        if (altvData.accuracySpread != data.accuracySpread) this.triggerServer('Server:Anticheat:WeaponModification', player.currentWeapon, 'accuracySpread', altvData.accuracySpread);
-        if (altvData.range != data.range) this.triggerServer('Server:Anticheat:WeaponModification', player.currentWeapon, 'range', altvData.range);
-        if (altvData.timeBetweenShots != data.timeBetweenShots) this.triggerServer('Server:Anticheat:WeaponModification', player.currentWeapon, 'timeBetweenShots', altvData.timeBetweenShots);
-        if (altvData.playerDamageModifier != data.playerDamageModifier) this.triggerServer('Server:Anticheat:WeaponModification', player.currentWeapon, 'playerDamageModifier', altvData.playerDamageModifier);
-      }
-    }
-
     const now = new Date();
     alt.Player.streamedIn.forEach(x => {
       const entries = this.godmodePlayers.filter(e => e.player == x.id);
@@ -184,10 +169,77 @@ export default new class AnticheatModule extends ModuleBase {
   private onWeaponSwitch(oldWeapon: number, newWeapon: number): void {
     if (newWeapon != 2725352035 && game.isPedArmed(alt.Player.local.scriptID, 6)) {
       const weapon = playerModule.weapons.find(e => e == newWeapon);
-      if (weapon != null) return;
+      if (weapon == null) {
+        this.triggerServer('Server:Anticheat:Weapon', newWeapon);
+        this.timeout();
+        return;
+      }
 
-      this.triggerServer('Server:Anticheat:Weapon', newWeapon);
-      this.timeout();
+      if (this.useWeaponModifier && game.isPedArmed(alt.Player.local.scriptID, 6)) {
+        const altvData = alt.WeaponData.getForHash(newWeapon);
+        const data = (weaponData as any)[`${newWeapon}`];
+        if (data != null && weaponData != null) {
+          let detected = false;
+          let args = [];
+          if (altvData.recoilShakeAmplitude != data.recoilShakeAmplitude) {
+            args = [newWeapon, 'recoilShakeAmplitude', altvData.recoilShakeAmplitude];
+            detected = true;
+          }
+
+          if (altvData.recoilAccuracyMax != data.recoilAccuracyMax) {
+            args = [newWeapon, 'recoilAccuracyMax', altvData.recoilAccuracyMax];
+            detected = true;
+          }
+
+          if (altvData.recoilAccuracyToAllowHeadshotPlayer != data.recoilAccuracyToAllowHeadshotPlayer) {
+            args = [newWeapon, 'recoilAccuracyToAllowHeadshotPlayer', altvData.recoilAccuracyToAllowHeadshotPlayer];
+            detected = true;
+          }
+
+          if (altvData.recoilRecoveryRate != data.recoilRecoveryRate) {
+            args = [newWeapon, 'recoilRecoveryRate', altvData.recoilRecoveryRate];
+            detected = true;
+          }
+
+          if (altvData.animReloadRate != data.animReloadRate) {
+            args = [newWeapon, 'animReloadRate', altvData.animReloadRate];
+            detected = true;
+          }
+
+          if (altvData.vehicleReloadTime != data.vehicleReloadTime) {
+            args = [newWeapon, 'vehicleReloadTime', altvData.vehicleReloadTime];
+            detected = true;
+          }
+
+          if (altvData.accuracySpread != data.accuracySpread) {
+            args = [newWeapon, 'accuracySpread', altvData.accuracySpread];
+            detected = true;
+          }
+
+          if (altvData.range != data.range) {
+            args = [newWeapon, 'range', altvData.range];
+            detected = true;
+          }
+
+          if (altvData.timeBetweenShots != data.timeBetweenShots) {
+            args = [newWeapon, 'timeBetweenShots', altvData.timeBetweenShots];
+            detected = true;
+          }
+
+          if (altvData.playerDamageModifier != data.playerDamageModifier) {
+            args = [newWeapon, 'playerDamageModifier', altvData.playerDamageModifier];
+            detected = true;
+          }
+
+          if (detected) {
+            this.useWeaponModifier = false;
+            this.triggerServer('Server:Anticheat:WeaponModification', ...args);
+            alt.setTimeout(() => {
+              this.useWeaponModifier = true;
+            }, 10000);
+          }
+        }
+      }
     }
   }
 
@@ -206,8 +258,8 @@ export default new class AnticheatModule extends ModuleBase {
   }
 
   private onWeaponDamage(target: alt.Entity, weaponHash: number, damage: number, offset: alt.Vector3, bodyPart: alt.BodyPart): boolean | void {
-    if(target == alt.Player.local) return;
-    
+    if (target == alt.Player.local) return;
+
     const data = (weaponData as any)[`${weaponHash}`];
 
     if (data != null && damage > data.damage) {
