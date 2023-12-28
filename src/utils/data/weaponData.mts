@@ -159,22 +159,6 @@ export default {
     "headshotDamageModifier": 0,
     "playerDamageModifier": 1
   },
-  "419712736": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
-  },
   "453432689": {
     "recoilShakeAmplitude": 1,
     "recoilAccuracyMax": 1,
@@ -335,22 +319,6 @@ export default {
     "headshotDamageModifier": 0,
     "playerDamageModifier": 1
   },
-  "940833800": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
-  },
   "961495388": {
     "recoilShakeAmplitude": 0.3330000042915344,
     "recoilAccuracyMax": 0.5,
@@ -397,22 +365,6 @@ export default {
     "clipSize": 15000,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
-  },
-  "1141786504": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
     "playerDamageModifier": 1
   },
   "1198256469": {
@@ -477,22 +429,6 @@ export default {
     "clipSize": 10,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
-  },
-  "1317494643": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
     "playerDamageModifier": 1
   },
   "1432025498": {
@@ -573,22 +509,6 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
-  },
-  "1737195953": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
     "playerDamageModifier": 1
   },
   "1785463520": {
@@ -719,22 +639,6 @@ export default {
     "headshotDamageModifier": 0,
     "playerDamageModifier": 1
   },
-  "2227010557": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
-  },
   "2228681469": {
     "recoilShakeAmplitude": 0.3330000042915344,
     "recoilAccuracyMax": 0.5,
@@ -767,22 +671,6 @@ export default {
     "headshotDamageModifier": 0,
     "playerDamageModifier": 1
   },
-  "2343591895": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 10,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
-  },
   "2441047180": {
     "recoilShakeAmplitude": 1.5,
     "recoilAccuracyMax": 1,
@@ -796,22 +684,6 @@ export default {
     "damage": 54,
     "clipSize": 6,
     "timeBetweenShots": 1,
-    "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
-  },
-  "2460120199": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
     "headshotDamageModifier": 18,
     "playerDamageModifier": 1
   },
@@ -829,38 +701,6 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
-  },
-  "2484171525": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
-  },
-  "2508868239": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
     "playerDamageModifier": 1
   },
   "2526821735": {
@@ -911,22 +751,6 @@ export default {
     "headshotDamageModifier": 0,
     "playerDamageModifier": 1
   },
-  "2578778090": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
-  },
   "2634544996": {
     "recoilShakeAmplitude": 1,
     "recoilAccuracyMax": 0.5,
@@ -973,22 +797,6 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
-  },
-  "2725352035": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 11.5,
-    "accuracySpread": 0,
-    "range": 30,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
     "playerDamageModifier": 1
   },
   "2726580491": {
@@ -1263,22 +1071,6 @@ export default {
     "headshotDamageModifier": 0,
     "playerDamageModifier": 1
   },
-  "3441901897": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
-  },
   "3523564046": {
     "recoilShakeAmplitude": 1,
     "recoilAccuracyMax": 1,
@@ -1293,22 +1085,6 @@ export default {
     "clipSize": 18,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
-  },
-  "3638508604": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 11.5,
-    "accuracySpread": 0,
-    "range": 30,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
     "playerDamageModifier": 1
   },
   "3675956304": {
@@ -1359,38 +1135,6 @@ export default {
     "headshotDamageModifier": 0,
     "playerDamageModifier": 1
   },
-  "3713923289": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
-  },
-  "3756226112": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
-  },
   "3800352039": {
     "recoilShakeAmplitude": 0.6660000085830688,
     "recoilAccuracyMax": 1,
@@ -1437,38 +1181,6 @@ export default {
     "clipSize": 30,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
-  },
-  "4191993645": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
-  },
-  "4192643659": {
-    "recoilShakeAmplitude": 1,
-    "recoilAccuracyMax": 1,
-    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
-    "recoilRecoveryRate": 1,
-    "animReloadRate": 1,
-    "vehicleReloadTime": -1,
-    "lockOnRange": 10,
-    "accuracySpread": 0,
-    "range": 1.600000023841858,
-    "damage": 0,
-    "clipSize": 0,
-    "timeBetweenShots": 0,
-    "headshotDamageModifier": 18,
     "playerDamageModifier": 1
   },
   "4208062921": {

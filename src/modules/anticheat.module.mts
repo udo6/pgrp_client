@@ -206,6 +206,8 @@ export default new class AnticheatModule extends ModuleBase {
   }
 
   private onWeaponDamage(target: alt.Entity, weaponHash: number, damage: number, offset: alt.Vector3, bodyPart: alt.BodyPart): boolean | void {
+    if(target == alt.Player.local) return;
+    
     const data = (weaponData as any)[`${weaponHash}`];
 
     if (data != null && damage > data.damage) {
