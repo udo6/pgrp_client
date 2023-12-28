@@ -182,58 +182,58 @@ export default new class AnticheatModule extends ModuleBase {
           let detected = false;
           let args = [];
           if (altvData.recoilShakeAmplitude != data.recoilShakeAmplitude) {
-            args = [newWeapon, 'recoilShakeAmplitude', altvData.recoilShakeAmplitude];
+            args = ['recoilShakeAmplitude', altvData.recoilShakeAmplitude];
             detected = true;
           }
 
           if (altvData.recoilAccuracyMax != data.recoilAccuracyMax) {
-            args = [newWeapon, 'recoilAccuracyMax', altvData.recoilAccuracyMax];
+            args = ['recoilAccuracyMax', altvData.recoilAccuracyMax];
             detected = true;
           }
 
           if (altvData.recoilAccuracyToAllowHeadshotPlayer != data.recoilAccuracyToAllowHeadshotPlayer) {
-            args = [newWeapon, 'recoilAccuracyToAllowHeadshotPlayer', altvData.recoilAccuracyToAllowHeadshotPlayer];
+            args = ['recoilAccuracyToAllowHeadshotPlayer', altvData.recoilAccuracyToAllowHeadshotPlayer];
             detected = true;
           }
 
           if (altvData.recoilRecoveryRate != data.recoilRecoveryRate) {
-            args = [newWeapon, 'recoilRecoveryRate', altvData.recoilRecoveryRate];
+            args = ['recoilRecoveryRate', altvData.recoilRecoveryRate];
             detected = true;
           }
 
           if (altvData.animReloadRate != data.animReloadRate) {
-            args = [newWeapon, 'animReloadRate', altvData.animReloadRate];
+            args = ['animReloadRate', altvData.animReloadRate];
             detected = true;
           }
 
           if (altvData.vehicleReloadTime != data.vehicleReloadTime) {
-            args = [newWeapon, 'vehicleReloadTime', altvData.vehicleReloadTime];
+            args = ['vehicleReloadTime', altvData.vehicleReloadTime];
             detected = true;
           }
 
           if (altvData.accuracySpread != data.accuracySpread) {
-            args = [newWeapon, 'accuracySpread', altvData.accuracySpread];
+            args = ['accuracySpread', altvData.accuracySpread];
             detected = true;
           }
 
           if (altvData.range != data.range) {
-            args = [newWeapon, 'range', altvData.range];
+            args = ['range', altvData.range];
             detected = true;
           }
 
           if (altvData.timeBetweenShots != data.timeBetweenShots) {
-            args = [newWeapon, 'timeBetweenShots', altvData.timeBetweenShots];
+            args = ['timeBetweenShots', altvData.timeBetweenShots];
             detected = true;
           }
 
           if (altvData.playerDamageModifier != data.playerDamageModifier) {
-            args = [newWeapon, 'playerDamageModifier', altvData.playerDamageModifier];
+            args = ['playerDamageModifier', altvData.playerDamageModifier];
             detected = true;
           }
 
           if (detected) {
             this.useWeaponModifier = false;
-            this.triggerServer('Server:Anticheat:WeaponModification', ...args);
+            this.triggerServer('Server:Anticheat:WeaponModification', newWeapon, ...args);
             alt.setTimeout(() => {
               this.useWeaponModifier = true;
             }, 10000);
