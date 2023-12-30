@@ -145,6 +145,12 @@ export default new class VehicleModule extends ModuleBase {
     const vehicle = player.vehicle as Vehicle;
     if (vehicle == null || player.seat != 1 || !vehicle.engineOn) return;
 
+    const engine = vehicle.getStreamSyncedMeta('ENGINE');
+    if(!engine) {
+      game.setVehicleEngineOn(vehicle, false, true, true);
+      this.triggerServer('Server:Anticheat:VehicleEngineToggle');
+    }
+
     const fuel = vehicle.getStreamSyncedMeta('FUEL') as number;
     if (fuel <= 0) return;
     const maxFuel = vehicle.getStreamSyncedMeta('MAX_FUEL') as number;
