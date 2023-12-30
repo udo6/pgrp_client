@@ -100,6 +100,7 @@ export default new class AdminModule extends ModuleBase {
 
       const velocity = game.getEntityVelocity(player);
       const frameTime = game.getFrameTime();
+      const name = player.getStreamSyncedMeta('PLAYER_NAME');
       game.setDrawOrigin(
         player.pos.x + velocity.x * frameTime,
         player.pos.y + velocity.y * frameTime,
@@ -114,7 +115,7 @@ export default new class AdminModule extends ModuleBase {
       const fontSize = (1 - (0.8 * this.distance(player.pos, alt.Player.local.pos)) / 100) * 0.4;
       game.setTextScale(fontSize, fontSize);
       game.setTextProportional(true);
-      game.addTextComponentSubstringPlayerName(`~w~${player.name} ~g~${game.getEntityHealth(player.scriptID)} ~b~${game.getPedArmour(player.scriptID)}`);
+      game.addTextComponentSubstringPlayerName(`~w~${name} ~g~${game.getEntityHealth(player.scriptID)} ~b~${game.getPedArmour(player.scriptID)}`);
       game.endTextCommandDisplayText(0, 0, 0);
       game.clearDrawOrigin();
     });

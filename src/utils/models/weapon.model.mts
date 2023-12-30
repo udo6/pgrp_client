@@ -1,11 +1,11 @@
 export class WeaponModel {
-  public hash: number;
-  public ammo: number;
-  public components: number[];
+  public Hash: number;
+  public Ammo: number;
+  public Components: number[];
 
   constructor(hash: number, ammo: number, components: number[]) {
-    this.hash = hash;
-    this.ammo = ammo;
-    this.components = components;
+    this.Hash = hash;
+    this.Ammo = ammo;
+    this.Components = components;
   }
 }

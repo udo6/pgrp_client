@@ -1,14 +1,31 @@
-import alt, { BaseObjectType } from 'alt-client';
+import alt from 'alt-client';
 import game from 'natives';
 import { AnticheatComponent } from '../utils/models/anticheat.component.mjs';
 import { ModuleBase } from "../utils/models/baseModels/module.base.mjs";
-import playerModule from './player.module.mjs';
 import weaponData from '../utils/data/weaponData.mjs';
 import adminModule from './admin.module.mjs';
 import { distanceTo2D } from '../utils/math.mjs';
-import { KeyCode } from 'alt-client';
 
-type godmodePlayer = { player: number, date: Date };
+const meeleWeapons: number[] = [
+  0x92A27487,
+  0x958A4A8F,
+  0xF9E6AA4B,
+  0x84BD7BFD,
+  0x8BB05FD7,
+  0x440E4788,
+  0x4E875F73,
+  0xF9DCBF2D,
+  0xD8DF3C3C,
+  0x99B507EA,
+  0xDD5DF8D9,
+  0xDFE37640,
+  0x678B81B1,
+  0x19044EE0,
+  0xCD274149,
+  0x94117305,
+  0x3813FC08,
+  0x6589186A
+];
 
 const vehicleParachuteWhitelist: number[] = [
   0x381E10BD
@@ -30,7 +47,6 @@ export default new class AnticheatModule extends ModuleBase {
   public position: AnticheatComponent<alt.Vector3>;
   public fly: AnticheatComponent<boolean>;
   public magic: AnticheatComponent<null>;
-  public godmodePlayers: godmodePlayer[];
   public lastShot: number;
   public useWeaponModifier: boolean;
 
@@ -43,7 +59,6 @@ export default new class AnticheatModule extends ModuleBase {
     this.position = new AnticheatComponent(alt.Player.local.pos, 750);
     this.fly = new AnticheatComponent(false, 750);
     this.magic = new AnticheatComponent(null, 300);
-    this.godmodePlayers = [];
     this.lastShot = new Date().getTime();
     this.useWeaponModifier = true;
 
@@ -58,6 +73,45 @@ export default new class AnticheatModule extends ModuleBase {
     alt.onServer('Client:AnticheatModule:SetHealth', this.setHealth.bind(this));
     alt.onServer('Client:AnticheatModule:SetGodmode', this.setGodmode.bind(this));
     alt.onServer('Client:AnticheatModule:SetPosition', this.setPosition.bind(this));
+
+    const militaryData = alt.WeaponData.getForHash(2636060646);
+    const heavyData = alt.WeaponData.getForHash(3347935668);
+    let data = {
+      '2636060646': {
+        recoilShakeAmplitude: militaryData.recoilShakeAmplitude,
+        recoilAccuracyMax: militaryData.recoilAccuracyMax,
+        recoilAccuracyToAllowHeadshotPlayer: militaryData.recoilAccuracyToAllowHeadshotPlayer,
+        recoilRecoveryRate: militaryData.recoilRecoveryRate,
+        animReloadRate: militaryData.animReloadRate,
+        vehicleReloadTime: militaryData.vehicleReloadTime,
+        lockOnRange: militaryData.lockOnRange,
+        accuracySpread: militaryData.accuracySpread,
+        range: militaryData.range,
+        damage: militaryData.damage,
+        clipSize: militaryData.clipSize,
+        timeBetweenShots: militaryData.timeBetweenShots,
+        headshotDamageModifier: militaryData.headshotDamageModifier,
+        playerDamageModifier: militaryData.playerDamageModifier
+      },
+      '3347935668': {
+        recoilShakeAmplitude: heavyData.recoilShakeAmplitude,
+        recoilAccuracyMax: heavyData.recoilAccuracyMax,
+        recoilAccuracyToAllowHeadshotPlayer: heavyData.recoilAccuracyToAllowHeadshotPlayer,
+        recoilRecoveryRate: heavyData.recoilRecoveryRate,
+        animReloadRate: heavyData.animReloadRate,
+        vehicleReloadTime: heavyData.vehicleReloadTime,
+        lockOnRange: heavyData.lockOnRange,
+        accuracySpread: heavyData.accuracySpread,
+        range: heavyData.range,
+        damage: heavyData.damage,
+        clipSize: heavyData.clipSize,
+        timeBetweenShots: heavyData.timeBetweenShots,
+        headshotDamageModifier: heavyData.headshotDamageModifier,
+        playerDamageModifier: heavyData.playerDamageModifier
+      }
+    };
+
+    alt.copyToClipboard(JSON.stringify(data));
   }
 
   private enterVehicle(veh: alt.Vehicle, seat: number): void {
@@ -110,18 +164,6 @@ export default new class AnticheatModule extends ModuleBase {
 
     this.checkFlags();
 
-    const now = new Date();
-    alt.Player.streamedIn.forEach(x => {
-      const entries = this.godmodePlayers.filter(e => e.player == x.id);
-      if (entries.length < 1) return;
-
-      const lastEntry = entries[entries.length - 1];
-      if (now.getTime() - lastEntry.date.getTime() < 1500) return;
-
-      for (let i = 0; i < entries.length; i++)
-        this.godmodePlayers.splice(this.godmodePlayers.findIndex(j => j.player == x.id), 1);
-    });
-
     if (alt.Player.local.vehicle != null) {
       const veh = alt.Player.local.vehicle;
 
@@ -133,11 +175,6 @@ export default new class AnticheatModule extends ModuleBase {
         this.triggerServer('Server:Anticheat:RocketBoost');
       }
     }
-
-    this.godmodePlayers.slice(0).forEach(x => {
-      if (now.getTime() - x.date.getTime() >= 1000)
-        this.godmodePlayers.splice(this.godmodePlayers.indexOf(x), 1);
-    });
   }
 
   private checkFlags(): void {
@@ -167,78 +204,71 @@ export default new class AnticheatModule extends ModuleBase {
   }
 
   private onWeaponSwitch(oldWeapon: number, newWeapon: number): void {
-    if (newWeapon != 2725352035 && game.isPedArmed(alt.Player.local.scriptID, 6)) {
-      const weapon = playerModule.weapons.find(e => e == newWeapon);
-      if (weapon == null) {
-        this.triggerServer('Server:Anticheat:Weapon', newWeapon);
-        this.timeout();
-        return;
+    return;
+    if (!this.useWeaponModifier || newWeapon == 2725352035 || meeleWeapons.find(x => x == newWeapon) != null) return;
+
+    const altvData = alt.WeaponData.getForHash(newWeapon);
+    const data = (weaponData as any)[`${newWeapon}`];
+
+    if (data != null && weaponData != null) {
+      let detected = false;
+      let args = [];
+      if (altvData.recoilShakeAmplitude != data.recoilShakeAmplitude) {
+        args = ['recoilShakeAmplitude', altvData.recoilShakeAmplitude];
+        detected = true;
       }
 
-      if (this.useWeaponModifier && game.isPedArmed(alt.Player.local.scriptID, 6)) {
-        const altvData = alt.WeaponData.getForHash(newWeapon);
-        const data = (weaponData as any)[`${newWeapon}`];
-        if (data != null && weaponData != null) {
-          let detected = false;
-          let args = [];
-          if (altvData.recoilShakeAmplitude != data.recoilShakeAmplitude) {
-            args = ['recoilShakeAmplitude', altvData.recoilShakeAmplitude];
-            detected = true;
-          }
+      if (altvData.recoilAccuracyMax != data.recoilAccuracyMax) {
+        args = ['recoilAccuracyMax', altvData.recoilAccuracyMax];
+        detected = true;
+      }
 
-          if (altvData.recoilAccuracyMax != data.recoilAccuracyMax) {
-            args = ['recoilAccuracyMax', altvData.recoilAccuracyMax];
-            detected = true;
-          }
+      if (altvData.recoilAccuracyToAllowHeadshotPlayer != data.recoilAccuracyToAllowHeadshotPlayer) {
+        args = ['recoilAccuracyToAllowHeadshotPlayer', altvData.recoilAccuracyToAllowHeadshotPlayer];
+        detected = true;
+      }
 
-          if (altvData.recoilAccuracyToAllowHeadshotPlayer != data.recoilAccuracyToAllowHeadshotPlayer) {
-            args = ['recoilAccuracyToAllowHeadshotPlayer', altvData.recoilAccuracyToAllowHeadshotPlayer];
-            detected = true;
-          }
+      if (altvData.recoilRecoveryRate != data.recoilRecoveryRate) {
+        args = ['recoilRecoveryRate', altvData.recoilRecoveryRate];
+        detected = true;
+      }
 
-          if (altvData.recoilRecoveryRate != data.recoilRecoveryRate) {
-            args = ['recoilRecoveryRate', altvData.recoilRecoveryRate];
-            detected = true;
-          }
+      if (altvData.animReloadRate != data.animReloadRate) {
+        args = ['animReloadRate', altvData.animReloadRate];
+        detected = true;
+      }
 
-          if (altvData.animReloadRate != data.animReloadRate) {
-            args = ['animReloadRate', altvData.animReloadRate];
-            detected = true;
-          }
+      if (altvData.vehicleReloadTime != data.vehicleReloadTime) {
+        args = ['vehicleReloadTime', altvData.vehicleReloadTime];
+        detected = true;
+      }
 
-          if (altvData.vehicleReloadTime != data.vehicleReloadTime) {
-            args = ['vehicleReloadTime', altvData.vehicleReloadTime];
-            detected = true;
-          }
+      if (altvData.accuracySpread != data.accuracySpread) {
+        args = ['accuracySpread', altvData.accuracySpread];
+        detected = true;
+      }
 
-          if (altvData.accuracySpread != data.accuracySpread) {
-            args = ['accuracySpread', altvData.accuracySpread];
-            detected = true;
-          }
+      if (altvData.range != data.range) {
+        args = ['range', altvData.range];
+        detected = true;
+      }
 
-          if (altvData.range != data.range) {
-            args = ['range', altvData.range];
-            detected = true;
-          }
+      if (altvData.timeBetweenShots != data.timeBetweenShots) {
+        args = ['timeBetweenShots', altvData.timeBetweenShots];
+        detected = true;
+      }
 
-          if (altvData.timeBetweenShots != data.timeBetweenShots) {
-            args = ['timeBetweenShots', altvData.timeBetweenShots];
-            detected = true;
-          }
+      if (altvData.playerDamageModifier != data.playerDamageModifier) {
+        args = ['playerDamageModifier', altvData.playerDamageModifier];
+        detected = true;
+      }
 
-          if (altvData.playerDamageModifier != data.playerDamageModifier) {
-            args = ['playerDamageModifier', altvData.playerDamageModifier];
-            detected = true;
-          }
-
-          if (detected) {
-            this.useWeaponModifier = false;
-            this.triggerServer('Server:Anticheat:WeaponModification', newWeapon, ...args);
-            alt.setTimeout(() => {
-              this.useWeaponModifier = true;
-            }, 10000);
-          }
-        }
+      if (detected) {
+        this.useWeaponModifier = false;
+        this.triggerServer('Server:Anticheat:WeaponModification', newWeapon, ...args);
+        alt.setTimeout(() => {
+          this.useWeaponModifier = true;
+        }, 10000);
       }
     }
   }
@@ -248,10 +278,15 @@ export default new class AnticheatModule extends ModuleBase {
     const now = new Date().getTime();
 
     if (data != null) {
-      if (now - this.lastShot < data.rapidFireMinTime) {
-        alt.log('[ANTICHEAT] Rapidfire time: ' + (now - this.lastShot));
-        alt.log('[ANTICHEAT] Rapidfire data: ' + data.rapidFireMinTime);
+      const time = now - this.lastShot;
+      if (time < data.rapidFireMinTime) {
+        this.triggerServer('Server:Anticheat:Rapidfire', weapon, time);
       }
+
+      alt.log('[ANTICHEAT] ---------------------------');
+      alt.log(`[ANTICHEAT] Rapidfire time: ${now - this.lastShot}, Weapon: ${weapon}`);
+      alt.log(`[ANTICHEAT] Rapidfire data: ${data.rapidFireMinTime}, Weapon: ${weapon}`);
+      alt.log('[ANTICHEAT] ---------------------------');
     }
 
     this.lastShot = now;
@@ -266,23 +301,6 @@ export default new class AnticheatModule extends ModuleBase {
       this.triggerServer('Server:Anticheat:DamageModifier', weaponHash, damage, data.damage);
       this.timeout();
     }
-
-    if (target.type != BaseObjectType.Player) return;
-    const targetPlayer = target as alt.Player;
-    if (targetPlayer.getStreamSyncedMeta('GODMODE') || targetPlayer.health <= 100) return;
-
-    const beforeHealth = targetPlayer.health;
-    const beforeArmor = targetPlayer.armour;
-
-    alt.setTimeout(() => {
-      if ((targetPlayer.getStreamSyncedMeta('GODMODE') || targetPlayer.health <= 100) || (!targetPlayer.valid || (targetPlayer.health + targetPlayer.armour) <= (beforeHealth + beforeArmor - damage))) return;
-
-      this.godmodePlayers.push({ player: targetPlayer.id, date: new Date() });
-
-      if (this.godmodePlayers.filter(x => x.player == targetPlayer.id).length > 5) {
-        this.triggerServer('Server:Anticheat:GodmodeTarget', targetPlayer, beforeHealth + beforeArmor - damage);
-      }
-    }, 450);
   }
 
   private timeout(duration: number = 500): void {

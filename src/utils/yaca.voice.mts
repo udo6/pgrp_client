@@ -137,50 +137,6 @@ export class YaCAClientModule {
 
   mhinTimeout = null;
   mhintTick = null;
-  /**
-   * Displays a hint message.
-   *
-   * @param {string} head - The heading of the hint.
-   * @param {string} msg - The message to be displayed.
-   * @param {number} [time=0] - The duration for which the hint should be displayed. If not provided, defaults to 0.
-   */
-  mhint(head, msg, time = 0) {
-    const scaleform = natives.requestScaleformMovie("MIDSIZED_MESSAGE");
-
-    this.mhinTimeout = alt.setTimeout(() => {
-      this.mhinTimeout = null;
-
-      if (!natives.hasScaleformMovieLoaded(scaleform)) {
-        this.mhint(head, msg, time);
-        return;
-      }
-
-      natives.beginScaleformMovieMethod(scaleform, "SHOW_MIDSIZED_MESSAGE");
-      natives.beginTextCommandScaleformString("STRING");
-      natives.scaleformMovieMethodAddParamPlayerNameString(head);
-      natives.scaleformMovieMethodAddParamTextureNameString(msg);
-      natives.scaleformMovieMethodAddParamInt(100);
-      natives.scaleformMovieMethodAddParamBool(true);
-      natives.scaleformMovieMethodAddParamInt(100);
-      natives.endScaleformMovieMethod();
-
-      this.mhintTick = new alt.Utils.EveryTick(() => {
-        natives.drawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255, 0);
-      });
-
-      if (time != 0) {
-        alt.setTimeout(() => {
-          this.mhintTick?.destroy();
-        }, time * 1000);
-      }
-    }, natives.hasScaleformMovieLoaded(scaleform) ? 0 : 1000);
-  }
-
-  stopMhint() {
-    if (this.mhinTimeout) alt.clearTimeout(this.mhinTimeout);
-    this.mhinTimeout = null;
-    this.mhintTick?.destroy();
-  }
 
   /**
    * Clamps a value between a minimum and maximum value.
@@ -642,15 +598,8 @@ export class YaCAClientModule {
       this.handleTalkState(payload);
       return;
     }
-
-    const message = translations[payload.code] ?? "Unknown error!";
+    
     if (!translations[payload.code]) alt.log(`[YaCA-Websocket]: Unknown error code: ${payload.code}`);
-    if (message.length < 1) return;
-
-    natives.beginTextCommandThefeedPost("STRING");
-    natives.addTextComponentSubstringPlayerName(`Voice: ${message}`);
-    natives.thefeedSetBackgroundColorForNextPost(6);
-    natives.endTextCommandThefeedPostTicker(false, false);
   }
 
   /**
@@ -849,7 +798,6 @@ export class YaCAClientModule {
   monitorConnectstate() {
     if (this.websocket?.readyState == 0 || this.websocket?.readyState == 1) {
       if (this.messageDisplayed && this.websocket.readyState == 1) {
-        this.stopMhint();
         this.messageDisplayed = false;
         this.noPluginActivated = 0;
       }
@@ -859,7 +807,6 @@ export class YaCAClientModule {
     this.noPluginActivated++;
 
     if (!this.messageDisplayed) {
-      this.mhint("Voiceplugin", translations.plugin_not_activated);
       this.messageDisplayed = true;
     }
 

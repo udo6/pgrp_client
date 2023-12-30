@@ -13,7 +13,8 @@ export default {
     "clipSize": 10,
     "timeBetweenShots": 1,
     "headshotDamageModifier": 3,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "101631238": {
     "recoilShakeAmplitude": 1,
@@ -29,7 +30,8 @@ export default {
     "clipSize": 2000,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "125959754": {
     "recoilShakeAmplitude": 1.25,
@@ -45,7 +47,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 1,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "126349499": {
     "recoilShakeAmplitude": 1,
@@ -61,7 +64,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 1,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "137902532": {
     "recoilShakeAmplitude": 1,
@@ -77,7 +81,8 @@ export default {
     "clipSize": 7,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "171789620": {
     "recoilShakeAmplitude": 0.4000000059604645,
@@ -93,7 +98,8 @@ export default {
     "clipSize": 30,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "177293209": {
     "recoilShakeAmplitude": 0.2800000011920929,
@@ -109,7 +115,8 @@ export default {
     "clipSize": 6,
     "timeBetweenShots": 1,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1.3899999856948853
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0.3899999856948853
   },
   "205991906": {
     "recoilShakeAmplitude": 0.2800000011920929,
@@ -125,7 +132,8 @@ export default {
     "clipSize": 6,
     "timeBetweenShots": 1,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1.3899999856948853
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0.3899999856948853
   },
   "317205821": {
     "recoilShakeAmplitude": 0.6660000085830688,
@@ -141,7 +149,8 @@ export default {
     "clipSize": 10,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "324215364": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -157,7 +166,8 @@ export default {
     "clipSize": 20,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "453432689": {
     "recoilShakeAmplitude": 1,
@@ -173,7 +183,8 @@ export default {
     "clipSize": 12,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0.10000000149011612,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 260
   },
   "487013001": {
     "recoilShakeAmplitude": 2,
@@ -189,7 +200,8 @@ export default {
     "clipSize": 8,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "584646201": {
     "recoilShakeAmplitude": 0.5,
@@ -205,7 +217,8 @@ export default {
     "clipSize": 20,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "600439132": {
     "recoilShakeAmplitude": 1,
@@ -221,7 +234,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "615608432": {
     "recoilShakeAmplitude": 1,
@@ -237,7 +251,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "727643628": {
     "recoilShakeAmplitude": 1.5,
@@ -253,7 +268,8 @@ export default {
     "clipSize": 12,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 20,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "736523883": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -269,7 +285,8 @@ export default {
     "clipSize": 30,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "741814745": {
     "recoilShakeAmplitude": 1,
@@ -285,7 +302,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "883325847": {
     "recoilShakeAmplitude": 1,
@@ -301,7 +319,8 @@ export default {
     "clipSize": 4500,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "911657153": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -317,7 +336,8 @@ export default {
     "clipSize": 2104529083,
     "timeBetweenShots": 2,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "961495388": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -333,7 +353,8 @@ export default {
     "clipSize": 40,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "984333226": {
     "recoilShakeAmplitude": 0.5,
@@ -349,7 +370,8 @@ export default {
     "clipSize": 6,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "1119849093": {
     "recoilShakeAmplitude": 0.6660000085830688,
@@ -365,7 +387,8 @@ export default {
     "clipSize": 15000,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "1198256469": {
     "recoilShakeAmplitude": 0.800000011920929,
@@ -381,7 +404,8 @@ export default {
     "clipSize": 9999,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "1198879012": {
     "recoilShakeAmplitude": 1,
@@ -397,7 +421,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "1233104067": {
     "recoilShakeAmplitude": 1,
@@ -413,7 +438,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "1305664598": {
     "recoilShakeAmplitude": 0.5,
@@ -429,7 +455,8 @@ export default {
     "clipSize": 10,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "1432025498": {
     "recoilShakeAmplitude": 2,
@@ -445,7 +472,8 @@ export default {
     "clipSize": 9,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "1593441988": {
     "recoilShakeAmplitude": 1,
@@ -461,7 +489,8 @@ export default {
     "clipSize": 12,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 260
   },
   "1627465347": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -477,7 +506,8 @@ export default {
     "clipSize": 35,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "1649403952": {
     "recoilShakeAmplitude": 0.4000000059604645,
@@ -493,7 +523,8 @@ export default {
     "clipSize": 30,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "1672152130": {
     "recoilShakeAmplitude": 1,
@@ -509,7 +540,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "1785463520": {
     "recoilShakeAmplitude": 0.2800000011920929,
@@ -525,7 +557,8 @@ export default {
     "clipSize": 8,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1.3899999856948853
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0.3899999856948853
   },
   "1834241177": {
     "recoilShakeAmplitude": 1,
@@ -541,7 +574,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 2,
     "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2017895192": {
     "recoilShakeAmplitude": 2.25,
@@ -557,7 +591,8 @@ export default {
     "clipSize": 8,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2024373456": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -573,7 +608,8 @@ export default {
     "clipSize": 30,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2132975508": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -589,7 +625,8 @@ export default {
     "clipSize": 35,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 80
   },
   "2138347493": {
     "recoilShakeAmplitude": 1,
@@ -605,7 +642,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2144741730": {
     "recoilShakeAmplitude": 0.800000011920929,
@@ -621,7 +659,8 @@ export default {
     "clipSize": 75,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2210333304": {
     "recoilShakeAmplitude": 0.3269999921321869,
@@ -637,7 +676,8 @@ export default {
     "clipSize": 35,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 80
   },
   "2228681469": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -653,7 +693,8 @@ export default {
     "clipSize": 35,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2285322324": {
     "recoilShakeAmplitude": 1,
@@ -669,7 +710,8 @@ export default {
     "clipSize": 6,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2441047180": {
     "recoilShakeAmplitude": 1.5,
@@ -685,7 +727,8 @@ export default {
     "clipSize": 6,
     "timeBetweenShots": 1,
     "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2481070269": {
     "recoilShakeAmplitude": 1,
@@ -701,7 +744,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2526821735": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -717,7 +761,8 @@ export default {
     "clipSize": 30,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2548703416": {
     "recoilShakeAmplitude": 1.25,
@@ -733,7 +778,8 @@ export default {
     "clipSize": 6,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2578377531": {
     "recoilShakeAmplitude": 1.5,
@@ -749,7 +795,8 @@ export default {
     "clipSize": 9,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 260
   },
   "2634544996": {
     "recoilShakeAmplitude": 1,
@@ -765,7 +812,8 @@ export default {
     "clipSize": 54,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2640438543": {
     "recoilShakeAmplitude": 1.75,
@@ -781,7 +829,8 @@ export default {
     "clipSize": 14,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2694266206": {
     "recoilShakeAmplitude": 1,
@@ -797,7 +846,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2726580491": {
     "recoilShakeAmplitude": 0.5,
@@ -813,7 +863,8 @@ export default {
     "clipSize": 10,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2828843422": {
     "recoilShakeAmplitude": 2,
@@ -829,7 +880,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 1,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2874559379": {
     "recoilShakeAmplitude": 1,
@@ -845,7 +897,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2937143193": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -861,7 +914,8 @@ export default {
     "clipSize": 30,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 80
   },
   "2939590305": {
     "recoilShakeAmplitude": 1,
@@ -877,7 +931,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 2,
     "headshotDamageModifier": 20,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "2982836145": {
     "recoilShakeAmplitude": 1,
@@ -893,7 +948,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "3056410471": {
     "recoilShakeAmplitude": 0.6660000085830688,
@@ -909,7 +965,8 @@ export default {
     "clipSize": 15000,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "3125143736": {
     "recoilShakeAmplitude": 1,
@@ -925,7 +982,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "3126027122": {
     "recoilShakeAmplitude": 1,
@@ -941,7 +999,8 @@ export default {
     "clipSize": 4500,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 18,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "3173288789": {
     "recoilShakeAmplitude": 0.75,
@@ -957,7 +1016,8 @@ export default {
     "clipSize": 20,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "3218215474": {
     "recoilShakeAmplitude": 1,
@@ -973,7 +1033,8 @@ export default {
     "clipSize": 6,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "3219281620": {
     "recoilShakeAmplitude": 1,
@@ -989,7 +1050,8 @@ export default {
     "clipSize": 12,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 260
   },
   "3220176749": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -1005,7 +1067,8 @@ export default {
     "clipSize": 40,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 80
   },
   "3231910285": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -1021,7 +1084,8 @@ export default {
     "clipSize": 35,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 80
   },
   "3249783761": {
     "recoilShakeAmplitude": 1.5,
@@ -1037,7 +1101,8 @@ export default {
     "clipSize": 6,
     "timeBetweenShots": 1,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "3342088282": {
     "recoilShakeAmplitude": 0.2800000011920929,
@@ -1053,7 +1118,8 @@ export default {
     "clipSize": 8,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1.3899999856948853
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0.3899999856948853
   },
   "3415619887": {
     "recoilShakeAmplitude": 1.75,
@@ -1069,7 +1135,8 @@ export default {
     "clipSize": 6,
     "timeBetweenShots": 1,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "3523564046": {
     "recoilShakeAmplitude": 1,
@@ -1085,7 +1152,8 @@ export default {
     "clipSize": 18,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 260
   },
   "3675956304": {
     "recoilShakeAmplitude": 0.5,
@@ -1101,7 +1169,8 @@ export default {
     "clipSize": 12,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "3686625920": {
     "recoilShakeAmplitude": 0.800000011920929,
@@ -1117,7 +1186,8 @@ export default {
     "clipSize": 75,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "3696079510": {
     "recoilShakeAmplitude": 1.5,
@@ -1133,7 +1203,8 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 2,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "3800352039": {
     "recoilShakeAmplitude": 0.6660000085830688,
@@ -1149,7 +1220,8 @@ export default {
     "clipSize": 8,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "4019527611": {
     "recoilShakeAmplitude": 1.5,
@@ -1165,7 +1237,8 @@ export default {
     "clipSize": 2,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "4024951519": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -1181,7 +1254,8 @@ export default {
     "clipSize": 30,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "4208062921": {
     "recoilShakeAmplitude": 0.3330000042915344,
@@ -1197,7 +1271,8 @@ export default {
     "clipSize": 35,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "4222310262": {
     "recoilShakeAmplitude": 1,
@@ -1213,7 +1288,8 @@ export default {
     "clipSize": 0,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
   },
   "4256991824": {
     "recoilShakeAmplitude": 1,
@@ -1229,6 +1305,41 @@ export default {
     "clipSize": 1,
     "timeBetweenShots": 0,
     "headshotDamageModifier": 0,
-    "playerDamageModifier": 1
+    "playerDamageModifier": 1,
+    "rapidFireTime": 0
+  },
+  "2636060646": {
+    "recoilShakeAmplitude": 0.367000013589859,
+    "recoilAccuracyMax": 0.5,
+    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
+    "recoilRecoveryRate": 1,
+    "animReloadRate": 0.8999999761581421,
+    "vehicleReloadTime": 1,
+    "lockOnRange": 65,
+    "accuracySpread": 2,
+    "range": 120,
+    "damage": 8,
+    "clipSize": 35,
+    "timeBetweenShots": 0,
+    "headshotDamageModifier": 0,
+    "playerDamageModifier": 1,
+    "rapidFireTime": 80
+  },
+  "3347935668": {
+    "recoilShakeAmplitude": 0.3330000042915344,
+    "recoilAccuracyMax": 0.5,
+    "recoilAccuracyToAllowHeadshotPlayer": 0.17499999701976776,
+    "recoilRecoveryRate": 1,
+    "animReloadRate": 1,
+    "vehicleReloadTime": 1,
+    "lockOnRange": 65,
+    "accuracySpread": 3.5,
+    "range": 120,
+    "damage": 8,
+    "clipSize": 30,
+    "timeBetweenShots": 0,
+    "headshotDamageModifier": 18,
+    "playerDamageModifier": 1,
+    "rapidFireTime": 80
   }
 }
