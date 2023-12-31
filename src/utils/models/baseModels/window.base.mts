@@ -36,8 +36,9 @@ export abstract class InteractionWindow extends WindowBase {
   private readonly _inVehicle: boolean;
   private readonly _cancelAnim: boolean;
   private readonly _disableESC: boolean;
+  private readonly _disableShift: boolean;
 
-  protected constructor(name: string, key: number, keyMutliFunction: boolean,  useColshapes: boolean, colshapeType: ColshapeType, cursor: boolean = true, disableDefaultShow: boolean = false, toggleGameControls: boolean = true, inVehicle: boolean = false, cancelAnim: boolean = false, disableESC: boolean = false) {
+  protected constructor(name: string, key: number, keyMutliFunction: boolean,  useColshapes: boolean, colshapeType: ColshapeType, cursor: boolean = true, disableDefaultShow: boolean = false, toggleGameControls: boolean = true, inVehicle: boolean = false, cancelAnim: boolean = false, disableESC: boolean = false, disableShift: boolean = false) {
     super(name, cursor, disableDefaultShow, toggleGameControls);
 
     this._isTimeout = false;
@@ -48,20 +49,26 @@ export abstract class InteractionWindow extends WindowBase {
     this._inVehicle = inVehicle;
     this._cancelAnim = cancelAnim;
     this._disableESC = disableESC;
+    this._disableShift = disableShift;
 
     alt.on('keydown', (key: number) => this.onKeyDown(key));
   }
 
   private onKeyDown(key: number): void {
     switch(key) {
-      case this._key:
+      case this._key: {
+        if(this._disableShift && alt.isKeyDown(alt.KeyCode.Shift)) return;
+
         if(!this.visible) this.open();
         else if(this._keyMutliFunction) this.close();
         break;
-      case KeyCode.ESCAPE:
+      }
+      case KeyCode.ESCAPE: {
         if(this._disableESC) return;
+        
         this.close();
         break;
+      }
     }
   }
 

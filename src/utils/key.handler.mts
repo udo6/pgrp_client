@@ -159,6 +159,11 @@ class KeyHandler extends ScriptBase {
         if (browserModule.isAnyComponentActive() || !playerModule.alive) return;
         voiceModule.toggleTransmitting();
         break;
+      case KeyCode.KEY_M:
+        if(!alt.isKeyDown(alt.KeyCode.Shift)) return;
+
+        this.triggerServer('Server:MMenu:QuickMask');
+        break;
     }
   }
 
