@@ -24,6 +24,7 @@ const animations: animation[] = [
   ["amb@world_human_stand_mobile@male@text@base", "base", 49],                       // 17 PHONE
   ["amb@world_human_stand_mobile@male@text@base", "base", 49],                       // 18 RAMMING
   ["timetable@gardener@filling_can", "gar_ig_5_filling_can", 35],                    // 19 FUELING
+  ["missfbi4", "takeoff_mask", 48],                                                  // 20 FUELING
 ];
 
 export const playAnim = (type: number): void => {
