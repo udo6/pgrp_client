@@ -47,8 +47,8 @@ export class HudWindow extends WindowBase {
     game.displayAreaName(false);
   }
 
-  private setPhoneSettings(): void {
-    browserModule.call('Phone:Settings:SetData', this.notifyMute);
+  private setPhoneSettings(volume: number): void {
+    browserModule.call('Phone:Settings:SetData', this.notifyMute, volume);
   }
 
   private updateNotifyMute(state: boolean): void {
