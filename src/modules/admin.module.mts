@@ -26,6 +26,7 @@ export default new class AdminModule extends ModuleBase {
     alt.onServer('Client:AdminModule:StartSpectating', this.startSpectating.bind(this));
     alt.onServer('Client:AdminModule:StopSpectating', this.stopSpectating.bind(this));
     alt.onServer('Client:AdminModule:SetDuty', this.setDuty.bind(this));
+    alt.onServer('Client:AdminModule:ToggleNames', this.toggleNames.bind(this));
   }
 
   private startSpectating(target: alt.Player): void {
@@ -69,7 +70,15 @@ export default new class AdminModule extends ModuleBase {
 
   private setDuty(state: boolean): void {
     this.duty = state;
+    this.setNames(state);
+    this.noclip.disable();
+  }
 
+  private toggleNames(): void {
+    this.setNames(this._namesTick == null);
+  }
+
+  private setNames(state: boolean): void {
     if(state) {
       if(this._namesTick != null) {
         alt.clearEveryTick(this._namesTick);
@@ -81,8 +90,6 @@ export default new class AdminModule extends ModuleBase {
       alt.clearEveryTick(this._namesTick);
       this._namesTick = null;
     }
-
-    this.noclip.disable();
   }
 
   private distance(vector1, vector2) {
