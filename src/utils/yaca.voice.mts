@@ -293,7 +293,7 @@ export class YaCAClientModule {
 
     alt.onServer("client:yaca:radioTalking", (target, frequency, state, self = false) => {
       const player = alt.Player.getByRemoteID(target);
-      if (!player?.valid) return;
+      if (player == null || !player.valid) return;
 
       const yacaSettings = player.yacaPlugin;
       if (!yacaSettings) return;
@@ -839,7 +839,7 @@ export class YaCAClientModule {
   calcPlayers() {
     const players = [];
     const localPos = this.localPlayer.pos;
-    const localRadioChannel = alt.Player.local.getSyncedMeta('RADIO_CHANNEL');
+    const localRadioChannel = alt.Player.local.getSyncedMeta('RADIO_CHANNEL') as number;
     const callPartner = alt.Player.local.getSyncedMeta('CALL_PARTNER');
 
     for (const player of alt.Player.all) {
@@ -849,8 +849,9 @@ export class YaCAClientModule {
       if (!voiceSetting?.clientId) continue;
 
       // workaround to disable radio effect
+      const targetRadioTalking = player.getSyncedMeta('RADIO_TALKING');
       const targetRadioChannel = player.getSyncedMeta('RADIO_CHANNEL');
-      const pos = ((this.radioEnabled && localRadioChannel == targetRadioChannel) || (callPartner == player.remoteID)) ? localPos : player.pos;
+      const pos = ((this.radioEnabled && targetRadioTalking && localRadioChannel > 0 && localRadioChannel == targetRadioChannel) || (callPartner == player.remoteID)) ? localPos : player.pos;
 
       players.push({
         client_id: voiceSetting.clientId,
