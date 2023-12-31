@@ -18,15 +18,12 @@ class CreatorWindow extends WindowBase {
     browserModule.on('Client:Creator:Rotate', this.rotate.bind(this));
     browserModule.on('Client:Creator:SetGender', this.changeGender.bind(this));
     browserModule.on('Client:Creator:Update', this.update2.bind(this));
-
-    alt.onServer('Client:Creator:SetCustomization', this.update2.bind(this));
   }
 
   private async changeGender(gender: number): Promise<void> {
     game.deletePed(this._ped);
     let modelHash = gender == 1 ? 1885233650 : 2627665880;
     this._ped = game.createPed(26, modelHash, 402.8664, -996.4108, -100, 0, false, true);
-    game.freezeEntityPosition(this._ped, true);
     game.setEntityHeading(this._ped, 180);
     game.taskSetBlockingOfNonTemporaryEvents(this._ped, true);
 
@@ -84,7 +81,7 @@ class CreatorWindow extends WindowBase {
       this._camera = game.createCamWithParams('DEFAULT_SCRIPTED_CAMERA', 402.8664, -997.5515, -98.5, 0, 0, 0, 75, true, 2);
       game.pointCamAtCoord(this._camera, 402.8664, -996.4108, -98.5);
       game.setCamActive(this._camera, true);
-      this.changeGender(parseInt(this._lastData!.Gender));
+      this.changeGender(this._lastData.Gender ? 1 : 0);
     } else {
       game.deletePed(this._ped);
       this._camera = null;
