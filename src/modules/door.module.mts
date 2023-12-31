@@ -12,7 +12,7 @@ export default new class DoorModule extends ModuleBase {
 
     alt.onServer("Client:DoorModule:Init", this.initDoors.bind(this));
     alt.onServer("Client:DoorModule:Lock", this.doorLock.bind(this));
-    alt.everyTick(this.tick.bind(this));
+    alt.setInterval(this.tick.bind(this), 800);
   }
 
   private initDoors(doorData: string): void {
