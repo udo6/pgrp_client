@@ -1333,7 +1333,7 @@ export default {
     "animReloadRate": 1,
     "vehicleReloadTime": 1,
     "lockOnRange": 65,
-    "accuracySpread": 3.5,
+    "accuracySpread": 3,
     "range": 120,
     "damage": 8,
     "clipSize": 30,

@@ -259,6 +259,8 @@ export default new class AnticheatModule extends ModuleBase {
     this.ammoInMag--;
     if(this.ammoInMag < 0) {
       this.triggerServer('Server:Anticheat:NoReload', weapon);
+      const clipSize = game.getWeaponClipSize(alt.Player.local.currentWeapon);
+      this.ammoInMag = clipSize;
     }
   }
 
