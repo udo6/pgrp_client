@@ -125,7 +125,7 @@ export default new class AnticheatModule extends ModuleBase {
 
     this.checkFlags();
 
-    if (player.isReloading || game.isPedClimbing(player)) {
+    if (player.isReloading || game.isPedClimbing(player) || player.isLeavingVehicle) {
       const clipSize = game.getWeaponClipSize(player.currentWeapon);
       this.ammoInMag = clipSize;
     }
@@ -253,6 +253,9 @@ export default new class AnticheatModule extends ModuleBase {
     }
 
     this.lastShot = now;
+
+    if(alt.Player.local.vehicle != null) return;
+    
     this.ammoInMag--;
     if(this.ammoInMag < 0) {
       this.triggerServer('Server:Anticheat:NoReload', weapon);
