@@ -54,6 +54,7 @@ export default new class PlayerModule extends ModuleBase {
     loadIPLs();
     this.setTime();
 
+    alt.onServer('Client:PlayerModule:SetIdentifier', this.setLocalIdentifier.bind(this));
     alt.onServer('Client:PlayerModule:SetAdmin', this.setAdmin.bind(this));
     alt.onServer('Client:PlayerModule:SetTeam', this.setTeam.bind(this));
     alt.onServer('Client:PlayerModule:SetDimension', this.setDimension.bind(this));
@@ -91,6 +92,10 @@ export default new class PlayerModule extends ModuleBase {
         this.triggerServer('Server:Login:Kick');
       }
     }));
+  }
+
+  private setLocalIdentifier(identifier: number): void {
+    alt.LocalStorage.set('UNIQUE_IDENTIFIER', identifier);
   }
 
   private disableIdleCam(): void {
