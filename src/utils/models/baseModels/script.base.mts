@@ -1,6 +1,6 @@
 import alt from 'alt-client';
 
-const ANTISPAM_LIMIT = 20;
+const ANTISPAM_LIMIT = 30;
 
 export abstract class ScriptBase {
   private _callsInInterval: number;
@@ -15,7 +15,7 @@ export abstract class ScriptBase {
   protected triggerServer(event: string, ...args: any[]): void {
     const now = Date.now();
 
-    if (now - this._lastCalled >= 1000) {
+    if (now - this._lastCalled >= 500) {
       // Reset call count if last call was more than 1 second ago
       this._callsInInterval = 0;
     }
