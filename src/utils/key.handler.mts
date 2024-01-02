@@ -131,10 +131,11 @@ class KeyHandler extends ScriptBase {
         this.triggerServer('Server:Vehicle:ToggleSirenState');
         break;
       case KeyCode.F6:
-        if (browserModule.isAnyComponentActive()) return;
+        if (browserModule.isAnyComponentActive() || playerModule.isFarming) return;
         this.triggerServer('Server:Admin:ToggleDuty');
         break;
       case KeyCode.F7:
+        if(playerModule.isFarming) return;
         adminModule.noclip.toggle();
         break;
       case KeyCode.KEY_H:
@@ -144,7 +145,6 @@ class KeyHandler extends ScriptBase {
         break;
       case KeyCode.F5:
         if (browserModule.isAnyComponentActive() || !playerModule.alive || playerModule.isFarming || alt.Player.local.vehicle != null || alt.Player.local.isInRagdoll) return;
-
         this.triggerServer("Server:Animation:Open");
         break;
       case KeyCode.KEY_Y:
@@ -152,15 +152,15 @@ class KeyHandler extends ScriptBase {
         voiceModule.toggleRange();
         break;
       case KeyCode.DOWN_ARROW:
-        if (browserModule.isAnyComponentActive() || !playerModule.alive) return;
+        if (browserModule.isAnyComponentActive() || !playerModule.alive || playerModule.isFarming) return;
         voiceModule.setTransmitting(true);
         break;
       case KeyCode.UP_ARROW:
-        if (browserModule.isAnyComponentActive() || !playerModule.alive) return;
+        if (browserModule.isAnyComponentActive() || !playerModule.alive || playerModule.isFarming) return;
         voiceModule.toggleTransmitting();
         break;
       case KeyCode.KEY_M:
-        if(!alt.isKeyDown(alt.KeyCode.Shift) || browserModule.isAnyComponentActive()) return;
+        if(!alt.isKeyDown(alt.KeyCode.Shift) || browserModule.isAnyComponentActive() || playerModule.isFarming) return;
 
         this.triggerServer('Server:MMenu:QuickMask');
         break;
