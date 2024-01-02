@@ -89,7 +89,7 @@ export default new class PlayerModule extends ModuleBase {
         const token = await alt.Discord.requestOAuth2Token('1191214265483411526');
         this.triggerServer('Server:Login:Auth', token, identifier);
       } catch(e: any) {
-        this.triggerServer('Server:Login:Kick');
+        this.triggerServer('Server:Login:Kick', 'Authentication failed! (Code: 1)');
       }
     }));
   }

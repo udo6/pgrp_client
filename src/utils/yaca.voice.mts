@@ -556,7 +556,9 @@ export class YaCAClientModule {
   sendWebsocket(msg) {
     if (!this.websocket) return alt.logError("[Voice-Websocket]: No websocket created");
 
-    if (this.websocket.readyState == 1) this.websocket.send(JSON.stringify(msg));
+    if (this.websocket.readyState == 1) {
+      this.websocket.send(JSON.stringify(msg));
+    }
   }
 
   /**
@@ -838,12 +840,12 @@ export class YaCAClientModule {
    */
   calcPlayers() {
     const players = [];
-    const localPos = this.localPlayer.pos;
+    const localPos = alt.Player.local.pos;
     const localRadioChannel = alt.Player.local.getSyncedMeta('RADIO_CHANNEL') as number;
     const callPartner = alt.Player.local.getSyncedMeta('CALL_PARTNER');
 
     for (const player of alt.Player.all) {
-      if (!player?.valid || player.remoteID == this.localPlayer.remoteID) continue;
+      if (!player?.valid || player.remoteID == alt.Player.local.remoteID) continue;
 
       const voiceSetting = player.yacaPlugin;
       if (!voiceSetting?.clientId) continue;
@@ -852,6 +854,7 @@ export class YaCAClientModule {
       const targetRadioTalking = player.getSyncedMeta('RADIO_TALKING');
       const targetRadioChannel = player.getSyncedMeta('RADIO_CHANNEL');
       const pos = ((this.radioEnabled && targetRadioTalking && localRadioChannel > 0 && localRadioChannel == targetRadioChannel) || (callPartner == player.remoteID)) ? localPos : player.pos;
+      if(pos == player.pos && !player.isSpawned) continue;
 
       players.push({
         client_id: voiceSetting.clientId,
@@ -870,9 +873,9 @@ export class YaCAClientModule {
       player: {
         player_direction: this.getCamDirection(),
         player_position: localPos,
-        player_range: this.localPlayer.yacaPlugin.range,
-        player_is_underwater: natives.isPedSwimmingUnderWater(this.localPlayer),
-        player_is_muted: this.localPlayer.yacaPlugin.forceMuted,
+        player_range: alt.Player.local.yacaPlugin.range,
+        player_is_underwater: natives.isPedSwimmingUnderWater(alt.Player.local),
+        player_is_muted: alt.Player.local.yacaPlugin.forceMuted,
         players_list: players
       }
     });
