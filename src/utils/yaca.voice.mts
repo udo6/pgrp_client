@@ -853,8 +853,12 @@ export class YaCAClientModule {
       // workaround to disable radio effect
       const targetRadioTalking = player.getSyncedMeta('RADIO_TALKING');
       const targetRadioChannel = player.getSyncedMeta('RADIO_CHANNEL');
-      const pos = ((this.radioEnabled && targetRadioTalking && localRadioChannel > 0 && localRadioChannel == targetRadioChannel) || (callPartner == player.remoteID)) ? localPos : player.pos;
-      if(pos == player.pos && !player.isSpawned) continue;
+      let pos = player.pos;
+      if((this.radioEnabled && targetRadioTalking && localRadioChannel > 0 && localRadioChannel == targetRadioChannel) || (callPartner == player.remoteID)) {
+        pos = localPos;
+      } else if(alt.Player.streamedIn.find(x => x == player) == null) {
+        continue;
+      }
 
       players.push({
         client_id: voiceSetting.clientId,
