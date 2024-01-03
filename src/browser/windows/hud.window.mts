@@ -93,11 +93,11 @@ export class HudWindow extends WindowBase {
     const maxFuel = vehicle.getStreamSyncedMeta('MAX_FUEL');
 
     browserModule.call('Hud:ShowVehicle', true, engine, locked, fuel, maxFuel);
-    this._vehicleHudInterval = alt.everyTick(this.vehicleTick.bind(this));
+    this._vehicleHudInterval = alt.setInterval(this.vehicleTick.bind(this), 200);
   }
 
   private exitVehicle(vehicle: alt.Vehicle, seat: number): void {
-    alt.clearEveryTick(this._vehicleHudInterval);
+    alt.clearInterval(this._vehicleHudInterval);
     browserModule.call('Hud:ShowVehicle', false);
   }
 
