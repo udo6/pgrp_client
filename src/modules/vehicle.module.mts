@@ -154,7 +154,7 @@ export default new class VehicleModule extends ModuleBase {
     const fuel = vehicle.getStreamSyncedMeta('FUEL') as number;
     if (fuel <= 0) return;
     const maxFuel = vehicle.getStreamSyncedMeta('MAX_FUEL') as number;
-    const usedFuel = parseFloat((maxFuel * 0.0015 * vehicle.rpm).toFixed(2));
+    const usedFuel = parseFloat((maxFuel * 0.0003 * vehicle.rpm).toFixed(2));
 
     this.triggerServer('Server:Vehicle:UpdateFuel', usedFuel);
   }
