@@ -16,7 +16,7 @@ export class NoclipModel {
   }
 
   public toggle(): void {
-    if(!playerModule.alive || !adminModule.duty || browserModule.isAnyComponentActive()) return;
+    if(!playerModule.alive || !adminModule.duty || playerModule.admin < 3 || browserModule.isAnyComponentActive()) return;
     
     this.active = !this.active;
     alt.emitServer('Server:Admin:ToggleNoclip', this.active);
