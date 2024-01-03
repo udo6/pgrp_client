@@ -38,6 +38,8 @@ export class HudWindow extends WindowBase {
     alt.onServer('Client:Hud:PushNotification', this.pushNotification.bind(this));
     alt.onServer('Client:Hud:ShowNativeMenu', this.showNativeMenu.bind(this));
 
+    alt.onServer('Client:Hud:UpdateVehicleState', this.updateVehicleState.bind(this));
+
     alt.on('keydown', this.onKeyDown.bind(this));
     alt.on('enteredVehicle', this.enterVehicle.bind(this));
     alt.on('leftVehicle', this.exitVehicle.bind(this));
@@ -94,6 +96,10 @@ export class HudWindow extends WindowBase {
 
     browserModule.call('Hud:ShowVehicle', true, engine, locked, fuel, maxFuel);
     this._vehicleHudInterval = alt.setInterval(this.vehicleTick.bind(this), 100);
+  }
+
+  private updateVehicleState(engine: boolean, locked: boolean): void {
+    browserModule.call('Hud:UpdateVehicleState', engine, locked);
   }
 
   private exitVehicle(vehicle: alt.Vehicle, seat: number): void {
