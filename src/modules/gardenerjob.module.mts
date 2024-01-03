@@ -36,11 +36,11 @@ export default new class GardenerJobModule extends ModuleBase {
     }, 1000 * 5);
   }
 
-  private stopJob(): void {
+  private stopJob(key: string): void {
     if (!this.jobStarted) return;
     if (this.jobInterval != 0) clearInterval(this.jobInterval);
 
-    alt.emitServer("Server:GardenerJob:StopJob", this.jobCounter);
+    alt.emitServer("Server:GardenerJob:StopJob", key, this.jobCounter);
 
     this.jobStarted = false;
     this.jobCounter = 0;

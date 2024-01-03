@@ -19,7 +19,7 @@ export default new class MoneyTruckJobModule extends ModuleBase {
       const trunkCoords = game.getWorldPositionOfEntityBone(vehicle.scriptID, game.getEntityBoneIndexByName(vehicle.scriptID, 'door_pside_r'));
       const distance = game.getDistanceBetweenCoords(alt.Player.local.pos.x, alt.Player.local.pos.y, alt.Player.local.pos.z, trunkCoords.x, trunkCoords.y, trunkCoords.z, true);
       if (distance <= 2.5) {
-        this.triggerServer("Server:MoneyTruckJob:Store", vehicle.id);
+        this.triggerServer("Server:MoneyTruckJob:Store", vehicle.remoteID);
       }
     }
   }
