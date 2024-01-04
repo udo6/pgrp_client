@@ -80,18 +80,6 @@ export default new class PlayerModule extends ModuleBase {
     alt.everyTick(this.tick.bind(this));
     alt.setInterval(this.deathTick.bind(this), 800);
     alt.setInterval(this.disableIdleCam.bind(this), 15000);
-
-    alt.Utils.requestModel(1885233650).then(() => alt.Utils.requestModel(2627665880).then(async () => {
-      let identifier = alt.LocalStorage.get('UNIQUE_IDENTIFIER');
-      if(identifier == null) identifier = 0;
-
-      try {
-        const token = await alt.Discord.requestOAuth2Token('1191214265483411526');
-        this.triggerServer('Server:Login:Auth', token, identifier);
-      } catch(e: any) {
-        this.triggerServer('Server:Login:Kick', 'Authentication failed! (Code: 1)');
-      }
-    }));
   }
 
   private setLocalIdentifier(identifier: number): void {
@@ -185,6 +173,9 @@ export default new class PlayerModule extends ModuleBase {
 
   private deathTick(): void {
     this.setTime();
+    game.setWeatherTypeNow('EXTRASUNNY');
+
+    game.restorePlayerStamina(alt.Player.local, 0);
 
     if (!this.alive) {
       const stabilized = alt.Player.local.getStreamSyncedMeta('STABILIZED') as boolean;
