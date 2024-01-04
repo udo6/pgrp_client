@@ -42,8 +42,6 @@ export default new class AnticheatModule extends ModuleBase {
   public static tpVehicleMaxDist: number = 50;
 
   public active: boolean;
-  public health: AnticheatComponent<number>;
-  public godmode: AnticheatComponent<boolean>;
   public position: AnticheatComponent<alt.Vector3>;
   public fly: AnticheatComponent<boolean>;
   public ammoInMag: number;
@@ -54,8 +52,6 @@ export default new class AnticheatModule extends ModuleBase {
     super('AnticheatModule');
 
     this.active = true;
-    this.health = new AnticheatComponent(200, 1200);
-    this.godmode = new AnticheatComponent(false, 750);
     this.position = new AnticheatComponent(alt.Player.local.pos, 750);
     this.fly = new AnticheatComponent(false, 750);
     this.ammoInMag = 0;
@@ -66,12 +62,9 @@ export default new class AnticheatModule extends ModuleBase {
 
     alt.on('playerWeaponChange', this.onWeaponSwitch.bind(this));
     alt.on('playerWeaponShoot', this.onWeaponShoot.bind(this));
-    alt.on('weaponDamage', this.onWeaponDamage.bind(this));
     alt.on('enteredVehicle', this.enterVehicle.bind(this));
     alt.on('leftVehicle', this.extiVehicle.bind(this));
 
-    alt.onServer('Client:AnticheatModule:SetHealth', this.setHealth.bind(this));
-    alt.onServer('Client:AnticheatModule:SetGodmode', this.setGodmode.bind(this));
     alt.onServer('Client:AnticheatModule:SetPosition', this.setPosition.bind(this));
   }
 
@@ -83,16 +76,6 @@ export default new class AnticheatModule extends ModuleBase {
     this.position.reset(alt.Player.local.pos);
   }
 
-  private setHealth(health: number): void {
-    this.health.value = health;
-    this.health.flags = 0;
-  }
-
-  public setGodmode(state: boolean): void {
-    this.godmode.value = state;
-    this.godmode.flags = 0;
-  }
-
   public setPosition(pos: alt.Vector3): void {
     this.position.value = pos;
     this.position.flags = 0;
@@ -102,12 +85,6 @@ export default new class AnticheatModule extends ModuleBase {
     if (!this.active) return;
 
     const player = alt.Player.local;
-
-    if (this.health.active && (player.health + player.armour) > this.health.value) this.health.flag();
-    else this.health.unflag();
-
-    if (this.godmode.active && game.getPlayerInvincible(player) != this.godmode.value) this.godmode.flag();
-    else this.godmode.unflag();
 
     if (!adminModule.spectating) {
       const noclip = adminModule.noclip.active;
@@ -145,21 +122,6 @@ export default new class AnticheatModule extends ModuleBase {
 
   private checkFlags(): void {
     const player = alt.Player.local;
-
-    if (this.health.flags > this.health.maxFlags) {
-      this.triggerServer('Server:Anticheat:Healkey', this.health.value);
-      this.timeout();
-      this.health.reset(player.health + player.armour);
-      return;
-    }
-
-    if (this.godmode.flags > this.godmode.maxFlags) {
-      const godmode = game.getPlayerInvincible(player.scriptID);
-      this.triggerServer('Server:Anticheat:Godmode', this.godmode.value);
-      this.timeout();
-      this.godmode.reset(godmode);
-      return;
-    }
 
     if (this.position.flags > this.position.maxFlags) {
       this.triggerServer('Server:Anticheat:Teleport', this.position.value);
@@ -261,16 +223,6 @@ export default new class AnticheatModule extends ModuleBase {
       this.triggerServer('Server:Anticheat:NoReload', weapon);
       const clipSize = game.getWeaponClipSize(alt.Player.local.currentWeapon);
       this.ammoInMag = clipSize;
-    }
-  }
-
-  private onWeaponDamage(target: alt.Entity, weaponHash: number, damage: number, offset: alt.Vector3, bodyPart: alt.BodyPart): boolean | void {
-    if (target == alt.Player.local) return;
-
-    const data = (weaponData as any)[`${weaponHash}`];
-
-    if (data != null && damage > data.damage) {
-      this.triggerServer('Server:Anticheat:DamageModifier', weaponHash, damage, data.damage);
     }
   }
 
