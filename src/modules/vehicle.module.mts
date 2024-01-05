@@ -32,6 +32,7 @@ export default new class VehicleModule extends ModuleBase {
     ];
 
     alt.onServer('Client:Vehicle:Exit', this.getKickedFromVehicle.bind(this));
+    alt.onServer('Client:SetIntoVehicle', this.setIntoVehicle.bind(this));
 
     alt.on('leftVehicle', this.exitVehicle.bind(this));
     alt.on('keydown', this.keydown.bind(this));
@@ -79,11 +80,11 @@ export default new class VehicleModule extends ModuleBase {
     let closestSeat = 0;
     let closestDistance = 5;
 
-    for(let i = 0; i < this._bones.length; i++) {
+    for (let i = 0; i < this._bones.length; i++) {
       const boneIndex = game.getEntityBoneIndexByName(vehicle.scriptID, this._bones[i]);
       const bonePos = game.getWorldPositionOfEntityBone(vehicle.scriptID, boneIndex);
       const dist = distanceTo(alt.Player.local.pos, bonePos, false);
-      if(dist > closestDistance || !game.isVehicleSeatFree(vehicle.scriptID, i, false)) continue;
+      if (dist > closestDistance || !game.isVehicleSeatFree(vehicle.scriptID, i, false)) continue;
 
       closestSeat = i;
       closestDistance = dist;
@@ -146,7 +147,7 @@ export default new class VehicleModule extends ModuleBase {
     if (vehicle == null || player.seat != 1 || !vehicle.engineOn) return;
 
     const engine = vehicle.getStreamSyncedMeta('ENGINE');
-    if(!engine) {
+    if (!engine) {
       game.setVehicleEngineOn(vehicle, false, true, true);
       this.triggerServer('Server:Anticheat:VehicleEngineToggle');
     }
@@ -174,6 +175,14 @@ export default new class VehicleModule extends ModuleBase {
     if (vehicle.hasStreamSyncedMeta('SIREN_SOUND')) {
       const sirenSound = vehicle.getStreamSyncedMeta('SIREN_SOUND') as boolean;
       game.setVehicleHasMutedSirens(vehicle.scriptID, sirenSound);
+    }
+  }
+
+  private setIntoVehicle(vehicle: alt.Vehicle, seat: number): void {
+    let count = 0;
+    while (!alt.Player.local.vehicle || count < 101) {
+      count++;
+      game.setPedIntoVehicle(alt.Player.local.scriptID, vehicle.scriptID, seat - 2);
     }
   }
 }
