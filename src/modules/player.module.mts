@@ -168,6 +168,11 @@ export default new class PlayerModule extends ModuleBase {
   }
 
   private setTime(): void {
+    if(this.dimension > 100000) {
+      game.setClockTime(23, 0, 0);
+      return;
+    }
+
     const now = new Date();
     game.setClockTime(now.getHours(), now.getMinutes(), 0);
   }
