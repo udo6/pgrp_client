@@ -42,6 +42,7 @@ export default new class AnticheatModule extends ModuleBase {
   public static tpVehicleMaxDist: number = 50;
 
   public active: boolean;
+  public health: AnticheatComponent<number>;
   public position: AnticheatComponent<alt.Vector3>;
   public fly: AnticheatComponent<boolean>;
   public ammoInMag: number;
@@ -52,6 +53,7 @@ export default new class AnticheatModule extends ModuleBase {
     super('AnticheatModule');
 
     this.active = true;
+    this.health = new AnticheatComponent(200, 1200);
     this.position = new AnticheatComponent(alt.Player.local.pos, 750);
     this.fly = new AnticheatComponent(false, 750);
     this.ammoInMag = 0;
@@ -65,6 +67,7 @@ export default new class AnticheatModule extends ModuleBase {
     alt.on('enteredVehicle', this.enterVehicle.bind(this));
     alt.on('leftVehicle', this.extiVehicle.bind(this));
 
+    alt.onServer('Client:AnticheatModule:SetHealth', this.setHealth.bind(this));
     alt.onServer('Client:AnticheatModule:SetPosition', this.setPosition.bind(this));
   }
 
@@ -76,6 +79,11 @@ export default new class AnticheatModule extends ModuleBase {
     this.position.reset(alt.Player.local.pos);
   }
 
+  private setHealth(health: number): void {
+    this.health.value = health;
+    this.health.flags = 0;
+  }
+
   public setPosition(pos: alt.Vector3): void {
     this.position.value = pos;
     this.position.flags = 0;
@@ -85,6 +93,9 @@ export default new class AnticheatModule extends ModuleBase {
     if (!this.active) return;
 
     const player = alt.Player.local;
+
+    if (this.health.active && (player.health + player.armour) > this.health.value) this.health.flag();
+    else this.health.unflag();
 
     if (!adminModule.spectating) {
       const noclip = adminModule.noclip.active;
@@ -127,6 +138,13 @@ export default new class AnticheatModule extends ModuleBase {
       this.triggerServer('Server:Anticheat:Teleport', this.position.value);
       this.timeout();
       this.position.reset(player.pos);
+      return;
+    }
+
+    if (this.health.flags > this.health.maxFlags) {
+      this.triggerServer('Server:Anticheat:Healkey', this.health.value);
+      this.timeout();
+      this.health.reset(player.health + player.armour);
       return;
     }
   }

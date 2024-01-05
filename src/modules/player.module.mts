@@ -7,6 +7,7 @@ import { Colshape } from '../utils/models/colshape.model.mjs';
 import { clearTasks, playAnim } from '../utils/animation.handler.mjs';
 import { WeaponModel } from '../utils/models/weapon.model.mjs';
 import browserModule from './browser.module.mjs';
+import loginWindow from '../browser/windows/login.window.mjs';
 
 const weathers = [
   "CLEAR",
