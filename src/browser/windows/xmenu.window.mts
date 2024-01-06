@@ -78,7 +78,7 @@ class XMenuWindow extends WindowBase {
 
         if(!alive) items.push(new XMenuItem('Stabilisieren', 'heal', 'Server:XMenu:Stabilize', [targetPlayer.remoteID]));
 
-        items.push(new XMenuItem('Gegenstand geben', 'give', 'Server:Inventory:Open', [targetPlayer.remoteID]));
+        items.push(new XMenuItem('Gegenstand geben', 'give', 'Server:Inventory:OpenGiveItem', [targetPlayer.remoteID]));
 
         if(cuffed || roped || !alive) {
           items.push(new XMenuItem('Ins Fahrzeug ziehen', 'grab', 'Server:XMenu:Grab', [targetPlayer.remoteID]));
