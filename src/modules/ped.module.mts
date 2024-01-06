@@ -7,18 +7,29 @@ export default new class PedModule extends ModuleBase {
   constructor() {
     super('PedModule');
 
-    alt.on('spawned', this.freezePeds.bind(this));
+    alt.on('worldObjectStreamIn', this.streamIn.bind(this));
     alt.setInterval(this.freezePeds.bind(this), 5000);
   }
 
-  private freezePeds(): void {
-    alt.Ped.all.forEach(entity => {
-      if(entity.type != BaseObjectType.Ped) return;
+  private streamIn(object: alt.WorldObject): void {
+    if(object.type != BaseObjectType.Ped) return;
 
-      game.freezeEntityPosition(entity.scriptID, true);
-      game.taskSetBlockingOfNonTemporaryEvents(entity.scriptID, true);
+    this.freezePed(object as alt.Ped);
+  }
+
+  private freezePeds(): void {
+    alt.Ped.streamedIn.forEach(ped => {
+      if(ped.type != BaseObjectType.Ped) return;
+
+      this.freezePed(ped);
+    });
+  }
+
+  private freezePed(ped: alt.Ped): void {
+    game.freezeEntityPosition(ped, true);
+      game.taskSetBlockingOfNonTemporaryEvents(ped.scriptID, true);
       game.setEntityProofs(
-        entity,
+        ped,
         true, // bullet
         true, // fire
         true, // explosion
@@ -28,11 +39,10 @@ export default new class PedModule extends ModuleBase {
         true, // DontResetDamageFlagsOnCleanupMissionState (?)
         true // water
       );
-      game.setPedTreatedAsFriendly(entity, 1, 0);
-      game.setRagdollBlockingFlags(entity.scriptID, 262143);
-      game.setPedResetFlag(entity.scriptID, 458, true);
-      game.setPedResetFlag(entity.scriptID, 64, true);
-      game.setPedResetFlag(entity.scriptID, 249, true);
-    });
+      game.setPedTreatedAsFriendly(ped, 1, 0);
+      game.setRagdollBlockingFlags(ped.scriptID, 262143);
+      game.setPedResetFlag(ped.scriptID, 458, true);
+      game.setPedResetFlag(ped.scriptID, 64, true);
+      game.setPedResetFlag(ped.scriptID, 249, true);
   }
 }
