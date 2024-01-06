@@ -5,9 +5,7 @@ import { ModuleBase } from "../utils/models/baseModels/module.base.mjs";
 import { loadIPLs } from '../utils/ipl.mjs';
 import { Colshape } from '../utils/models/colshape.model.mjs';
 import { clearTasks, playAnim } from '../utils/animation.handler.mjs';
-import { WeaponModel } from '../utils/models/weapon.model.mjs';
 import browserModule from './browser.module.mjs';
-import loginWindow from '../browser/windows/login.window.mjs';
 
 const weathers = [
   "CLEAR",
@@ -81,6 +79,8 @@ export default new class PlayerModule extends ModuleBase {
     alt.everyTick(this.tick.bind(this));
     alt.setInterval(this.deathTick.bind(this), 800);
     alt.setInterval(this.disableIdleCam.bind(this), 15000);
+
+    game.setPedConfigFlag(alt.Player.local, 184, true);
   }
 
   private setLocalIdentifier(identifier: number): void {
@@ -102,10 +102,34 @@ export default new class PlayerModule extends ModuleBase {
       game.disableControlAction(0, 141, true);
       game.disableControlAction(0, 142, true);
 
-      if(this.superSecretFeature) {
+      if (this.superSecretFeature) {
         game.setWeaponDamageModifier(alt.Player.local.currentWeapon, 0.7);
       }
     }
+
+    game.hideHudComponentThisFrame(7);
+    game.hideHudComponentThisFrame(9);
+    game.hideHudComponentThisFrame(20);
+
+    game.setWeaponDamageModifier(0xA2719263, 0.4); //weapon_unarmed
+    game.setWeaponDamageModifier(0x92A27487, 0.2); //weapon_dagger
+    game.setWeaponDamageModifier(0x958A4A8F, 0.2); //weapon_bat
+    game.setWeaponDamageModifier(0xF9E6AA4B, 0.2); //weapon_bottle
+    game.setWeaponDamageModifier(0x84BD7BFD, 0.2); //weapon_crowbar
+    game.setWeaponDamageModifier(0x8BB05FD7, 0.2); //weapon_flashlight
+    game.setWeaponDamageModifier(0x440E4788, 0.2); //weapon_golfclub
+    game.setWeaponDamageModifier(0x4E875F73, 0.2); //weapon_hammer
+    game.setWeaponDamageModifier(0xF9DCBF2D, 0.2); //weapon_hatchet
+    game.setWeaponDamageModifier(0xD8DF3C3C, 0.2); //weapon_knuckle
+    game.setWeaponDamageModifier(0x99B507EA, 0.2); //weapon_knife
+    game.setWeaponDamageModifier(0xDD5DF8D9, 0.2); //weapon_machete
+    game.setWeaponDamageModifier(0xDFE37640, 0.2); //weapon_switchblade
+    game.setWeaponDamageModifier(0x678B81B1, 0.2); //weapon_nightstick
+    game.setWeaponDamageModifier(0x19044EE0, 0.2); //weapon_wrench
+    game.setWeaponDamageModifier(0xCD274149, 0.2); //weapon_battleaxe
+    game.setWeaponDamageModifier(0x94117305, 0.2); //weapon_poolcue
+    game.setWeaponDamageModifier(0x3813FC08, 0.1); //weapon_stone_hatchet
+    game.setWeaponDamageModifier(0x6589186A, 0.1); //weapon_candycane
 
     if (this.freezed) {
       game.disablePlayerFiring(alt.Player.local.scriptID, true);
@@ -122,6 +146,8 @@ export default new class PlayerModule extends ModuleBase {
 
     game.disableControlAction(0, 36, true);
     game.disableControlAction(0, 345, true);
+
+    game.restorePlayerStamina(alt.Player.local, 100);
   }
 
   private setAdmin(rank: number): void {
@@ -168,7 +194,7 @@ export default new class PlayerModule extends ModuleBase {
   }
 
   private setTime(): void {
-    if(this.dimension > 100000) {
+    if (this.dimension > 100000) {
       game.setClockTime(23, 0, 0);
       return;
     }
@@ -180,8 +206,6 @@ export default new class PlayerModule extends ModuleBase {
   private deathTick(): void {
     this.setTime();
     game.setWeatherTypeNow('EXTRASUNNY');
-
-    game.restorePlayerStamina(alt.Player.local, 0);
 
     if (!this.alive) {
       const stabilized = alt.Player.local.getStreamSyncedMeta('STABILIZED') as boolean;

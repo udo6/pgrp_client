@@ -6,6 +6,29 @@ import weaponData from '../utils/data/weaponData.mjs';
 import adminModule from './admin.module.mjs';
 import { distanceTo2D } from '../utils/math.mjs';
 
+const whitelistedResources: string[] = [
+  'lspd-veh',
+  'fib-veh',
+  'fib-alamo',
+  'badfrak-veh',
+  'schafterg',
+  'drafterg',
+  'pillboxkh',
+  'paletokh',
+  'rockfordkh',
+  'lspd',
+  'vespuccipd',
+  'badfrak-maps',
+  'team-clothes',
+  'fib-clothes',
+  'lcn',
+  'mara',
+  'yakuza',
+  'vagos',
+  'weapons',
+  'roleplay'
+];
+
 const meeleWeapons: number[] = [
   0x92A27487,
   0x958A4A8F,
@@ -62,6 +85,7 @@ export default new class AnticheatModule extends ModuleBase {
 
     alt.everyTick(this.tick.bind(this));
 
+    alt.on('anyResourceStart', this.onAnyResourceStart.bind(this));
     alt.on('playerWeaponChange', this.onWeaponSwitch.bind(this));
     alt.on('playerWeaponShoot', this.onWeaponShoot.bind(this));
     alt.on('enteredVehicle', this.enterVehicle.bind(this));
@@ -69,6 +93,12 @@ export default new class AnticheatModule extends ModuleBase {
 
     alt.onServer('Client:AnticheatModule:SetHealth', this.setHealth.bind(this));
     alt.onServer('Client:AnticheatModule:SetPosition', this.setPosition.bind(this));
+  }
+
+  private onAnyResourceStart(name: string): void {
+    if(whitelistedResources.some(x => x == name)) return;
+
+    this.triggerServer('Server:Anticheat:UnallowedResource', name);
   }
 
   private enterVehicle(veh: alt.Vehicle, seat: number): void {
