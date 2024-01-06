@@ -13,6 +13,7 @@ const whitelistedResources: string[] = [
   'badfrak-veh',
   'schafterg',
   'drafterg',
+  'lsmd-veh',
   'pillboxkh',
   'paletokh',
   'rockfordkh',
