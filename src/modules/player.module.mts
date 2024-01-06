@@ -97,7 +97,7 @@ export default new class PlayerModule extends ModuleBase {
       game.setPedUsingActionMode(alt.Player.local, false, -1, "-1");
     }
 
-    if (game.isPedArmed(alt.Player.local.scriptID, 6)) {
+    if (game.isPedArmed(alt.Player.local, 6)) {
       game.disableControlAction(0, 140, true);
       game.disableControlAction(0, 141, true);
       game.disableControlAction(0, 142, true);
@@ -132,7 +132,7 @@ export default new class PlayerModule extends ModuleBase {
     game.setWeaponDamageModifier(0x6589186A, 0.1); //weapon_candycane
 
     if (this.freezed) {
-      game.disablePlayerFiring(alt.Player.local.scriptID, true);
+      game.disablePlayerFiring(alt.Player.local, true);
       game.disableControlAction(0, 30, true); //Move LR
       game.disableControlAction(0, 31, true); //Move UD
       game.disableControlAction(0, 22, true); //Space
@@ -148,6 +148,7 @@ export default new class PlayerModule extends ModuleBase {
     game.disableControlAction(0, 345, true);
 
     game.restorePlayerStamina(alt.Player.local, 100);
+    game.setPedResetFlag(alt.Player.local, 438, true);
   }
 
   private setAdmin(rank: number): void {
