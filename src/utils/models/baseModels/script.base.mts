@@ -9,5 +9,6 @@ export abstract class ScriptBase {
 
   protected triggerServer(event: string, ...args: any[]): void {
     alt.emitServer(event, ...args);
+    alt.logDebug(`${event}: ${args.join(', ')}`);
   }
 }
