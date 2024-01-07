@@ -5,6 +5,16 @@ import { ModuleBase } from "../utils/models/baseModels/module.base.mjs";
 import { distanceTo } from '../utils/math.mjs';
 import browserModule from './browser.module.mjs';
 
+const engineWhitelist: number[] = [
+  0x43779C54,
+  0x1ABA13B5,
+  0xCE23D3BF,
+  0xF4E1AA15,
+  0x4339CD69,
+  0xB67597EC,
+  0xE823FB48
+];
+
 export default new class VehicleModule extends ModuleBase {
   private _bones: string[];
 
@@ -147,7 +157,7 @@ export default new class VehicleModule extends ModuleBase {
     if (vehicle == null || player.seat != 1 || !vehicle.engineOn) return;
 
     const engine = vehicle.getStreamSyncedMeta('ENGINE');
-    if (!engine) {
+    if (!engine && !engineWhitelist.some(x => x == vehicle.model)) {
       game.setVehicleEngineOn(vehicle, false, true, true);
       this.triggerServer('Server:Anticheat:VehicleEngineToggle');
     }
