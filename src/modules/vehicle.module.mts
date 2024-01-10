@@ -152,6 +152,8 @@ export default new class VehicleModule extends ModuleBase {
   }
 
   private tick(): void {
+    alt.Vehicle.streamedIn.forEach(x => game.setVehicleDirtLevel(x, 0));
+
     const player = alt.Player.local;
     const vehicle = player.vehicle as Vehicle;
     if (vehicle == null || player.seat != 1 || !vehicle.engineOn) return;
@@ -181,6 +183,8 @@ export default new class VehicleModule extends ModuleBase {
     if (entity.type != alt.BaseObjectType.Vehicle) return;
 
     const vehicle = entity as alt.Vehicle;
+
+    game.setVehicleDirtLevel(vehicle, 0);
 
     if (vehicle.hasStreamSyncedMeta('SIREN_SOUND')) {
       const sirenSound = vehicle.getStreamSyncedMeta('SIREN_SOUND') as boolean;
