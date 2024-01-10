@@ -152,10 +152,9 @@ export default new class VehicleModule extends ModuleBase {
   }
 
   private tick(): void {
-    alt.Vehicle.streamedIn.forEach(x => game.setVehicleDirtLevel(x, 0));
-
     const player = alt.Player.local;
     const vehicle = player.vehicle as Vehicle;
+
     if (vehicle == null || player.seat != 1 || !vehicle.engineOn) return;
 
     const engine = vehicle.getStreamSyncedMeta('ENGINE');
