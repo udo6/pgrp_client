@@ -66,7 +66,7 @@ export default new class VehicleModule extends ModuleBase {
     if (vehicle == null) return;
 
     const seat = this.getClosestVehicleSeat(vehicle);
-    game.taskEnterVehicle(alt.Player.local.scriptID, vehicle.scriptID, -1, seat, 2, 0, '0');
+    game.taskEnterVehicle(alt.Player.local.scriptID, vehicle.scriptID, -1, seat, 2, 0, '0', 0);
     game.setPedConfigFlag(alt.Player.local.scriptID, 184, true);
   }
 

@@ -3,24 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Pegasus-Crimelife/client.git"
-  },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Pegasus-Crimelife/client/issues"
-  },
-  "homepage": "https://github.com/Pegasus-Crimelife/client#readme",
   "devDependencies": {
-    "@altv/types-client": "^15.0.12",
-    "@altv/types-natives": "^15.0.8",
-    "@altv/types-shared": "^15.0.9",
-    "@altv/types-webview": "^15.0.8",
+    "@altv/types-client": "^16.2.0",
+    "@altv/types-natives": "^16.2.0",
+    "@altv/types-shared": "^16.2.0",
+    "@altv/types-webview": "^16.2.0",
     "typescript": "^4.7.4"
   }
 }
