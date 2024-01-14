@@ -31,6 +31,7 @@ export default new class PlayerModule extends ModuleBase {
   public cuffed: boolean;
   public roped: boolean;
   public superSecretFeature: boolean;
+  public canHoldWeapon: boolean;
 
   public gargabeProp: number;
 
@@ -48,12 +49,13 @@ export default new class PlayerModule extends ModuleBase {
     this.cuffed = false;
     this.roped = false;
     this.superSecretFeature = false;
+    this.canHoldWeapon = true;
 
     this.setMaxStats();
     loadIPLs();
     this.setTime();
 
-    alt.onServer('Client:PlayerModule:SetIdentifier', this.setLocalIdentifier.bind(this));
+    alt.onServer('Client:PlayerModule:SetCanHoldWeapon', this.setCanHoldWeapon.bind(this));
     alt.onServer('Client:PlayerModule:SetAdmin', this.setAdmin.bind(this));
     alt.onServer('Client:PlayerModule:SetTeam', this.setTeam.bind(this));
     alt.onServer('Client:PlayerModule:SetDimension', this.setDimension.bind(this));
@@ -83,8 +85,10 @@ export default new class PlayerModule extends ModuleBase {
     game.setPedConfigFlag(alt.Player.local, 184, true);
   }
 
-  private setLocalIdentifier(identifier: number): void {
-    alt.LocalStorage.set('UNIQUE_IDENTIFIER', identifier);
+  private setCanHoldWeapon(state: boolean): void {
+    this.canHoldWeapon = state;
+    game.setPedCanSwitchWeapon(alt.Player.local, state);
+    if(!state) game.setCurrentPedWeapon(alt.Player.local, 1122011548, true);
   }
 
   private disableIdleCam(): void {

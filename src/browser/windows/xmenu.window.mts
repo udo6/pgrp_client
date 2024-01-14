@@ -86,14 +86,22 @@ class XMenuWindow extends WindowBase {
         }
 
         if(!cuffed && alive) {
-          if(!roped) items.push(new XMenuItem('Fesseln', 'rope', 'Server:XMenu:Rope', [targetPlayer.remoteID, true]));
-          else items.push(new XMenuItem('Entfesseln', 'rope', 'Server:XMenu:Rope', [targetPlayer.remoteID, false]));
+          if(!roped) {
+            items.push(new XMenuItem('Fesseln', 'rope', 'Server:XMenu:Rope', [targetPlayer.remoteID, true]));
+          } else {
+            items.push(new XMenuItem('Entfesseln', 'rope', 'Server:XMenu:Rope', [targetPlayer.remoteID, false]));
+            items.push(new XMenuItem('Fußfesseln anlegen/abnehmen', 'handcuff', 'Server:XMenu:CuffLegs', [targetPlayer.remoteID]));
+          }
         }
 
         if(playerModule.team == 1 || playerModule.team == 2 || playerModule.team == 5) {
           if(!roped && alive) {
-            if(!cuffed) items.push(new XMenuItem('Handschellen anlegen', 'handcuff', 'Server:XMenu:Cuff', [targetPlayer.remoteID, true]));
-            else items.push(new XMenuItem('Handschellen abnehmen', 'handcuff', 'Server:XMenu:Cuff', [targetPlayer.remoteID, false]));
+            if(!cuffed) {
+              items.push(new XMenuItem('Handschellen anlegen', 'handcuff', 'Server:XMenu:Cuff', [targetPlayer.remoteID, true]));
+            } else {
+              items.push(new XMenuItem('Handschellen abnehmen', 'handcuff', 'Server:XMenu:Cuff', [targetPlayer.remoteID, false]));
+              items.push(new XMenuItem('Fußfesseln anlegen/abnehmen', 'handcuff', 'Server:XMenu:CuffLegs', [targetPlayer.remoteID]));
+            }
           }
         }
 
