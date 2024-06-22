@@ -6,7 +6,7 @@
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "skipLibCheck": true,
-    "outDir": "./build",
+    "outDir": "C://Users/Anwender/Desktop/altvserver/resources/chat/client/",
     "typeRoots": ["./node_modules/@types", "./node_modules/@altv"],
     "moduleResolution": "node",
     "resolveJsonModule": true,

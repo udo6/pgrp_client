@@ -1,5 +1,5 @@
 import alt from 'alt-client';
-import game, { getWeaponComponentHudStats } from 'natives';
+import game from 'natives';
 import { AnticheatComponent } from '../utils/models/anticheat.component.mjs';
 import { ModuleBase } from "../utils/models/baseModels/module.base.mjs";
 import weaponData from '../utils/data/weaponData.mjs';
@@ -7,25 +7,6 @@ import adminModule from './admin.module.mjs';
 import { distanceTo2D } from '../utils/math.mjs';
 
 const whitelistedResources: string[] = [
-  'lspd-veh',
-  'fib-veh',
-  'fib-alamo',
-  'badfrak-veh',
-  'schafterg',
-  'drafterg',
-  'lsmd-veh',
-  'pillboxkh',
-  'paletokh',
-  'rockfordkh',
-  'lspd',
-  'vespuccipd',
-  'badfrak-maps',
-  'team-clothes',
-  'fib-clothes',
-  'lcn',
-  'mara',
-  'yakuza',
-  'vagos',
   'weapons',
   'roleplay'
 ];
@@ -99,7 +80,7 @@ export default new class AnticheatModule extends ModuleBase {
   private onAnyResourceStart(name: string): void {
     if(whitelistedResources.some(x => x == name)) return;
 
-    this.triggerServer('Server:Anticheat:UnallowedResource', name);
+    //this.triggerServer('Server:Anticheat:UnallowedResource', name);
   }
 
   private enterVehicle(veh: alt.Vehicle, seat: number): void {
@@ -153,11 +134,11 @@ export default new class AnticheatModule extends ModuleBase {
       const veh = alt.Player.local.vehicle;
 
       if (!vehicleParachuteWhitelist.includes(veh.model) && (game.isVehicleParachuteDeployed(veh.scriptID) || game.getVehicleCanDeployParachute(veh.scriptID) || game.getVehicleHasParachute(veh.scriptID))) {
-        this.triggerServer('Server:Anticheat:VehicleParachute');
+        //this.triggerServer('Server:Anticheat:VehicleParachute');
       }
 
       if (!vehicleRocketboostWhitelist.includes(veh.model) && game.isRocketBoostActive(veh.scriptID)) {
-        this.triggerServer('Server:Anticheat:RocketBoost');
+        //this.triggerServer('Server:Anticheat:RocketBoost');
       }
     }
   }
@@ -166,14 +147,14 @@ export default new class AnticheatModule extends ModuleBase {
     const player = alt.Player.local;
 
     if (this.position.flags > this.position.maxFlags) {
-      this.triggerServer('Server:Anticheat:Teleport', this.position.value);
+      //this.triggerServer('Server:Anticheat:Teleport', this.position.value);
       this.timeout();
       this.position.reset(player.pos);
       return;
     }
 
     if (this.health.flags > this.health.maxFlags) {
-      this.triggerServer('Server:Anticheat:Healkey', this.health.value);
+      //this.triggerServer('Server:Anticheat:Healkey', this.health.value);
       this.timeout();
       this.health.reset(player.health + player.armour);
       return;
@@ -244,7 +225,7 @@ export default new class AnticheatModule extends ModuleBase {
 
       if (detected) {
         this.useWeaponModifier = false;
-        this.triggerServer('Server:Anticheat:WeaponModification', newWeapon, ...args);
+        //this.triggerServer('Server:Anticheat:WeaponModification', newWeapon, ...args);
         alt.setTimeout(() => {
           this.useWeaponModifier = true;
         }, 10000);
@@ -259,7 +240,7 @@ export default new class AnticheatModule extends ModuleBase {
     if (data != null) {
       const time = now - this.lastShot;
       if (time < data.rapidFireMinTime) {
-        this.triggerServer('Server:Anticheat:Rapidfire', weapon, time);
+        //this.triggerServer('Server:Anticheat:Rapidfire', weapon, time);
       }
     }
 
@@ -269,7 +250,7 @@ export default new class AnticheatModule extends ModuleBase {
     
     this.ammoInMag--;
     if(this.ammoInMag < 0) {
-      this.triggerServer('Server:Anticheat:NoReload', weapon);
+      //this.triggerServer('Server:Anticheat:NoReload', weapon);
       const clipSize = game.getWeaponClipSize(alt.Player.local.currentWeapon);
       this.ammoInMag = clipSize;
     }

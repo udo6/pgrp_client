@@ -91,19 +91,6 @@ const voiceRangesEnum = {
   3: 12
 }
 
-const translations = {
-  "plugin_not_activated": "Please activate your voiceplugin!",
-  "connect_error": "Error while connecting to voiceserver, please reconnect!",
-  "plugin_not_initializiaed": "Plugin not initialized!",
-
-  // Error message which comes from the plugin
-  "OUTDATED_VERSION": "You dont use the required plugin version!",
-  "WRONG_TS_SERVER": "You are on the wrong teamspeakserver!",
-  "NOT_CONNECTED": "You are on the wrong teamspeakserver!",
-  "MOVE_ERROR": "Error while moving into ingame teamspeak channel!",
-  "WAIT_GAME_INIT": ""
-}
-
 export class YaCAClientModule {
   static instance = null;
 
@@ -485,7 +472,7 @@ export class YaCAClientModule {
   initRequest(dataObj) {
     if (!dataObj || !dataObj.suid || typeof dataObj.chid != "number"
       || !dataObj.deChid || !dataObj.ingameName || !dataObj.channelPassword
-    ) return this.radarNotification(translations.connect_error)
+    ) return;
 
     this.sendWebsocket({
       base: { "request_type": "INIT" },
@@ -532,7 +519,7 @@ export class YaCAClientModule {
        * if the value is >= 0, you can set the max muffling range before it gets completely cut off
        */
       muffling_range: 2,
-      build_type: YacaBuildType.RELEASE, // 0 = Release, 1 = Debug,
+      build_type: YacaBuildType.RELEASE,
       unmute_delay: 400,
       operation_mode: dataObj.useWhisper ? 1 : 0,
     });
@@ -542,8 +529,6 @@ export class YaCAClientModule {
 
   isPluginInitialized() {
     const inited = !!alt.Player.local.yacaPlugin;
-
-    if (!inited) this.radarNotification(translations.plugin_not_initializiaed);
 
     return inited;
   }
@@ -600,8 +585,6 @@ export class YaCAClientModule {
       this.handleTalkState(payload);
       return;
     }
-    
-    if (!translations[payload.code]) alt.log(`[YaCA-Websocket]: Unknown error code: ${payload.code}`);
   }
 
   /**
