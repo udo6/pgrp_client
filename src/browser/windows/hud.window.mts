@@ -159,6 +159,8 @@ export class HudWindow extends WindowBase {
   public onShow(state: boolean, data: string): void {
     game.displayRadar(state);
     browserModule.call('Hud:ShowVoice', state, false, 0, 0);
+    browserModule.call('Hud:ShowInfo', state, data);
+    browserModule.call('Hud:ShowTime', state);
   }
 }
 
