@@ -156,10 +156,13 @@ export class HudWindow extends WindowBase {
     browserModule.call('Hud:SetVoice', micRange, micMute, radio);
   }
 
-  public onShow(state: boolean, data: string): void {
+  public onShow(state: boolean, json: string): void {
+    const data = JSON.parse(json);
+
     game.displayRadar(state);
     browserModule.call('Hud:ShowVoice', state, false, 0, 0);
-    browserModule.call('Hud:ShowInfo', state, data);
+    browserModule.call('Hud:SetMoney', data.Money);
+    browserModule.call('Hud:ShowInfo', state, data.Hunger, data.Thirst);
     browserModule.call('Hud:ShowTime', state);
   }
 }
